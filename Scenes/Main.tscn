@@ -1,12 +1,23 @@
 [gd_scene format=3 uid="uid://c21wcy162tkwh"]
 
+[ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://ds67g31vkx03h" path="res://Objects/Player.tscn" id="1_r150o"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ss0sq"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_epb4q"]
 
-[node name="Main" type="Node3D" unique_id=2108868054]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
+
+[sub_resource type="Sky" id="Sky_ljk2t"]
+sky_material = SubResource("ProceduralSkyMaterial_fum83")
+
+[sub_resource type="Environment" id="Environment_ljk2t"]
+background_mode = 2
+sky = SubResource("Sky_ljk2t")
+
+[node name="GameManager" type="Node3D" unique_id=2108868054]
+script = ExtResource("1_idj7w")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
 
@@ -19,3 +30,10 @@ shape = SubResource("WorldBoundaryShape3D_epb4q")
 
 [node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=516250162]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 10, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
+environment = SubResource("Environment_ljk2t")
