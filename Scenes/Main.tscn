@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://ds67g31vkx03h" path="res://Objects/Player.tscn" id="1_r150o"]
+[ext_resource type="PackedScene" uid="uid://cd5mcvn0u2bsw" path="res://Objects/Reactor.tscn" id="3_kln2b"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ss0sq"]
 
@@ -37,3 +38,6 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
 environment = SubResource("Environment_ljk2t")
+
+[node name="Reactor" parent="." unique_id=915847997 instance=ExtResource("3_kln2b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.245472, -6.091688)
