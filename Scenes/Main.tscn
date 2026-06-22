@@ -9,6 +9,7 @@
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_epb4q"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
+sky_top_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Sky" id="Sky_ljk2t"]
 sky_material = SubResource("ProceduralSkyMaterial_fum83")
@@ -17,8 +18,11 @@ sky_material = SubResource("ProceduralSkyMaterial_fum83")
 background_mode = 2
 sky = SubResource("Sky_ljk2t")
 
-[node name="GameManager" type="Node3D" unique_id=2108868054]
+[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Reactor", "Sun")]
 script = ExtResource("1_idj7w")
+Player = NodePath("Player")
+Reactor = NodePath("Reactor")
+Sun = NodePath("WorldEnvironment/Sun")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
 
@@ -32,12 +36,13 @@ shape = SubResource("WorldBoundaryShape3D_epb4q")
 [node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=516250162]
-transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 10, 0)
-shadow_enabled = true
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
 environment = SubResource("Environment_ljk2t")
 
-[node name="Reactor" parent="." unique_id=915847997 instance=ExtResource("3_kln2b")]
+[node name="Sun" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=516250162]
+transform = Transform3D(1, 0, 0, 0, -0.4076817, 0.91312414, 0, -0.91312414, -0.4076817, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Reactor" parent="." unique_id=915847997 node_paths=PackedStringArray("GameManager") instance=ExtResource("3_kln2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.245472, -6.091688)
+GameManager = NodePath("..")

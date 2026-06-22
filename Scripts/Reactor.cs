@@ -6,15 +6,8 @@ public partial class Reactor : StaticBody3D {
     const float TemperatureIncreaseRate = 50.0f;
     [Export] public float Temperature;
 
-    GameManager GameManager;
-    AreaLight3D Light;
-
-    public override void _Ready() {
-
-        GameManager = GetTree().Root.GetNode<GameManager>("GameManager");
-        Light = GetNode<AreaLight3D>("Light");
-
-    }
+    [Export] GameManager GameManager;
+    [Export] AreaLight3D Light;
 
     public override void _Process(double delta) {
 
@@ -33,11 +26,26 @@ public partial class Reactor : StaticBody3D {
         }
 
 
-        else {
+        else if (Temperature < 750.0f) {
 
             Light.LightColor = (new Color(255, 0, 0));
-            GameManager.ReactorExplode();
 
+        }
+
+        else {
+
+            if (GameManager != null) {
+
+                GameManager.ReactorExplode();
+
+            }
+
+            else {
+
+                ReactorExplode();
+            
+            }
+        
         }
 
     }

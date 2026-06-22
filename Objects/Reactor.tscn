@@ -6,8 +6,9 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ljk2t"]
 
-[node name="Reactor" type="StaticBody3D" unique_id=915847997]
+[node name="Reactor" type="StaticBody3D" unique_id=915847997 node_paths=PackedStringArray("Light")]
 script = ExtResource("1_3bifc")
+Light = NodePath("Light")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=657621598]
 mesh = SubResource("BoxMesh_0rgu8")

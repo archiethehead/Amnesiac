@@ -7,12 +7,11 @@ public partial class Player : CharacterBody3D {
     public const float JumpVelocity = 4.5f;
     public const float Sensitivity = 0.003f;
 
-    Camera3D Camera = null;
+    [Export] Camera3D Camera = null;
 
     public override void _Ready() {
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        Camera = GetNode<Camera3D>("Camera");
 
     }
 
