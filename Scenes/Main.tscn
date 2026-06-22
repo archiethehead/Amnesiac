@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c21wcy162tkwh"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ss0sq"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_epb4q"]
+
+[node name="Main" type="Node3D" unique_id=2108868054]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor" unique_id=47508337]
+mesh = SubResource("PlaneMesh_ss0sq")
+
+[node name="Collider" type="CollisionShape3D" parent="Floor" unique_id=1053750144]
+shape = SubResource("WorldBoundaryShape3D_epb4q")
