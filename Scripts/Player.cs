@@ -2,17 +2,29 @@ using Godot;
 using System;
 
 public partial class Player : CharacterBody3D, Employee {
+    
+    private const float Speed = 5.0f;
+    private const float JumpVelocity = 4.5f;
+    private const float Sensitivity = 0.003f;
+    private Interactable Interactable; 
 
-    public const float Speed = 5.0f;
-    public const float JumpVelocity = 4.5f;
-    public const float Sensitivity = 0.003f;
-
-    [Export] GameManager GameManager;
+    [Export] GameManager GameManager = null;
     [Export] Camera3D Camera = null;
+    [Export] RayCast3D RayCast = null;
 
     public override void _Ready() {
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
+
+    }
+
+    public override void _Process(double delta) {
+
+        if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i) {
+
+            Interactable = i;
+        
+        }
 
     }
 
@@ -44,6 +56,17 @@ public partial class Player : CharacterBody3D, Employee {
 
         Velocity = velocity;
         MoveAndSlide();
+
+    }
+
+    public override void _Input(InputEvent @event) {
+
+        if (@event.IsActionPressed("E") && Interactable != null) {
+
+            Interactable.Interact();
+        
+        }
+
     }
 
     public override void _UnhandledInput(InputEvent @Event) {

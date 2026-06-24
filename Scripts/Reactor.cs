@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Reactor : StaticBody3D, Employee {
+public partial class Reactor : StaticBody3D, Employee, Interactable {
 
     const float TemperatureIncreaseRate = 50.0f;
     [Export] public float Temperature;
@@ -36,6 +36,12 @@ public partial class Reactor : StaticBody3D, Employee {
             Employee.CallManager(GameManager, this, "ReactorExplode");
 
         }
+
+    }
+
+    public void Interact() {
+
+        GD.Print("You interacted with me!");
 
     }
 

@@ -18,9 +18,10 @@ sky_material = SubResource("ProceduralSkyMaterial_fum83")
 background_mode = 2
 sky = SubResource("Sky_ljk2t")
 
-[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Sun")]
+[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Reactor", "Sun")]
 script = ExtResource("1_idj7w")
 Player = NodePath("Player")
+Reactor = NodePath("Reactor")
 Sun = NodePath("WorldEnvironment/Sun")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]

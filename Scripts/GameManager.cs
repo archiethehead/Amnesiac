@@ -8,7 +8,7 @@ public interface Employee {
 
     public static void CallManager(GameManager Manager, Node Employee, string function) {
 
-        if (Manager is GameManager) {
+        if (Manager is not null) {
 
             Manager.Call(function);
             return;
@@ -39,7 +39,7 @@ public partial class GameManager : Node3D {
 
     private void CallEmployee(Node Employee, String Function) {
 
-        if (Employee is Employee && Employee.HasMethod(Function)) { 
+        if (Employee is not null && Employee.HasMethod(Function)) { 
         
             Employee.Call(Function);
         
