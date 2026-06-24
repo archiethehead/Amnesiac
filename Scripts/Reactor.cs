@@ -5,6 +5,7 @@ public partial class Reactor : StaticBody3D, Employee, Interactable {
 
     const float TemperatureIncreaseRate = 50.0f;
     [Export] public float Temperature;
+    [Export] public float MaxTemperature = 0.0f;
     [Export] GameManager GameManager = null;
     [Export] AreaLight3D Light = null;
 
@@ -12,26 +13,26 @@ public partial class Reactor : StaticBody3D, Employee, Interactable {
 
         Temperature += TemperatureIncreaseRate * (float)delta;
 
-        if (Temperature < 250.0f) {
+        if (Temperature < MaxTemperature * 0.25f) {
 
             Light.LightColor = (new Color(0, 255, 0));
 
         }
 
-        else if (Temperature < 500.0f) {
+        else if (Temperature < MaxTemperature * 0.50f) {
 
             Light.LightColor = (new Color(255, 255, 0));
 
         }
 
 
-        else if (Temperature < 750.0f) {
+        else if (Temperature < MaxTemperature * 0.75f) {
 
             Light.LightColor = (new Color(255, 0, 0));
 
         }
 
-        else {
+        else if (Temperature > MaxTemperature){
 
             Employee.CallManager(GameManager, this, "ReactorExplode");
 
