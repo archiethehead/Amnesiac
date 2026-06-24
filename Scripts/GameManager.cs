@@ -19,6 +19,19 @@ public interface Employee {
 
     }
 
+    public static void CallManagerWithSelf(GameManager Manager, Node Employee, string function) {
+
+        if (Manager is not null) {
+
+            Manager.Call(function, Employee);
+            return;
+
+        }
+
+        Employee.Call(function);
+
+    }
+
 }
 
 public partial class GameManager : Node3D {
@@ -51,6 +64,13 @@ public partial class GameManager : Node3D {
 
         CallEmployee(Reactor, "ReactorExplode");
 
+    }
+
+    private void FacePlayer(Node3D Object) {
+
+        Object.LookAt(Player.GlobalTransform.Origin, Vector3.Up, true);
+        Object.GlobalRotation = new Vector3(0.0f, Object.GlobalRotation.Y, Object.GlobalRotation.Z);
+    
     }
 
 }

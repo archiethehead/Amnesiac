@@ -20,9 +20,24 @@ public partial class Player : CharacterBody3D, Employee {
 
     public override void _Process(double delta) {
 
+        RayCast.ForceRaycastUpdate();
+
         if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i) {
 
-            Interactable = i;
+            if (RayCast.GetCollider() != Interactable) {
+
+                Interactable = i;
+                Interactable.ShowInteract();
+
+            }
+
+        }
+
+        else if (Interactable is not null) {
+
+            Interactable.HideInteract();
+            Interactable = null;
+            
         
         }
 

@@ -46,4 +46,5 @@ shadow_enabled = true
 
 [node name="Reactor" parent="." unique_id=915847997 node_paths=PackedStringArray("GameManager") instance=ExtResource("3_kln2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.245472, -6.091688)
+MaxTemperature = 1000.0
 GameManager = NodePath("..")

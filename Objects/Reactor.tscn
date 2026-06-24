@@ -6,9 +6,13 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ljk2t"]
 
-[node name="Reactor" type="StaticBody3D" unique_id=915847997 node_paths=PackedStringArray("Light")]
+[sub_resource type="SystemFont" id="SystemFont_tu013"]
+font_names = PackedStringArray("Courier New")
+
+[node name="Reactor" type="StaticBody3D" unique_id=915847997 node_paths=PackedStringArray("Light", "InteractLabel")]
 script = ExtResource("1_3bifc")
 Light = NodePath("Light")
+InteractLabel = NodePath("InteractLabel")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=657621598]
 mesh = SubResource("BoxMesh_0rgu8")
@@ -20,3 +24,9 @@ shape = SubResource("SphereShape3D_ljk2t")
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0.55)
 light_color = Color(0, 1, 0, 1)
 shadow_enabled = true
+
+[node name="InteractLabel" type="Label3D" parent="." unique_id=1681466683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6925756, 0)
+visible = false
+text = "Press E to Interact With Me"
+font = SubResource("SystemFont_tu013")
