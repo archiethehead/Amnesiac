@@ -1,13 +1,12 @@
 using Godot;
 using System;
 
-public partial class Reactor : StaticBody3D {
+public partial class Reactor : StaticBody3D, Employee {
 
     const float TemperatureIncreaseRate = 50.0f;
     [Export] public float Temperature;
-
-    [Export] GameManager GameManager;
-    [Export] AreaLight3D Light;
+    [Export] GameManager GameManager = null;
+    [Export] AreaLight3D Light = null;
 
     public override void _Process(double delta) {
 
@@ -34,18 +33,8 @@ public partial class Reactor : StaticBody3D {
 
         else {
 
-            if (GameManager != null) {
+            Employee.CallManager(GameManager, this, "ReactorExplode");
 
-                GameManager.ReactorExplode();
-
-            }
-
-            else {
-
-                ReactorExplode();
-            
-            }
-        
         }
 
     }
@@ -55,7 +44,7 @@ public partial class Reactor : StaticBody3D {
         Light.LightColor = (new Color(0, 0, 0));
         this.SetProcess(false);
         GD.Print("BANG!");
-    
+
     }
 
 }

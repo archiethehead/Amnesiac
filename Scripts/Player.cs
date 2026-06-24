@@ -1,12 +1,13 @@
 using Godot;
 using System;
 
-public partial class Player : CharacterBody3D {
+public partial class Player : CharacterBody3D, Employee {
 
     public const float Speed = 5.0f;
     public const float JumpVelocity = 4.5f;
     public const float Sensitivity = 0.003f;
 
+    [Export] GameManager GameManager;
     [Export] Camera3D Camera = null;
 
     public override void _Ready() {

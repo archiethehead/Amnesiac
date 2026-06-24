@@ -18,10 +18,9 @@ sky_material = SubResource("ProceduralSkyMaterial_fum83")
 background_mode = 2
 sky = SubResource("Sky_ljk2t")
 
-[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Reactor", "Sun")]
+[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Sun")]
 script = ExtResource("1_idj7w")
 Player = NodePath("Player")
-Reactor = NodePath("Reactor")
 Sun = NodePath("WorldEnvironment/Sun")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
@@ -33,8 +32,9 @@ mesh = SubResource("PlaneMesh_ss0sq")
 [node name="Collider" type="CollisionShape3D" parent="Floor" unique_id=1053750144]
 shape = SubResource("WorldBoundaryShape3D_epb4q")
 
-[node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
+[node name="Player" parent="." unique_id=1929853051 node_paths=PackedStringArray("GameManager") instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+GameManager = NodePath("..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
 environment = SubResource("Environment_ljk2t")

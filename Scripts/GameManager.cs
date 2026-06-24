@@ -1,11 +1,31 @@
 using Godot;
 using System;
 
+// Manager will always refer to the mediator design pattern implemented in this class,
+// and Employee can refer to any Node within the current scene that can call the Manager.
+
+public interface Employee {
+
+    public static void CallManager(GameManager Manager, Node Employee, string function) {
+
+        if (Manager is GameManager) {
+
+            Manager.Call(function);
+            return;
+
+        }
+
+        Employee.Call(function);
+
+    }
+
+}
+
 public partial class GameManager : Node3D {
 
-    [Export] Player Player = null;
-    [Export] Reactor Reactor = null;
-    [Export] DirectionalLight3D Sun = null;
+    [Export] private Player Player = null;
+    [Export] private Reactor Reactor = null;
+    [Export] private DirectionalLight3D Sun = null;
 
     public override void _Process(double delta) {
 
@@ -17,10 +37,20 @@ public partial class GameManager : Node3D {
 
     }
 
-    public void ReactorExplode() {
+    private void CallEmployee(Node Employee, String Function) {
 
-        Reactor.ReactorExplode();
+        if (Employee is Employee && Employee.HasMethod(Function)) { 
+        
+            Employee.Call(Function);
+        
+        }
     
+    }
+
+    private void ReactorExplode() {
+
+        CallEmployee(Reactor, "ReactorExplode");
+
     }
 
 }
