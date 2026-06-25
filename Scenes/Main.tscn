@@ -18,6 +18,8 @@ sky_material = SubResource("ProceduralSkyMaterial_fum83")
 background_mode = 2
 sky = SubResource("Sky_ljk2t")
 
+[sub_resource type="BoxMesh" id="BoxMesh_ljk2t"]
+
 [node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Reactor", "Sun")]
 script = ExtResource("1_idj7w")
 Player = NodePath("Player")
@@ -27,11 +29,23 @@ Sun = NodePath("WorldEnvironment/Sun")
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
 
 [node name="Mesh" type="MeshInstance3D" parent="Floor" unique_id=47508337]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+transform = Transform3D(54.000004, 0, 0, 0, 50, 0, 0, 0, 13.118897, 0, 0, -1)
 mesh = SubResource("PlaneMesh_ss0sq")
 
 [node name="Collider" type="CollisionShape3D" parent="Floor" unique_id=1053750144]
 shape = SubResource("WorldBoundaryShape3D_epb4q")
+
+[node name="Mesh2" type="MeshInstance3D" parent="Floor" unique_id=1044557976]
+transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, 0, 0, -33.550346)
+mesh = SubResource("PlaneMesh_ss0sq")
+
+[node name="Mesh3" type="MeshInstance3D" parent="Floor" unique_id=1264297995]
+transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, 59, 0, -21.550346)
+mesh = SubResource("PlaneMesh_ss0sq")
+
+[node name="Mesh4" type="MeshInstance3D" parent="Floor" unique_id=1247862624]
+transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, -59, 0, -21.550346)
+mesh = SubResource("PlaneMesh_ss0sq")
 
 [node name="Player" parent="." unique_id=1929853051 node_paths=PackedStringArray("GameManager") instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -45,6 +59,10 @@ transform = Transform3D(1, 0, 0, 0, -0.4076817, 0.91312414, 0, -0.91312414, -0.4
 shadow_enabled = true
 
 [node name="Reactor" parent="." unique_id=915847997 node_paths=PackedStringArray("GameManager") instance=ExtResource("3_kln2b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.245472, -6.091688)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0046520233, -16.055674)
 MaxTemperature = 1000.0
 GameManager = NodePath("..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2135371755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -18)
+mesh = SubResource("BoxMesh_ljk2t")

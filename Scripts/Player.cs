@@ -2,11 +2,11 @@ using Godot;
 using System;
 
 public partial class Player : CharacterBody3D, Employee {
-    
+
     private const float Speed = 5.0f;
     private const float JumpVelocity = 4.5f;
     private const float Sensitivity = 0.003f;
-    private Interactable Interactable; 
+    private Interactable Interactable;
 
     [Export] GameManager GameManager = null;
     [Export] Camera3D Camera = null;
@@ -37,8 +37,8 @@ public partial class Player : CharacterBody3D, Employee {
 
             Interactable.HideInteract();
             Interactable = null;
-            
-        
+
+
         }
 
     }
@@ -79,7 +79,7 @@ public partial class Player : CharacterBody3D, Employee {
         if (@event.IsActionPressed("E") && Interactable != null) {
 
             Interactable.Interact();
-        
+
         }
 
     }

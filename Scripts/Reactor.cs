@@ -9,7 +9,7 @@ public partial class Reactor : Node3D, Employee {
     [Export] public float Temperature;
     [Export] public float MaxTemperature = 0.0f;
     [Export] GameManager GameManager = null;
-    [Export] AreaLight3D Light = null;
+    [Export] OmniLight3D Light = null;
 
     public override void _Process(double delta) {
 

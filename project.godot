@@ -24,6 +24,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="Meltdown"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/IgnoreFolder/addons/IgnoreFolders/plugin.cfg")
+
 [input]
 
 W={

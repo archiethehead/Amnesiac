@@ -52,12 +52,12 @@ public partial class GameManager : Node3D {
 
     private void CallEmployee(Node Employee, String Function) {
 
-        if (Employee is not null && Employee.HasMethod(Function)) { 
-        
+        if (Employee is not null && Employee.HasMethod(Function)) {
+
             Employee.Call(Function);
-        
+
         }
-    
+
     }
 
     private void ReactorExplode() {
@@ -70,7 +70,7 @@ public partial class GameManager : Node3D {
 
         Object.LookAt(Player.GlobalTransform.Origin, Vector3.Up, true);
         Object.GlobalRotation = new Vector3(0.0f, Object.GlobalRotation.Y, Object.GlobalRotation.Z);
-    
+
     }
 
 }
