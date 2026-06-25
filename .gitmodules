@@ -1,0 +1,4 @@
+[submodule "addons/IgnoreFolder"]
+	path = addons/IgnoreFolder
+	url = https://github.com/archiethehead/IgnoreFolders
+ignore = all
