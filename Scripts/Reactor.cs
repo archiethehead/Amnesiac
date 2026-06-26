@@ -1,5 +1,7 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public partial class Reactor : Node3D, Employee {
 
@@ -10,6 +12,7 @@ public partial class Reactor : Node3D, Employee {
     [Export] public float MaxTemperature = 0.0f;
     [Export] GameManager GameManager = null;
     [Export] OmniLight3D Light = null;
+    [Export] public Array<ControlRod> ControlRods = new();
 
     public override void _Process(double delta) {
 
@@ -34,12 +37,18 @@ public partial class Reactor : Node3D, Employee {
 
         }
 
-        else if (Temperature > MaxTemperature){
+        else if (Temperature > MaxTemperature) {
 
             Employee.CallManager(GameManager, this, "ReactorExplode");
 
         }
 
+    }
+
+    public void ApplyTemperatureChange() { 
+    
+
+    
     }
 
     public void ReactorExplode() {
