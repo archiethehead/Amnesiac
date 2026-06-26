@@ -5,7 +5,7 @@ public partial class ControlRod : Node3D {
 
     [Export] private float Modifier = 0.25f;
     [Export] private float RodDepth = 0.0f;
-    public float NewRodDepth { get; set; } = 0.0f;
+    [Export] public float NewRodDepth { get; set; } = 0.0f;
 
     private const float MaxRodDepth = -4.0f;
     private const float MinRodDepth = 0.0f;
@@ -25,7 +25,6 @@ public partial class ControlRod : Node3D {
     public override void _Ready() {
 
         CurrentPosition = Position;
-        SetProcess(false);
 
     }
 

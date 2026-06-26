@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public partial class Valve : StaticBody3D, Interactable
-{
+public partial class Valve : StaticBody3D, Interactable {
 
     [Export] private ControlRod ControlRod;
     private float RotationPercentage = 0.0f;
@@ -10,17 +9,15 @@ public partial class Valve : StaticBody3D, Interactable
     private float RotationRate = 3.0f;
     private int DepthModifier = 1;
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() {
 
         SetProcess(false);
 
-	}
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) {
 
         RotationPercentage += (DepthIncreaseRate * (float)delta) * DepthModifier;
         RotationPercentage = Mathf.Clamp(RotationPercentage, 0.0f, 1.0f);
@@ -38,7 +35,7 @@ public partial class Valve : StaticBody3D, Interactable
     public void Interact() {
 
         SetProcess(true);
-    
+
     }
 
     public void Uninteract() {
@@ -51,7 +48,7 @@ public partial class Valve : StaticBody3D, Interactable
     public void ShowInteract() {
 
         GD.Print("Interact with me!");
-    
+
     }
 
     public void HideInteract() {

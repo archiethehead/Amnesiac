@@ -56,7 +56,7 @@ roughness = 0.19
 roughness_texture = ExtResource("3_7jojs")
 roughness_texture_channel = 1
 normal_enabled = true
-normal_scale = 6.6
+normal_scale = 0.8
 normal_texture = ExtResource("4_7jojs")
 ao_enabled = true
 ao_light_affect = 1.0
@@ -80,7 +80,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_tu013")
 shape = SubResource("ConcavePolygonShape3D_s7r8p")
 
 [node name="Light" type="OmniLight3D" parent="." unique_id=1168839703]
-transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 2.9986706, 1.0589222, -1.65)
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, -0.691973, -1.7836097, -1.6500001)
 shadow_enabled = true
 distance_fade_enabled = true
 omni_range = 50.0

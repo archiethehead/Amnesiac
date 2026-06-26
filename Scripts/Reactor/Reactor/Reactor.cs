@@ -8,7 +8,7 @@ public partial class Reactor : Node3D, Employee {
     const float TemperatureIncreaseRate = 50.0f;
     public bool IsExploded;
 
-    [Export] public float Temperature = 0.0f;
+    [Export] public float Temperature;
     [Export] public float MaxTemperature = 0.0f;
     [Export] GameManager GameManager = null;
     [Export] OmniLight3D Light = null;
@@ -16,7 +16,7 @@ public partial class Reactor : Node3D, Employee {
 
     public override void _Process(double delta) {
 
-        Temperature += TemperatureIncreaseRate * (float)delta;
+        ApplyTemperatureChange((float)delta);
 
         if (Temperature < MaxTemperature * 0.25f) {
 
@@ -45,10 +45,18 @@ public partial class Reactor : Node3D, Employee {
 
     }
 
-    public void ApplyTemperatureChange() { 
-    
+    public void ApplyTemperatureChange(float delta) {
 
-    
+        float ControlRodAffect = 1.0f;
+
+        for (int i = 0; i < ControlRods.Count; i++) {
+
+            ControlRodAffect -= ControlRods[i].TemperatureReduction;
+
+        }
+
+        Temperature += (TemperatureIncreaseRate * delta) * ControlRodAffect;
+
     }
 
     public void ReactorExplode() {

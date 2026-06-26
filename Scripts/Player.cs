@@ -88,7 +88,7 @@ public partial class Player : CharacterBody3D, Employee {
 
             Interacting = false;
             Interactable.Uninteract();
-        
+
         }
 
     }
