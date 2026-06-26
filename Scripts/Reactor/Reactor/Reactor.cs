@@ -1,18 +1,34 @@
 using Godot;
 using Godot.Collections;
 using System;
-using System.Collections.Generic;
 
 public partial class Reactor : Node3D {
 
-    const float TemperatureIncreaseRate = 50.0f;
-    public bool IsExploded;
+    private const float TemperatureIncreaseRate = 50.0f;
+    private const float WaterDecreaseRate = 1.0f;
+    private float MaxInternalWaterLevel = 30.0f;
+    private float MinInternalWaterLevel = 0.0f;
+    private float InternalWaterLevel = 30.0f;
+    private float WaterCoolRate {
+
+        get {
+
+            return 5.0f * (InternalWaterLevel / MaxInternalWaterLevel);
+
+        }
+        
+    }
+
+
+    private bool IsExploded;
 
     [Export] public float Temperature;
     [Export] public float MaxTemperature = 0.0f;
-    [Export] GameManager GameManager = null;
-    [Export] OmniLight3D Light = null;
-    [Export] public Array<ControlRod> ControlRods = new();
+
+
+    [Export] private GameManager GameManager = null;
+    [Export] private OmniLight3D Light = null;
+    [Export] private Array<ControlRod> ControlRods = new();
 
     public override void _Process(double delta) {
 
@@ -55,7 +71,14 @@ public partial class Reactor : Node3D {
 
     }
 
-    public void ApplyTemperatureChange(float delta) {
+    private void ApplyTemperatureChange(float delta) {
+
+        float TemperaturePercentage = Temperature / MaxTemperature;
+        if (TemperaturePercentage > 0.75f) {
+
+            InternalWaterLevel -= (WaterDecreaseRate * delta) * TemperaturePercentage;
+        
+        }
 
         float ControlRodAffect = 1.0f;
 
@@ -66,6 +89,10 @@ public partial class Reactor : Node3D {
         }
 
         Temperature += (TemperatureIncreaseRate * delta) * ControlRodAffect;
+        Temperature -= (WaterCoolRate * delta);
+
+        GD.Print(InternalWaterLevel);
+
 
     }
 
