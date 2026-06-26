@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://27nscjywbkq6"
-path="res://.godot/imported/rodm.fbx-0d0d3585ee44f52deaf30c6e667e823b.scn"
+path="res://.godot/imported/rodm.fbx-71b87fc28c88e6aebb6ea82c6b45f970.scn"
 
 [deps]
 
-source_file="res://Assets/Models/Control Rods/rodm.fbx"
-dest_files=["res://.godot/imported/rodm.fbx-0d0d3585ee44f52deaf30c6e667e823b.scn"]
+source_file="res://Assets/Models/Reacto/Control Rods/rodm.fbx"
+dest_files=["res://.godot/imported/rodm.fbx-71b87fc28c88e6aebb6ea82c6b45f970.scn"]
 
 [params]
 

@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://ds67g31vkx03h" path="res://Objects/Player.tscn" id="1_r150o"]
-[ext_resource type="PackedScene" uid="uid://dyybblh723c12" path="res://Objects/ControlRod.tscn" id="2_rgh2o"]
-[ext_resource type="PackedScene" uid="uid://cd5mcvn0u2bsw" path="res://Objects/Reactor.tscn" id="3_kln2b"]
+[ext_resource type="PackedScene" uid="uid://dyybblh723c12" path="res://Objects/Reactor/Reactor/ControlRod.tscn" id="2_rgh2o"]
+[ext_resource type="PackedScene" uid="uid://cd5mcvn0u2bsw" path="res://Objects/Reactor/Control Rod/Reactor.tscn" id="3_kln2b"]
+[ext_resource type="PackedScene" uid="uid://b4tyucbpilq5q" path="res://Objects/Interactables/Valve.tscn" id="5_pbw6q"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ss0sq"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_epb4q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tu013"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -48,6 +51,11 @@ mesh = SubResource("PlaneMesh_ss0sq")
 transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, -59, 0, -21.550346)
 mesh = SubResource("PlaneMesh_ss0sq")
 
+[node name="ValvePodium" type="MeshInstance3D" parent="Floor" unique_id=1035144990]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37972093, -4.090542)
+mesh = SubResource("BoxMesh_tu013")
+metadata/_edit_group_ = true
+
 [node name="Player" parent="." unique_id=1929853051 node_paths=PackedStringArray("GameManager") instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 GameManager = NodePath("..")
@@ -70,3 +78,8 @@ mesh = SubResource("BoxMesh_ljk2t")
 
 [node name="ControlRod" parent="." unique_id=43492146 instance=ExtResource("2_rgh2o")]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -4.772, 0, -13.433)
+Modifier = -0.62
+
+[node name="Valve" parent="." unique_id=1475203535 node_paths=PackedStringArray("ControlRod") instance=ExtResource("5_pbw6q")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -0.0051760674, 1.3642628, -4.0531936)
+ControlRod = NodePath("../ControlRod")

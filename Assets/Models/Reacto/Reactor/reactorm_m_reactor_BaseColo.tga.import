@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://brgtwbefrhpdu"
-path.s3tc="res://.godot/imported/reactorm_m_reactor_BaseColo.tga-82a1ce486f5117ac5679f940cf44ab84.s3tc.ctex"
+path.s3tc="res://.godot/imported/reactorm_m_reactor_BaseColo.tga-4199fde4d566b3b720371c607a5ec81f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/Reactor/reactorm_m_reactor_BaseColo.tga"
-dest_files=["res://.godot/imported/reactorm_m_reactor_BaseColo.tga-82a1ce486f5117ac5679f940cf44ab84.s3tc.ctex"]
+source_file="res://Assets/Models/Reacto/Reactor/reactorm_m_reactor_BaseColo.tga"
+dest_files=["res://.godot/imported/reactorm_m_reactor_BaseColo.tga-4199fde4d566b3b720371c607a5ec81f.s3tc.ctex"]
 
 [params]
 

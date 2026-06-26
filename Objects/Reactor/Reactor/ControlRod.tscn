@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://dyybblh723c12"]
 
-[ext_resource type="Texture2D" uid="uid://bmk0nhcexomm1" path="res://Assets/Models/Control Rods/T_yay_BC.tga" id="1_4l0vx"]
-[ext_resource type="Script" uid="uid://bh0e71l2pnh6w" path="res://Scripts/ControlRod.cs" id="1_iqg28"]
-[ext_resource type="Texture2D" uid="uid://dd2dtckx5s2c3" path="res://Assets/Models/Control Rods/T_yay_ORM.tga" id="3_dyhxl"]
-[ext_resource type="Texture2D" uid="uid://cl2gm0ouou0xk" path="res://Assets/Models/Control Rods/T_yay_N.tga" id="4_k35os"]
+[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_BC.tga" id="1_4l0vx"]
+[ext_resource type="Script" uid="uid://bh0e71l2pnh6w" path="res://Scripts/Reactor/Control Rod/ControlRod.cs" id="1_iqg28"]
+[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_ORM.tga" id="3_dyhxl"]
+[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_N.tga" id="4_k35os"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8at6f"]
 resource_name = "lambert2"

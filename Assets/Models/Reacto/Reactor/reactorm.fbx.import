@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bjlfr67h13vvq"
-path="res://.godot/imported/reactorm.fbx-f1e41de4303912c6ce86bd1d3e31da6c.scn"
+path="res://.godot/imported/reactorm.fbx-c3fd67bffb5f8ca607af43754e60c795.scn"
 
 [deps]
 
-source_file="res://Assets/Models/Reactor/reactorm.fbx"
-dest_files=["res://.godot/imported/reactorm.fbx-f1e41de4303912c6ce86bd1d3e31da6c.scn"]
+source_file="res://Assets/Models/Reacto/Reactor/reactorm.fbx"
+dest_files=["res://.godot/imported/reactorm.fbx-c3fd67bffb5f8ca607af43754e60c795.scn"]
 
 [params]
 

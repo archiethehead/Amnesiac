@@ -8,7 +8,7 @@ public partial class Reactor : Node3D, Employee {
     const float TemperatureIncreaseRate = 50.0f;
     public bool IsExploded;
 
-    [Export] public float Temperature;
+    [Export] public float Temperature = 0.0f;
     [Export] public float MaxTemperature = 0.0f;
     [Export] GameManager GameManager = null;
     [Export] OmniLight3D Light = null;

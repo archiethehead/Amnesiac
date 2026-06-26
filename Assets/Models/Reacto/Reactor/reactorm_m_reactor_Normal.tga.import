@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cl2gm0ouou0xk"
-path.s3tc="res://.godot/imported/T_yay_N.tga-c0a7af2d8681dd80709f1733b772246f.s3tc.ctex"
+uid="uid://l1dianxpwuc6"
+path.s3tc="res://.godot/imported/reactorm_m_reactor_Normal.tga-a69c2240c2066a71ecec91cfdff80d3e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/Control Rods/T_yay_N.tga"
-dest_files=["res://.godot/imported/T_yay_N.tga-c0a7af2d8681dd80709f1733b772246f.s3tc.ctex"]
+source_file="res://Assets/Models/Reacto/Reactor/reactorm_m_reactor_Normal.tga"
+dest_files=["res://.godot/imported/reactorm_m_reactor_Normal.tga-a69c2240c2066a71ecec91cfdff80d3e.s3tc.ctex"]
 
 [params]
 
@@ -27,7 +27,7 @@ compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=1
-roughness/src_normal="res://Assets/Models/Control Rods/T_yay_N.tga"
+roughness/src_normal="res://Assets/Models/Reactor/reactorm_m_reactor_Normal.tga"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2

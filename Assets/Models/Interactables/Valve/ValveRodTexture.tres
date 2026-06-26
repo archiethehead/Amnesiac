@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bri4bos7x1eqo"]
+
+[ext_resource type="Texture2D" uid="uid://ddvoh8y8gpmg7" path="res://Assets/Models/Interactables/Valve/Valve_low3_Valve_BaseColor.tga" id="1_nypvl"]
+[ext_resource type="Texture2D" uid="uid://d2dw20fxwduf2" path="res://Assets/Models/Interactables/Valve/Valve_low3_Valve_OcclusionRoughnessMetallic.tga" id="2_hsps7"]
+[ext_resource type="Texture2D" uid="uid://cnhbs1p28cfjx" path="res://Assets/Models/Interactables/Valve/Valve_low3_Valve_Normal.tga" id="3_upjhl"]
+
+[resource]
+albedo_texture = ExtResource("1_nypvl")
+metallic = 1.0
+metallic_texture = ExtResource("2_hsps7")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_hsps7")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_scale = 6.0
+normal_texture = ExtResource("3_upjhl")
+ao_enabled = true
+ao_texture = ExtResource("2_hsps7")
+ao_on_uv2 = true

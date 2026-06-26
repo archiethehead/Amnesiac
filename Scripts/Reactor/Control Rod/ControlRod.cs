@@ -5,7 +5,7 @@ public partial class ControlRod : Node3D {
 
     [Export] private float Modifier = 0.25f;
     [Export] private float RodDepth = 0.0f;
-    [Export] private float NewRodDepth = 1.0f;
+    public float NewRodDepth { get; set; } = 0.0f;
 
     private const float MaxRodDepth = -4.0f;
     private const float MinRodDepth = 0.0f;
@@ -25,17 +25,16 @@ public partial class ControlRod : Node3D {
     public override void _Ready() {
 
         CurrentPosition = Position;
-        GD.Print(CurrentPosition);
+        SetProcess(false);
 
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {
 
-
         if (RodDepth != NewRodDepth) {
 
-            float DepthTarget = MaxRodDepth / NewRodDepth;
+            float DepthTarget = MaxRodDepth * NewRodDepth;
 
             float weight = 1.0f - Mathf.Exp(-RodSpeed * (float)delta);
             Position = Position.Lerp(new Vector3(CurrentPosition.X, DepthTarget, CurrentPosition.Z), weight);
@@ -48,12 +47,11 @@ public partial class ControlRod : Node3D {
 
                 Position = new Vector3(CurrentPosition.X, DepthTarget, CurrentPosition.Z);
                 RodDepth = NewRodDepth;
+                SetProcess(false);
 
             }
 
         }
-
-        GD.Print(RodDepth);
 
     }
 }

@@ -6,6 +6,7 @@ public partial class Player : CharacterBody3D, Employee {
     private const float Speed = 5.0f;
     private const float JumpVelocity = 4.5f;
     private const float Sensitivity = 0.003f;
+    private bool Interacting = false;
     private Interactable Interactable;
 
     [Export] GameManager GameManager = null;
@@ -21,7 +22,6 @@ public partial class Player : CharacterBody3D, Employee {
     public override void _Process(double delta) {
 
         RayCast.ForceRaycastUpdate();
-
         if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i) {
 
             if (RayCast.GetCollider() != Interactable) {
@@ -36,6 +36,7 @@ public partial class Player : CharacterBody3D, Employee {
         else if (Interactable is not null) {
 
             Interactable.HideInteract();
+            Interactable.Uninteract();
             Interactable = null;
 
 
@@ -76,10 +77,18 @@ public partial class Player : CharacterBody3D, Employee {
 
     public override void _Input(InputEvent @event) {
 
-        if (@event.IsActionPressed("E") && Interactable != null) {
+        if (@event.IsActionPressed("E") && Interactable != null && !Interacting) {
 
+            Interacting = true;
             Interactable.Interact();
 
+        }
+
+        else if (Interacting && (@event.IsActionReleased("E") && Interactable != null)) {
+
+            Interacting = false;
+            Interactable.Uninteract();
+        
         }
 
     }
