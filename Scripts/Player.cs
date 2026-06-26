@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Player : CharacterBody3D, Employee {
+public partial class Player : CharacterBody3D {
 
     private const float Speed = 5.0f;
     private const float JumpVelocity = 4.5f;

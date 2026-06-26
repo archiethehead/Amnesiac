@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://dyybblh723c12"]
 
-[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_BC.tga" id="1_4l0vx"]
+[ext_resource type="Texture2D" uid="uid://bmk0nhcexomm1" path="res://Assets/Models/Reacto/Control Rods/T_yay_BC.tga" id="1_4l0vx"]
 [ext_resource type="Script" uid="uid://bh0e71l2pnh6w" path="res://Scripts/Reactor/Control Rod/ControlRod.cs" id="1_iqg28"]
-[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_ORM.tga" id="3_dyhxl"]
-[ext_resource type="Texture2D" path="res://Assets/Models/Reacto/Control Rods/T_yay_N.tga" id="4_k35os"]
+[ext_resource type="Texture2D" uid="uid://dd2dtckx5s2c3" path="res://Assets/Models/Reacto/Control Rods/T_yay_ORM.tga" id="3_dyhxl"]
+[ext_resource type="Texture2D" uid="uid://cl2gm0ouou0xk" path="res://Assets/Models/Reacto/Control Rods/T_yay_N.tga" id="4_k35os"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8at6f"]
 resource_name = "lambert2"
@@ -67,7 +67,7 @@ points = PackedVector3Array(-0.004443942, -0.005079365, -0.004126735, 0.00444395
 script = ExtResource("1_iqg28")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=68120350]
-transform = Transform3D(92.5649, 0, 0, 0, 494.55652, 0, 0, 0, 92.5649, 0, 2.25, 0)
+transform = Transform3D(-4.0461405e-06, 0, 92.5649, 0, 494.55652, 0, -92.5649, 0, -4.0461405e-06, 0, 2.25, 0)
 mesh = SubResource("ArrayMesh_x7fgp")
 surface_material_override/0 = SubResource("StandardMaterial3D_wauqb")
 

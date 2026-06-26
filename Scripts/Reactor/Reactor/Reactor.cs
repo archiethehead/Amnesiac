@@ -3,7 +3,7 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 
-public partial class Reactor : Node3D, Employee {
+public partial class Reactor : Node3D {
 
     const float TemperatureIncreaseRate = 50.0f;
     public bool IsExploded;
@@ -39,7 +39,17 @@ public partial class Reactor : Node3D, Employee {
 
         else if (Temperature > MaxTemperature) {
 
-            Employee.CallManager(GameManager, this, "ReactorExplode");
+            if (GameManager != null) {
+
+                GameManager.ReactorExplode();
+
+            }
+
+            else {
+
+                ReactorExplode();
+            
+            }
 
         }
 
