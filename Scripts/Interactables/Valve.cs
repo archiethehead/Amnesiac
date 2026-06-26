@@ -3,11 +3,13 @@ using System;
 
 public partial class Valve : StaticBody3D, Interactable {
 
-    [Export] private ControlRod ControlRod;
     private float RotationPercentage = 0.0f;
     private float DepthIncreaseRate = 0.5f;
     private float RotationRate = 3.0f;
     private int DepthModifier = 1;
+
+    [Export] private ControlRod ControlRod;
+    [Export] private Label3D InteractLabel;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
@@ -47,13 +49,13 @@ public partial class Valve : StaticBody3D, Interactable {
 
     public void ShowInteract() {
 
-        GD.Print("Interact with me!");
+        InteractLabel.Visible = true;
 
     }
 
     public void HideInteract() {
 
-        GD.Print("Awwww :(");
+        InteractLabel.Visible = false;
 
     }
 

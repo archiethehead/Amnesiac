@@ -91,9 +91,6 @@ public partial class Reactor : Node3D {
         Temperature += (TemperatureIncreaseRate * delta) * ControlRodAffect;
         Temperature -= (WaterCoolRate * delta);
 
-        GD.Print(InternalWaterLevel);
-
-
     }
 
     public void ReactorExplode() {

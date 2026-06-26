@@ -71,8 +71,7 @@ transform = Transform3D(-4.0461405e-06, 0, 92.5649, 0, 494.55652, 0, -92.5649, 0
 mesh = SubResource("ArrayMesh_x7fgp")
 surface_material_override/0 = SubResource("StandardMaterial3D_wauqb")
 
-[node name="RigidPhysicsBody" type="RigidBody3D" parent="Mesh" unique_id=1010420973]
-mass = 30.0
+[node name="RigidPhysicsBody" type="StaticBody3D" parent="Mesh" unique_id=599580900]
 
 [node name="Collider" type="CollisionShape3D" parent="Mesh/RigidPhysicsBody" unique_id=64493647]
 shape = SubResource("ConvexPolygonShape3D_t40cr")

@@ -48,9 +48,10 @@ shadow_mesh = SubResource("ArrayMesh_76x5c")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tu013"]
 
-[node name="Valve" type="StaticBody3D" unique_id=542406856]
+[node name="Valve" type="StaticBody3D" unique_id=542406856 node_paths=PackedStringArray("InteractLabel")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
 script = ExtResource("1_1n8eu")
+InteractLabel = NodePath("InteractLabel")
 
 [node name="BaseCollider" type="CollisionShape3D" parent="." unique_id=1886445545]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.050311044, -0.0024801518)
@@ -64,3 +65,10 @@ surface_material_override/0 = ExtResource("1_hbf5q")
 [node name="InteractCollider" type="CollisionShape3D" parent="." unique_id=1723895213]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, -0.06584811, 0.0112695135)
 shape = SubResource("SphereShape3D_tu013")
+
+[node name="InteractLabel" type="Label3D" parent="." unique_id=307605565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05991635, 0)
+visible = false
+pixel_size = 0.001
+text = "E"
+font_size = 100
