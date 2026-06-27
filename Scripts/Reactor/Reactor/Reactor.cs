@@ -16,7 +16,7 @@ public partial class Reactor : Node3D {
             return 33.3f * (InternalWaterLevel / MaxInternalWaterLevel);
 
         }
-        
+
     }
 
 
@@ -64,7 +64,7 @@ public partial class Reactor : Node3D {
             else {
 
                 ReactorExplode();
-            
+
             }
 
         }
@@ -77,7 +77,7 @@ public partial class Reactor : Node3D {
         if (TemperaturePercentage > 0.75f) {
 
             InternalWaterLevel -= (WaterDecreaseRate * delta) * TemperaturePercentage;
-        
+
         }
 
         float ControlRodAffect = 1.0f;

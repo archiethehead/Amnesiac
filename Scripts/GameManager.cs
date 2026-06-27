@@ -22,7 +22,7 @@ public partial class GameManager : Node3D {
         if (Reactor != null) {
 
             Reactor.ReactorExplode();
-        
+
         }
 
     }

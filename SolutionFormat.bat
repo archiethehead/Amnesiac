@@ -1,1 +1,1 @@
-dotnet format "./Meltdown.sln" --no-restore
+dotnet format "./Amnesiac.sln" --no-restore
