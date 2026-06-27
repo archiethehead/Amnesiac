@@ -9,7 +9,7 @@ public partial class ControlRod : Node3D {
 
     private const float MaxRodDepth = -4.0f;
     private const float MinRodDepth = 0.0f;
-    private const float RodSpeed = 2.0f;
+    private const float RodSpeed = 0.5f;
     private Vector3 CurrentPosition;
 
     public float TemperatureReduction {

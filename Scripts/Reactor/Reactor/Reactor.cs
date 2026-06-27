@@ -4,7 +4,7 @@ using System;
 
 public partial class Reactor : Node3D {
 
-    private const float TemperatureIncreaseRate = 50.0f;
+    private const float TemperatureIncreaseRate = 100.0f;
     private const float WaterDecreaseRate = 1.0f;
     private float MaxInternalWaterLevel = 30.0f;
     private float MinInternalWaterLevel = 0.0f;
@@ -13,7 +13,7 @@ public partial class Reactor : Node3D {
 
         get {
 
-            return 5.0f * (InternalWaterLevel / MaxInternalWaterLevel);
+            return 33.3f * (InternalWaterLevel / MaxInternalWaterLevel);
 
         }
         
