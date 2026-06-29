@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://bmsx0sjwwaxat"]
+
+[ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_o8klq"]
+[ext_resource type="Script" uid="uid://c5h73e5oyyitq" path="res://Scripts/Menus/PauseMenu.cs" id="2_scvw1"]
+[ext_resource type="Theme" uid="uid://u8yin4hovprj" path="res://Assets/Styles/Title.tres" id="3_fyku0"]
+[ext_resource type="Theme" uid="uid://6bee868cnqkc" path="res://Assets/Styles/Button.tres" id="4_spy8q"]
+
+[node name="GameManager" type="Node3D" unique_id=455620337]
+script = ExtResource("1_o8klq")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1128438915 node_paths=PackedStringArray("GameManager")]
+process_mode = 2
+visible = false
+script = ExtResource("2_scvw1")
+GameManager = NodePath("..")
+
+[node name="Paused" type="Label" parent="PauseMenu" unique_id=1407695698]
+process_mode = 2
+offset_right = 1151.0
+offset_bottom = 23.0
+theme = ExtResource("3_fyku0")
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Resume" type="Button" parent="PauseMenu" unique_id=1349160323]
+process_mode = 2
+anchors_preset = -1
+anchor_left = 0.4652778
+anchor_top = 0.47608024
+anchor_right = 0.5347222
+anchor_bottom = 0.52391976
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+offset_transform_enabled = true
+offset_transform_scale = Vector2(2, 2)
+theme = ExtResource("4_spy8q")
+text = "Resume"
+metadata/_edit_use_anchors_ = true
+
+[node name="Exit" type="Button" parent="PauseMenu" unique_id=597089427]
+process_mode = 2
+anchors_preset = -1
+anchor_left = 0.46310765
+anchor_top = 0.47608024
+anchor_right = 0.53255206
+anchor_bottom = 0.52391976
+offset_left = 2.5
+offset_top = 155.5
+offset_right = 2.5
+offset_bottom = 155.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+offset_transform_enabled = true
+offset_transform_scale = Vector2(2, 2)
+theme = ExtResource("4_spy8q")
+text = "Exit"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="PauseMenu/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Exit" to="PauseMenu" method="_on_exit_pressed"]

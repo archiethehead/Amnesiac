@@ -1,0 +1,8 @@
+[gd_resource type="Theme" format=3 uid="uid://6bee868cnqkc"]
+
+[sub_resource type="SystemFont" id="SystemFont_ljk2t"]
+font_names = PackedStringArray("Courier New")
+oversampling = 2.5
+
+[resource]
+default_font = SubResource("SystemFont_ljk2t")

@@ -65,9 +65,9 @@ public partial class ControlRod : Node3D, ValveInterface {
 
             SetProcess(true);
             IsMoving = true;
-        
+
         }
-    
+
     }
 
 

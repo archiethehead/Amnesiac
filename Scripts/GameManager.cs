@@ -34,4 +34,22 @@ public partial class GameManager : Node3D {
 
     }
 
+    public void Pause() {
+
+        GetTree().Paused = true;
+
+    }
+
+    public void Unpause() {
+
+        GetTree().Paused = false;
+
+    }
+
+    public void Exit() {
+
+        GetTree().Quit();
+
+    }
+
 }

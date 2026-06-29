@@ -38,6 +38,7 @@ public partial class Valve : StaticBody3D, Interactable {
                 v.HandleValveValue(RotationPercentage);
 
             }
+
         }
 
         if (RotationPercentage > 0.0f && RotationPercentage < 1.0f) {

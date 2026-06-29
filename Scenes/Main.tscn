@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c21wcy162tkwh"]
 
-[ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_idj7w"]
+[ext_resource type="PackedScene" uid="uid://bmsx0sjwwaxat" path="res://Objects/GameManager.tscn" id="1_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://ds67g31vkx03h" path="res://Objects/Player.tscn" id="1_r150o"]
 [ext_resource type="PackedScene" uid="uid://dyybblh723c12" path="res://Objects/Reactor/Control Rod/ControlRod.tscn" id="2_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cd5mcvn0u2bsw" path="res://Objects/Reactor/Reactor/Reactor.tscn" id="3_kln2b"]
@@ -23,11 +23,12 @@ sky_material = SubResource("ProceduralSkyMaterial_fum83")
 background_mode = 2
 sky = SubResource("Sky_ljk2t")
 
-[node name="GameManager" type="Node3D" unique_id=2108868054 node_paths=PackedStringArray("Player", "Reactor", "Sun")]
-script = ExtResource("1_idj7w")
-Player = NodePath("Player")
-Reactor = NodePath("Reactor")
-Sun = NodePath("WorldEnvironment/Sun")
+[node name="Root" type="Node3D" unique_id=2108868054]
+
+[node name="GameManager" parent="." unique_id=455620337 node_paths=PackedStringArray("Player", "Reactor", "Sun") instance=ExtResource("1_pbw6q")]
+Player = NodePath("../Player")
+Reactor = NodePath("../Reactor")
+Sun = NodePath("../WorldEnvironment/Sun")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
 
@@ -61,7 +62,7 @@ mesh = SubResource("PlaneMesh_tu013")
 
 [node name="Player" parent="." unique_id=1929853051 node_paths=PackedStringArray("GameManager") instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-GameManager = NodePath("..")
+GameManager = NodePath("../GameManager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
 environment = SubResource("Environment_ljk2t")
@@ -73,7 +74,7 @@ shadow_enabled = true
 [node name="Reactor" parent="." unique_id=915847997 node_paths=PackedStringArray("GameManager", "ControlRods") instance=ExtResource("3_kln2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0046520233, -16.055674)
 MaxTemperature = 5000.0
-GameManager = NodePath("..")
+GameManager = NodePath("../GameManager")
 ControlRods = [NodePath("../Control Rods/ControlRod"), NodePath("../Control Rods/ControlRod2"), NodePath("../Control Rods/ControlRod3"), NodePath("../Control Rods/ControlRod4")]
 
 [node name="Valve" parent="." unique_id=1475203535 node_paths=PackedStringArray("LinkedValveObjects") instance=ExtResource("5_pbw6q")]

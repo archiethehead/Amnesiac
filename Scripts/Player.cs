@@ -91,6 +91,12 @@ public partial class Player : CharacterBody3D {
 
         }
 
+        else if (@event.IsActionPressed("Escape")) {
+
+            GameManager.Pause();
+
+        }
+
     }
 
     public override void _UnhandledInput(InputEvent @Event) {
