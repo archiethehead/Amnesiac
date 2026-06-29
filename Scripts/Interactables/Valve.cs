@@ -1,5 +1,12 @@
 using Godot;
+using Godot.Collections;
 using System;
+
+public interface ValveInterface {
+
+    public void HandleValveValue(float ValveValue);
+
+}
 
 public partial class Valve : StaticBody3D, Interactable {
 
@@ -8,7 +15,7 @@ public partial class Valve : StaticBody3D, Interactable {
     private float RotationRate = 3.0f;
     private int DepthModifier = 1;
 
-    [Export] private ControlRod ControlRod;
+    [Export] private Array<Node3D> LinkedValveObjects = new();
     [Export] private Label3D InteractLabel;
 
     // Called when the node enters the scene tree for the first time.
@@ -23,8 +30,15 @@ public partial class Valve : StaticBody3D, Interactable {
 
         RotationPercentage += (DepthIncreaseRate * (float)delta) * DepthModifier;
         RotationPercentage = Mathf.Clamp(RotationPercentage, 0.0f, 1.0f);
-        ControlRod.NewRodDepth = RotationPercentage;
-        ControlRod.SetProcess(true);
+
+        for (int i = 0; i < LinkedValveObjects.Count; i++) {
+
+            if (LinkedValveObjects[i] is ValveInterface v) {
+
+                v.HandleValveValue(RotationPercentage);
+
+            }
+        }
 
         if (RotationPercentage > 0.0f && RotationPercentage < 1.0f) {
 

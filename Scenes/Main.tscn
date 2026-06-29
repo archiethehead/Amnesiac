@@ -76,9 +76,9 @@ MaxTemperature = 5000.0
 GameManager = NodePath("..")
 ControlRods = [NodePath("../Control Rods/ControlRod"), NodePath("../Control Rods/ControlRod2"), NodePath("../Control Rods/ControlRod3"), NodePath("../Control Rods/ControlRod4")]
 
-[node name="Valve" parent="." unique_id=1475203535 node_paths=PackedStringArray("ControlRod") instance=ExtResource("5_pbw6q")]
+[node name="Valve" parent="." unique_id=1475203535 node_paths=PackedStringArray("LinkedValveObjects") instance=ExtResource("5_pbw6q")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -0.0051760674, 1.3642628, -4.0531936)
-ControlRod = NodePath("../Control Rods/ControlRod")
+LinkedValveObjects = [NodePath("../Control Rods/ControlRod"), NodePath("../Control Rods/ControlRod2"), NodePath("../Control Rods/ControlRod3"), NodePath("../Control Rods/ControlRod4")]
 
 [node name="Control Rods" type="Node" parent="." unique_id=386926743]
 
