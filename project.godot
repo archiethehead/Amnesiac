@@ -26,7 +26,7 @@ project/assembly_name="Amnesiac"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/IgnoreFolder/addons/IgnoreFolders/plugin.cfg")
+enabled=PackedStringArray("res://addons/IgnoreFolder/addons/IgnoreFolders/plugin.cfg", "res://addons/func_godot/plugin.cfg")
 
 [input]
 
