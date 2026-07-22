@@ -9,12 +9,14 @@ public partial class Player : CharacterBody3D {
     private bool Interacting = false;
     private Interactable Interactable;
 
-    [Export] GameManager GameManager = null;
+    private GameManager GameManager = null;
     [Export] Camera3D Camera = null;
     [Export] RayCast3D RayCast = null;
 
     public override void _Ready() {
 
+        GameManager = GameManager.Instance;
+        GameManager.Player = this;
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
     }

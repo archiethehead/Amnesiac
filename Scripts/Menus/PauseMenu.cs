@@ -5,7 +5,13 @@ public partial class PauseMenu : CanvasLayer {
 
     private float PauseCooldown = 0.5f;
     private bool IsPaused = false;
-    [Export] private GameManager GameManager = null;
+    private GameManager GameManager = null;
+
+    public override void _Ready() {
+
+        GameManager = GameManager.Instance;
+
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {

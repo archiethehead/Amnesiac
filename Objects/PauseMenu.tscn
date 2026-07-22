@@ -1,20 +1,15 @@
 [gd_scene format=3 uid="uid://bmsx0sjwwaxat"]
 
-[ext_resource type="Script" uid="uid://bejfpsch24134" path="res://Scripts/GameManager.cs" id="1_o8klq"]
 [ext_resource type="Script" uid="uid://c5h73e5oyyitq" path="res://Scripts/Menus/PauseMenu.cs" id="2_scvw1"]
 [ext_resource type="Theme" uid="uid://u8yin4hovprj" path="res://Assets/Styles/Title.tres" id="3_fyku0"]
 [ext_resource type="Theme" uid="uid://6bee868cnqkc" path="res://Assets/Styles/Button.tres" id="4_spy8q"]
 
-[node name="GameManager" type="Node3D" unique_id=455620337]
-script = ExtResource("1_o8klq")
-
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1128438915 node_paths=PackedStringArray("GameManager")]
+[node name="PauseMenu" type="CanvasLayer" unique_id=1128438915]
 process_mode = 2
 visible = false
 script = ExtResource("2_scvw1")
-GameManager = NodePath("..")
 
-[node name="Paused" type="Label" parent="PauseMenu" unique_id=1407695698]
+[node name="Paused" type="Label" parent="." unique_id=1407695698]
 process_mode = 2
 offset_right = 1151.0
 offset_bottom = 23.0
@@ -22,7 +17,7 @@ theme = ExtResource("3_fyku0")
 text = "PAUSED"
 horizontal_alignment = 1
 
-[node name="Resume" type="Button" parent="PauseMenu" unique_id=1349160323]
+[node name="Resume" type="Button" parent="." unique_id=1349160323]
 process_mode = 2
 anchors_preset = -1
 anchor_left = 0.4652778
@@ -39,7 +34,7 @@ theme = ExtResource("4_spy8q")
 text = "Resume"
 metadata/_edit_use_anchors_ = true
 
-[node name="Exit" type="Button" parent="PauseMenu" unique_id=597089427]
+[node name="Exit" type="Button" parent="." unique_id=597089427]
 process_mode = 2
 anchors_preset = -1
 anchor_left = 0.46310765
@@ -60,5 +55,5 @@ theme = ExtResource("4_spy8q")
 text = "Exit"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="PauseMenu/Resume" to="PauseMenu" method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/Exit" to="PauseMenu" method="_on_exit_pressed"]
+[connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

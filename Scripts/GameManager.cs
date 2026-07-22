@@ -3,18 +3,14 @@ using System;
 
 public partial class GameManager : Node3D {
 
-    [Export] private Player Player = null;
-    [Export] private Reactor Reactor = null;
-    [Export] private DirectionalLight3D Sun = null;
+    public static GameManager Instance { get; private set; }
+    public Player Player { get; set; } = null;
+    public Reactor Reactor { get; set; } = null;
 
-    public override void _Process(double delta) {
-
-        if (Sun != null) {
-
-            Sun.RotateX(0.001f * (float)delta);
-
-        }
-
+    public override void _Ready() { 
+    
+        Instance = this;
+    
     }
 
     public void ReactorExplode() {
