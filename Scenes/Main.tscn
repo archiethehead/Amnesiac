@@ -1,23 +1,12 @@
 [gd_scene format=4 uid="uid://c21wcy162tkwh"]
 
 [ext_resource type="PackedScene" uid="uid://ds67g31vkx03h" path="res://Objects/Player.tscn" id="1_r150o"]
-[ext_resource type="PackedScene" uid="uid://dyybblh723c12" path="res://Objects/Reactor/Control Rod/ControlRod.tscn" id="2_rgh2o"]
-[ext_resource type="PackedScene" uid="uid://cd5mcvn0u2bsw" path="res://Objects/Reactor/Reactor/Reactor.tscn" id="3_kln2b"]
-[ext_resource type="PackedScene" uid="uid://b4tyucbpilq5q" path="res://Objects/Interactables/Valve.tscn" id="5_pbw6q"]
 [ext_resource type="Script" uid="uid://cwu5cf7a0awcd" path="res://addons/func_godot/src/map/func_godot_map.gd" id="6_50glp"]
 [ext_resource type="Material" uid="uid://cvex6toty8yn7" path="res://addons/func_godot/textures/default_material.tres" id="7_4kpch"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="8_bmxlf"]
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="8_grg3l"]
 [ext_resource type="Script" uid="uid://38q6k0ctahjn" path="res://addons/func_godot/src/map/func_godot_map_settings.gd" id="9_frkhe"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_ss0sq"]
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_epb4q"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_tu013"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_tu013"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
 
@@ -162,38 +151,8 @@ points = PackedVector3Array(17, 5, -1.8846154, 17, 3, -1.8846154, 9.5, 5, -1.884
 
 [node name="Root" type="Node3D" unique_id=2108868054]
 
-[node name="Floor" type="StaticBody3D" parent="." unique_id=400882074]
-
-[node name="Mesh" type="MeshInstance3D" parent="Floor" unique_id=47508337]
-transform = Transform3D(54.000004, 0, 0, 0, 50, 0, 0, 0, 13.118897, 0, 0, -1)
-mesh = SubResource("PlaneMesh_ss0sq")
-
-[node name="Collider" type="CollisionShape3D" parent="Floor" unique_id=1053750144]
-shape = SubResource("WorldBoundaryShape3D_epb4q")
-
-[node name="Mesh2" type="MeshInstance3D" parent="Floor" unique_id=1044557976]
-transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, 0, 0, -33.550346)
-mesh = SubResource("PlaneMesh_ss0sq")
-
-[node name="Mesh3" type="MeshInstance3D" parent="Floor" unique_id=1264297995]
-transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, 59, 0, -21.550346)
-mesh = SubResource("PlaneMesh_ss0sq")
-
-[node name="Mesh4" type="MeshInstance3D" parent="Floor" unique_id=1247862624]
-transform = Transform3D(55, 0, 0, 0, 50, 0, 0, 0, 13.118897, -59, 0, -21.550346)
-mesh = SubResource("PlaneMesh_ss0sq")
-
-[node name="ValvePodium" type="MeshInstance3D" parent="Floor" unique_id=1035144990]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37972093, -4.090542)
-mesh = SubResource("BoxMesh_tu013")
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=583900402]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -4.7431836, -17.17864)
-mesh = SubResource("PlaneMesh_tu013")
-
 [node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.273, 1.5, -15.394)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1141719185]
 environment = SubResource("Environment_ljk2t")
@@ -202,31 +161,7 @@ environment = SubResource("Environment_ljk2t")
 transform = Transform3D(1, 0, 0, 0, -0.4076817, 0.91312414, 0, -0.91312414, -0.4076817, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Reactor" parent="." unique_id=915847997 node_paths=PackedStringArray("ControlRods") instance=ExtResource("3_kln2b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0046520233, -16.055674)
-MaxTemperature = 5000.0
-ControlRods = [NodePath("../Control Rods/ControlRod"), NodePath("../Control Rods/ControlRod2"), NodePath("../Control Rods/ControlRod3"), NodePath("../Control Rods/ControlRod4")]
-
-[node name="Valve" parent="." unique_id=1475203535 node_paths=PackedStringArray("LinkedValveObjects") instance=ExtResource("5_pbw6q")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -0.0051760674, 1.3642628, -4.0531936)
-LinkedValveObjects = [NodePath("../Control Rods/ControlRod"), NodePath("../Control Rods/ControlRod2"), NodePath("../Control Rods/ControlRod3"), NodePath("../Control Rods/ControlRod4")]
-
-[node name="Control Rods" type="Node" parent="." unique_id=386926743]
-
-[node name="ControlRod" parent="Control Rods" unique_id=43492146 instance=ExtResource("2_rgh2o")]
-transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -4.841899, 0, -13.433)
-
-[node name="ControlRod2" parent="Control Rods" unique_id=687121035 instance=ExtResource("2_rgh2o")]
-transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 3.700873, 0, -21.983)
-
-[node name="ControlRod3" parent="Control Rods" unique_id=1826770913 instance=ExtResource("2_rgh2o")]
-transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -4.842, 0, -21.983)
-
-[node name="ControlRod4" parent="Control Rods" unique_id=358474672 instance=ExtResource("2_rgh2o")]
-transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 3.701, 0, -13.433)
-
 [node name="FuncGodotMap" type="Node3D" parent="." unique_id=792600498]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.812082, 0.7017393, 2.1606736)
 script = ExtResource("6_50glp")
 local_map_file = "uid://dtel11m5xeupv"
 map_settings = SubResource("Resource_0joy5")
