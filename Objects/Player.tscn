@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ds67g31vkx03h"]
 
 [ext_resource type="Script" uid="uid://bh0sjtk6to2n6" path="res://Scripts/Player.cs" id="1_8r7yd"]
+[ext_resource type="Texture2D" uid="uid://cxygrpmd6471n" path="res://Assets/Images/crosshair.png" id="2_n6db0"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tu013"]
 
@@ -23,5 +24,28 @@ current = true
 
 [node name="RayCast" type="RayCast3D" parent="Camera" unique_id=1997520734]
 transform = Transform3D(1, 0, 0, 0, -5.9604645e-08, -0.5, 0, 2, -1.4901161e-08, 0, 0.16023883, -0.84251404)
+collision_mask = 32769
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=264503476]
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD" unique_id=1530703732]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(512, 512)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Reticle" type="TextureRect" parent="HUD/CenterContainer" unique_id=2030336523]
+layout_mode = 2
+texture = ExtResource("2_n6db0")

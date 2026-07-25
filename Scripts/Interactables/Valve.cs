@@ -10,6 +10,8 @@ public interface ValveInterface {
 
 public partial class Valve : StaticBody3D, Interactable {
 
+    public bool IsInteractable { get; protected set; } = true;
+    
     private float RotationPercentage = 0.0f;
     private float DepthIncreaseRate = 0.5f;
     private float RotationRate = 3.0f;

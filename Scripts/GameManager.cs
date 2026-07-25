@@ -7,10 +7,10 @@ public partial class GameManager : Node3D {
     public Player Player { get; set; } = null;
     public Reactor Reactor { get; set; } = null;
 
-    public override void _Ready() { 
-    
+    public override void _Ready() {
+
         Instance = this;
-    
+
     }
 
     public void ReactorExplode() {
