@@ -46,9 +46,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_76x5c")
 
-[node name="Valve" type="StaticBody3D" unique_id=542406856 node_paths=PackedStringArray("InteractLabel")]
+[node name="Valve" type="StaticBody3D" unique_id=542406856 node_paths=PackedStringArray("MeshInstance", "InteractLabel")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
 script = ExtResource("1_1n8eu")
+MeshInstance = NodePath("Mesh")
 InteractLabel = NodePath("InteractLabel")
 
 [node name="BaseCollider" type="CollisionShape3D" parent="." unique_id=1886445545]

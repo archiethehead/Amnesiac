@@ -17,3 +17,6 @@ normal_texture = ExtResource("3_upjhl")
 ao_enabled = true
 ao_texture = ExtResource("2_hsps7")
 ao_on_uv2 = true
+stencil_flags = 2
+stencil_color = Color(1, 1, 1, 1)
+stencil_outline_thickness = 0.005

@@ -10,13 +10,17 @@ public interface ValveInterface {
 
 public partial class Valve : StaticBody3D, Interactable {
 
+    // Interface Members
     public bool IsInteractable { get; protected set; } = true;
-    
+    [Export] public MeshInstance3D MeshInstance { get; protected set; }  = null;
+
+    // Object Variables
     private float RotationPercentage = 0.0f;
     private float DepthIncreaseRate = 0.5f;
     private float RotationRate = 3.0f;
     private int DepthModifier = 1;
 
+    // Node Exports
     [Export] private Array<Node3D> LinkedValveObjects = new();
     [Export] private Label3D InteractLabel;
 
@@ -61,18 +65,6 @@ public partial class Valve : StaticBody3D, Interactable {
 
         DepthModifier *= -1;
         SetProcess(false);
-
-    }
-
-    public void ShowInteract() {
-
-        InteractLabel.Visible = true;
-
-    }
-
-    public void HideInteract() {
-
-        InteractLabel.Visible = false;
 
     }
 
