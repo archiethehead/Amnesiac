@@ -1,5 +1,8 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
+using System.Data;
 
 public partial class GameManager : Node3D {
 
@@ -12,6 +15,8 @@ public partial class GameManager : Node3D {
         Instance = this;
 
     }
+
+    public void PickUp() { return; }
 
     public void ReactorExplode() {
 

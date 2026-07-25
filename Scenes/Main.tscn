@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="8_bmxlf"]
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="8_grg3l"]
 [ext_resource type="Script" uid="uid://38q6k0ctahjn" path="res://addons/func_godot/src/map/func_godot_map_settings.gd" id="9_frkhe"]
+[ext_resource type="PackedScene" uid="uid://dj3pyf3swis54" path="res://Objects/Tools/LeadPipe.tscn" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
@@ -284,3 +285,6 @@ shape = SubResource("ConvexPolygonShape3D_lac6x")
 
 [node name="Valve" parent="." unique_id=542406856 instance=ExtResource("8_50glp")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.185823)
+
+[node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 13.621658, 1.5518228, -21.309443)

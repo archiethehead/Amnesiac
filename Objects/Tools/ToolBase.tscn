@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bjr7ku2v0qs2t"]
+
+[ext_resource type="Script" uid="uid://d1sooaw6pi00f" path="res://Scripts/Tools/ToolBase.cs" id="1_fw2sm"]
+
+[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_e5rg0"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_nli4w"]
+
+[node name="ToolBase" type="RigidBody3D" unique_id=749444530 node_paths=PackedStringArray("MeshInstance")]
+mass = 6.8
+script = ExtResource("1_fw2sm")
+MeshInstance = NodePath("Mesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1003253747]
+mesh = SubResource("PlaceholderMesh_e5rg0")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1514681216]
+shape = SubResource("SphereShape3D_nli4w")
