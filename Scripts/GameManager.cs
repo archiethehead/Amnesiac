@@ -16,7 +16,7 @@ public partial class GameManager : Node3D {
 
     }
 
-    public void PickUp() { return; }
+    public void PickUp(ToolBase Tool) { Player.Equip(Tool); }
 
     public void ReactorExplode() {
 

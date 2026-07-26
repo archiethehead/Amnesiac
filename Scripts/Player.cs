@@ -4,7 +4,7 @@ using System;
 public partial class Player : CharacterBody3D {
 
     private const float Speed = 5.0f;
-    private const float JumpVelocity = 4.5f;
+    private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private bool Interacting = false;
     private Interactable Interactable;
@@ -12,6 +12,7 @@ public partial class Player : CharacterBody3D {
     private GameManager GameManager = null;
     [Export] Camera3D Camera = null;
     [Export] RayCast3D RayCast = null;
+    [Export] Marker3D ToolPos = null;
 
     public override void _Ready() {
 
@@ -120,6 +121,14 @@ public partial class Player : CharacterBody3D {
 
         }
 
+    }
+
+    public void Equip(ToolBase Tool) {
+
+        Tool.Reparent(ToolPos);
+        Tool.Position = Vector3.Zero;
+        Tool.Rotation = Vector3.Zero;
+        Tool.Freeze = true;
     }
 
 }

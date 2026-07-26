@@ -6,11 +6,21 @@ public partial class ToolBase : RigidBody3D, Interactable
     public bool IsInteractable { get; protected set; } = true;
     [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
 
+    [Export] CollisionShape3D Collider = null;
+
     private GameManager GameManager = null;
 
-    public void PickUp() { }
+    public override void _Ready() {
 
-    public void Equip() { }
+        GameManager = GameManager.Instance;
+
+    }
+
+    public void Equip() {
+
+        Collider.Disabled = true;
+    
+    }
 
     public void Unequip() { }
 
@@ -21,9 +31,10 @@ public partial class ToolBase : RigidBody3D, Interactable
     public void Interact() {
 
         IsInteractable = false;
-        PickUp();
+        GameManager.PickUp(this);
         Equip();
         GD.Print("you picked me up");
+
     }
 
 }
