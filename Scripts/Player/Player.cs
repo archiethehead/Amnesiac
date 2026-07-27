@@ -13,6 +13,8 @@ public partial class Player : CharacterBody3D {
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
     [Export] private Marker3D ToolPos = null;
+    [Export] private CanvasLayer HUD = null;
+    
 
     public override void _Ready() {
 
@@ -104,6 +106,7 @@ public partial class Player : CharacterBody3D {
 
         else if (@event.IsActionPressed(InputMap.Pause)) {
 
+            HUD.Visible = false;
             GameManager.Pause();
 
         }
@@ -129,6 +132,12 @@ public partial class Player : CharacterBody3D {
 
         }
 
+    }
+
+    public void Unpause() {
+
+        HUD.Visible = true;
+    
     }
 
     public void Equip(ToolBase Tool) {

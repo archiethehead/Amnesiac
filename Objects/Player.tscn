@@ -7,11 +7,12 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ljk2t"]
 
-[node name="Player" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Camera", "RayCast", "ToolPos")]
+[node name="Player" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Camera", "RayCast", "ToolPos", "HUD")]
 script = ExtResource("1_8r7yd")
 Camera = NodePath("Camera")
 RayCast = NodePath("Camera/RayCast")
 ToolPos = NodePath("Camera/ToolPos")
+HUD = NodePath("HUD")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=847383310]
 mesh = SubResource("CapsuleMesh_tu013")
