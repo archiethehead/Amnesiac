@@ -24,9 +24,9 @@ public partial class GameManager : Node3D {
             Inventory.AddItemToInventory((int)Tool.ToolID);
             Tool.Equip();
             Player.Equip(Tool);
-        
+
         }
-    
+
     }
 
     public void ReactorExplode() {

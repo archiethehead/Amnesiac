@@ -7,6 +7,7 @@ public partial class Player : CharacterBody3D {
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private bool Interacting = false;
+    private ToolBase EquippedTool = null;
     private Interactable Interactable;
 
     private GameManager GameManager = null;
@@ -14,7 +15,7 @@ public partial class Player : CharacterBody3D {
     [Export] private RayCast3D RayCast = null;
     [Export] private Marker3D ToolPos = null;
     [Export] private CanvasLayer HUD = null;
-    
+
 
     public override void _Ready() {
 
@@ -67,10 +68,10 @@ public partial class Player : CharacterBody3D {
         Vector2 inputDir = Input.GetVector(
 
                                             InputMap.Left,
-                                            InputMap.Right, 
-                                            InputMap.Forward, 
+                                            InputMap.Right,
+                                            InputMap.Forward,
                                             InputMap.Backward
-                                            
+
                                           );
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
@@ -111,6 +112,30 @@ public partial class Player : CharacterBody3D {
 
         }
 
+        else if (EquippedTool == null) {
+
+            return;
+
+        }
+
+        else if (@event.IsActionPressed(InputMap.Primary)) {
+
+            EquippedTool.PrimaryAction();
+
+        }
+
+        else if (@event.IsActionPressed(InputMap.Secondary)) {
+
+            EquippedTool.SecondaryAction();
+
+        }
+
+        else if (@event.IsActionPressed(InputMap.Tertiary)) {
+
+            EquippedTool.TertiaryAction();
+
+        }
+
     }
 
     public override void _UnhandledInput(InputEvent @Event) {
@@ -137,7 +162,7 @@ public partial class Player : CharacterBody3D {
     public void Unpause() {
 
         HUD.Visible = true;
-    
+
     }
 
     public void Equip(ToolBase Tool) {
@@ -146,6 +171,8 @@ public partial class Player : CharacterBody3D {
         Tool.Position = Vector3.Zero;
         Tool.Rotation = Vector3.Zero;
         Tool.Freeze = true;
+        EquippedTool = Tool;
+
     }
 
 }

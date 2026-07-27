@@ -12,7 +12,7 @@ public partial class Valve : StaticBody3D, Interactable {
 
     // Interface Members
     public bool IsInteractable { get; protected set; } = true;
-    [Export] public MeshInstance3D MeshInstance { get; protected set; }  = null;
+    [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
 
     // Object Variables
     private float RotationPercentage = 0.0f;

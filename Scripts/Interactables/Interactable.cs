@@ -12,7 +12,7 @@ public interface Interactable {
     public void Uninteract() {
 
         return;
-    
+
     }
 
     public void ShowInteract() {
@@ -25,7 +25,7 @@ public interface Interactable {
             MeshBaseMaterial3D.StencilColor = new Color(0xff, 0xff, 0xff);
             MeshBaseMaterial3D.StencilOutlineThickness = 0.005f;
 
-        
+
         }
 
     }

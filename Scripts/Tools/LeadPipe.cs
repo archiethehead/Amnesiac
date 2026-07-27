@@ -1,25 +1,23 @@
 using Godot;
 using System;
 
-public partial class LeadPipe : ToolBase
-{
+public partial class LeadPipe : ToolBase {
 
     public override ToolBitMask ToolID { get; protected set; } = ToolBitMask.LeadPipe;
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) {
+    }
 
     public override void PrimaryAction() {
-        throw new NotImplementedException();
+        GD.Print("SWING");
     }
 
     public override void SecondaryAction() {
-        throw new NotImplementedException();
+        GD.Print("BLOCK");
     }
 
     public override void TertiaryAction() {
-        throw new NotImplementedException();
+        GD.Print("DUNNO");
     }
 }

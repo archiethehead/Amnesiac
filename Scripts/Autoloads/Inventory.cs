@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public partial class Inventory : Node
-{
+public partial class Inventory : Node {
     private GameManager GameManager = null;
     private int CurrentItemIndex = -1;
     private int InventoryBitArray = 0;
@@ -21,11 +20,11 @@ public partial class Inventory : Node
         if (IsID == 0) {
 
             return false;
-        
+
         }
 
         return true;
-    
+
     }
 
     public void AddItemToInventory(int ID) {
@@ -38,7 +37,7 @@ public partial class Inventory : Node
     public void EquipItem(int ID) {
 
         CurrentItemIndex = ID;
-    
+
     }
-         
+
 }

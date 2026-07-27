@@ -1,14 +1,13 @@
 using Godot;
 using System;
 
-public enum ToolBitMask { 
+public enum ToolBitMask {
 
     LeadPipe = 1 << 0
 
 }
 
-public partial class ToolBase : RigidBody3D, Interactable
-{
+public partial class ToolBase : RigidBody3D, Interactable {
 
     public virtual ToolBitMask ToolID { get; protected set; }
 
