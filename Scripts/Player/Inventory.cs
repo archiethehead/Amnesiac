@@ -4,7 +4,6 @@ using System;
 public partial class Inventory : Node
 {
     private GameManager GameManager = null;
-    private const int MaxBits = 32 - 1;
     private int CurrentItemIndex = -1;
     private int InventoryBitArray = 0;
 
@@ -17,7 +16,7 @@ public partial class Inventory : Node
 
     public bool IsItemInInventory(int ID) {
 
-        int IsID = InventoryBitArray & (1 << (ID & MaxBits));
+        int IsID = InventoryBitArray & ID;
 
         if (IsID == 0) {
 
@@ -31,7 +30,7 @@ public partial class Inventory : Node
 
     public void AddItemToInventory(int ID) {
 
-        InventoryBitArray |= (1 << (ID & MaxBits));
+        InventoryBitArray |= ID;
         EquipItem(ID);
 
     }

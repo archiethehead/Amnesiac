@@ -24,7 +24,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_c0n2h"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_butlu"]
 resource_name = "leadpipe"
 _surfaces = [{
 "aabb": AABB(-0.02828041, -0.28416693, -0.059127793, 0.05656082, 0.5683338, 0.10365234),
@@ -42,7 +42,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ihnty")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5kytk"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_butlu"]
+resource_local_to_scene = true
 albedo_texture = ExtResource("2_hxsks")
 metallic = 1.0
 metallic_specular = 1.0
@@ -63,8 +64,8 @@ points = PackedVector3Array(0.0145886615, -0.11693792, 0.04452455, -0.014594198,
 script = ExtResource("2_butlu")
 
 [node name="Mesh" parent="." index="0" unique_id=1003253747]
-mesh = SubResource("ArrayMesh_c0n2h")
-surface_material_override/0 = SubResource("StandardMaterial3D_5kytk")
+mesh = SubResource("ArrayMesh_butlu")
+surface_material_override/0 = SubResource("StandardMaterial3D_butlu")
 
 [node name="Collider" parent="." index="1" unique_id=1514681216]
 shape = SubResource("ConvexPolygonShape3D_go5lh")

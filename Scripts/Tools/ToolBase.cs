@@ -3,7 +3,7 @@ using System;
 
 public enum ToolBitMask { 
 
-    LeadPipe
+    LeadPipe = 1 << 0
 
 }
 

@@ -288,7 +288,16 @@ shape = SubResource("ConvexPolygonShape3D_m4llh")
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.185823)
 
 [node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 13.621658, 1.5518228, -21.309443)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, -21)
 
-[node name="LeadPipe2" parent="." unique_id=810287084 instance=ExtResource("9_vy5pj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.818506, 0.78416693, -20.433332)
+[node name="LeadPipe2" parent="." unique_id=91994943 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 1, -22)
+
+[node name="LeadPipe3" parent="." unique_id=227660137 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1, -14)
+
+[node name="LeadPipe4" parent="." unique_id=1234538541 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1, -15)
+
+[node name="LeadPipe5" parent="." unique_id=2143544233 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 1, -15)
