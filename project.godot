@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameManager="*uid://bejfpsch24134"
 PauseMenu="*uid://bmsx0sjwwaxat"
+Inventory="*uid://d0h4kgsuh6shm"
 
 [display]
 

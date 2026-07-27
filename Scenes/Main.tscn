@@ -289,3 +289,6 @@ transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.
 
 [node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 13.621658, 1.5518228, -21.309443)
+
+[node name="LeadPipe2" parent="." unique_id=810287084 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.818506, 0.78416693, -20.433332)

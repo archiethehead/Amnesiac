@@ -10,9 +10,9 @@ public partial class Player : CharacterBody3D {
     private Interactable Interactable;
 
     private GameManager GameManager = null;
-    [Export] Camera3D Camera = null;
-    [Export] RayCast3D RayCast = null;
-    [Export] Marker3D ToolPos = null;
+    [Export] private Camera3D Camera = null;
+    [Export] private RayCast3D RayCast = null;
+    [Export] private Marker3D ToolPos = null;
 
     public override void _Ready() {
 

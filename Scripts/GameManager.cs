@@ -7,6 +7,7 @@ using System.Data;
 public partial class GameManager : Node3D {
 
     public static GameManager Instance { get; private set; }
+    public Inventory Inventory { get; set; } = null;
     public Player Player { get; set; } = null;
     public Reactor Reactor { get; set; } = null;
 
@@ -16,7 +17,17 @@ public partial class GameManager : Node3D {
 
     }
 
-    public void PickUp(ToolBase Tool) { Player.Equip(Tool); }
+    public void PickUp(ToolBase Tool) {
+
+        if (!Inventory.IsItemInInventory((int)Tool.ToolID)) {
+
+            Inventory.AddItemToInventory((int)Tool.ToolID);
+            Tool.Equip();
+            Player.Equip(Tool);
+        
+        }
+    
+    }
 
     public void ReactorExplode() {
 
