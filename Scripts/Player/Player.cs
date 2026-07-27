@@ -56,13 +56,21 @@ public partial class Player : CharacterBody3D {
         }
 
         // Handle Jump.
-        if (Input.IsActionJustPressed("Spacebar") && IsOnFloor()) {
+        if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
             velocity.Y = JumpVelocity;
         }
 
         // Get the input direction and handle the movement/deceleration.
         // As good practice, you should replace UI actions with custom gameplay actions.
-        Vector2 inputDir = Input.GetVector("A", "D", "W", "S");
+        Vector2 inputDir = Input.GetVector(
+
+                                            InputMap.Left,
+                                            InputMap.Right, 
+                                            InputMap.Forward, 
+                                            InputMap.Backward
+                                            
+                                          );
+
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
             velocity.X = direction.X * Speed;
@@ -80,21 +88,21 @@ public partial class Player : CharacterBody3D {
 
     public override void _Input(InputEvent @event) {
 
-        if (@event.IsActionPressed("E") && Interactable != null && !Interacting) {
+        if (@event.IsActionPressed(InputMap.Interact) && Interactable != null && !Interacting) {
 
             Interacting = true;
             Interactable.Interact();
 
         }
 
-        else if (Interacting && (@event.IsActionReleased("E") && Interactable != null)) {
+        else if (Interacting && (@event.IsActionReleased(InputMap.Interact) && Interactable != null)) {
 
             Interacting = false;
             Interactable.Uninteract();
 
         }
 
-        else if (@event.IsActionPressed("Escape")) {
+        else if (@event.IsActionPressed(InputMap.Pause)) {
 
             GameManager.Pause();
 

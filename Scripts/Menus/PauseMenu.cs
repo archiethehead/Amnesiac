@@ -30,7 +30,7 @@ public partial class PauseMenu : CanvasLayer {
 
         }
 
-        else if (Input.IsActionJustPressed("Escape")) {
+        else if (Input.IsActionJustPressed(InputMap.Pause)) {
 
             Unpause();
 
