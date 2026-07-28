@@ -112,27 +112,25 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        else if (EquippedTool == null) {
+        else if (EquippedTool != null) {
 
-            return;
+            if (@event.IsActionPressed(InputMap.Primary)) {
 
-        }
+                EquippedTool.PrimaryAction();
 
-        else if (@event.IsActionPressed(InputMap.Primary)) {
+            }
 
-            EquippedTool.PrimaryAction();
+            else if (@event.IsActionPressed(InputMap.Secondary)) {
 
-        }
+                EquippedTool.SecondaryAction();
 
-        else if (@event.IsActionPressed(InputMap.Secondary)) {
+            }
 
-            EquippedTool.SecondaryAction();
+            else if (@event.IsActionPressed(InputMap.Tertiary)) {
 
-        }
+                EquippedTool.TertiaryAction();
 
-        else if (@event.IsActionPressed(InputMap.Tertiary)) {
-
-            EquippedTool.TertiaryAction();
+            }
 
         }
 
