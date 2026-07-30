@@ -173,7 +173,9 @@ public partial class Player : CharacterBody3D {
     }
 
     public void Pickup(ToolBase Tool) {
-
+        
+        Interacting = false;
+        Interactable.Uninteract();
         Tool.Reparent(ToolPos);
         EquippedTool = Tool;
 
