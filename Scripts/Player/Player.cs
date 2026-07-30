@@ -10,6 +10,11 @@ public partial class Player : CharacterBody3D {
     private ToolBase EquippedTool = null;
     private Interactable Interactable;
 
+    // Item throw variables
+    private float ThrowForce = 60.0f;
+    private float Arc = 15.0f;
+    private float Torque = -20.0f;
+
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
@@ -100,12 +105,17 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        else if (Interacting && (@event.IsActionReleased(InputMap.Interact) && Interactable != null)) {
+        else if (Interacting && (@event.IsActionReleased(InputMap.Interact))) {
 
             Interacting = false;
-            Interactable.Uninteract();
 
-        }
+            if (Interactable != null) { 
+             
+                Interactable.Uninteract();
+
+            }
+        
+    }
 
         else if (@event.IsActionPressed(InputMap.Pause)) {
 
@@ -137,6 +147,15 @@ public partial class Player : CharacterBody3D {
             else if (@event.IsActionPressed(InputMap.Drop)) {
 
                 GameManager.Drop(EquippedTool);
+
+                Vector3 Forward = -GlobalTransform.Basis.Z;
+                Vector3 ThrowDirection = (Forward * ThrowForce) + (Vector3.Up * Arc);
+                Vector3 LocalXAxis = EquippedTool.GlobalTransform.Basis.X;
+
+                EquippedTool.ApplyCentralImpulse(ThrowDirection);
+
+                EquippedTool.AngularVelocity = LocalXAxis * Torque;
+                
                 EquippedTool = null;
 
             }
@@ -174,8 +193,6 @@ public partial class Player : CharacterBody3D {
 
     public void Pickup(ToolBase Tool) {
         
-        Interacting = false;
-        Interactable.Uninteract();
         Tool.Reparent(ToolPos);
         EquippedTool = Tool;
 
