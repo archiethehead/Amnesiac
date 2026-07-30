@@ -39,7 +39,7 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        else if (Interactable is not null) {
+        else if (Interactable is not null || (Interactable is not null && !Interactable.IsInteractable)) {
 
             Interactable.HideInteract();
             Interactable.Uninteract();
@@ -60,7 +60,9 @@ public partial class Player : CharacterBody3D {
 
         // Handle Jump.
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
+
             velocity.Y = JumpVelocity;
+        
         }
 
         // Get the input direction and handle the movement/deceleration.
@@ -132,6 +134,13 @@ public partial class Player : CharacterBody3D {
 
             }
 
+            else if (@event.IsActionPressed(InputMap.Drop)) {
+
+                GameManager.Drop(EquippedTool);
+                EquippedTool = null;
+
+            }
+
         }
 
     }
@@ -163,12 +172,9 @@ public partial class Player : CharacterBody3D {
 
     }
 
-    public void Equip(ToolBase Tool) {
+    public void Pickup(ToolBase Tool) {
 
         Tool.Reparent(ToolPos);
-        Tool.Position = Vector3.Zero;
-        Tool.Rotation = Vector3.Zero;
-        Tool.Freeze = true;
         EquippedTool = Tool;
 
     }

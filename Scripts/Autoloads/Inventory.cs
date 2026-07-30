@@ -40,4 +40,11 @@ public partial class Inventory : Node {
 
     }
 
+    public void RemoveItemFromInventory() {
+    
+        InventoryBitArray ^= CurrentItemIndex;
+        CurrentItemIndex = -1;
+    
+    }
+
 }

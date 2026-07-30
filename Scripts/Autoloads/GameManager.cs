@@ -22,11 +22,19 @@ public partial class GameManager : Node3D {
         if (!Inventory.IsItemInInventory((int)Tool.ToolID)) {
 
             Inventory.AddItemToInventory((int)Tool.ToolID);
-            Tool.Equip();
-            Player.Equip(Tool);
+            Player.Pickup(Tool);
+            Tool.Pickup();
 
         }
 
+    }
+
+    public void Drop(ToolBase Tool) {
+
+        Tool.Reparent(GetTree().Root);
+        Tool.Drop();
+        Inventory.RemoveItemFromInventory();
+    
     }
 
     public void ReactorExplode() {

@@ -15,6 +15,7 @@ public static class InputMap {
     public static StringName Primary = new StringName("Left Click");
     public static StringName Secondary = new StringName("Right Click");
     public static StringName Tertiary = new StringName("R");
+    public static StringName Drop = new StringName("Q");
 
     // Executive
     public static StringName Pause = new StringName("Escape");

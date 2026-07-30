@@ -23,13 +23,27 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
     }
 
-    public void Equip() {
+    public void Pickup() {
 
         IsInteractable = false;
         Collider.Disabled = true;
+        this.Position = Vector3.Zero;
+        this.Rotation = Vector3.Zero;
+        this.Freeze = true;
         GD.Print("you picked me up");
 
     }
+
+
+    public void Drop() {
+
+        IsInteractable = true;
+        Collider.Disabled = false;
+        this.Freeze = false;
+        GD.Print("you dropped me up");
+    }
+
+    public void Equip() { }
 
     public void Unequip() { }
 
@@ -42,5 +56,6 @@ public partial class ToolBase : RigidBody3D, Interactable {
         GameManager.PickUp(this);
 
     }
+
 
 }
