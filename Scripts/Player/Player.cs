@@ -11,9 +11,14 @@ public partial class Player : CharacterBody3D {
     private Interactable Interactable;
 
     // Item throw variables
-    private float ThrowForce = 60.0f;
-    private float Arc = 15.0f;
-    private float Torque = -20.0f;
+    private const float MaxThrowForce = 60.0f;
+    private const float MaxArc = 15.0f;
+    private const float MaxTorque = 20.0f;
+    private const float TimeToMax = 2.0f;
+    private float ThrowForce = 0.0f;
+    private float Arc = 0.0f;
+    private float Torque = 0.0f;
+    private bool Throwing = false;
 
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
@@ -50,6 +55,23 @@ public partial class Player : CharacterBody3D {
             Interactable.Uninteract();
             Interactable = null;
 
+
+        }
+
+
+        if (Throwing && ThrowForce < 60.0f) {
+
+            ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
+            Arc += (float)((MaxArc / TimeToMax) * delta);
+            Torque += (float)((MaxTorque / TimeToMax) * delta);
+
+        }
+
+        else if (Throwing && ThrowForce > 60.0f) {
+
+            Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
+            Mathf.Clamp(Arc, 0.0f, MaxArc);
+            Mathf.Clamp(Torque, 0.0f, MaxTorque);
 
         }
 
@@ -146,6 +168,12 @@ public partial class Player : CharacterBody3D {
 
             else if (@event.IsActionPressed(InputMap.Drop)) {
 
+                Throwing = true;
+
+            }
+
+            else if (@event.IsActionReleased(InputMap.Drop)) {
+
                 GameManager.Drop(EquippedTool);
 
                 Vector3 Forward = -GlobalTransform.Basis.Z;
@@ -153,10 +181,13 @@ public partial class Player : CharacterBody3D {
                 Vector3 LocalXAxis = EquippedTool.GlobalTransform.Basis.X;
 
                 EquippedTool.ApplyCentralImpulse(ThrowDirection);
+                EquippedTool.AngularVelocity = LocalXAxis * (-Torque);
 
-                EquippedTool.AngularVelocity = LocalXAxis * Torque;
-                
                 EquippedTool = null;
+                Throwing = false;
+                ThrowForce = 0.0f;
+                Arc = 0.0f;
+                Torque = 0.0f;
 
             }
 
