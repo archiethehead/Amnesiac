@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://boevtw11m78s6"]
+
+[ext_resource type="Script" uid="uid://da087cg46iawj" path="res://addons/voronoishatter/tools/voronoishatter.gd" id="1_31pii"]
+[ext_resource type="Script" uid="uid://c8f8ns8st4imr" path="res://Scripts/Destructibles/DestructibleBase.cs" id="1_o3ipc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tu013"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o3ipc"]
+
+[node name="DestructibleBase" type="Node3D" unique_id=1817050354 node_paths=PackedStringArray("PhysicsBody", "Collider")]
+script = ExtResource("1_o3ipc")
+PhysicsBody = NodePath("VoronoiShatter/PhysicsBody")
+Collider = NodePath("VoronoiShatter/PhysicsBody/Collider")
+
+[node name="VoronoiShatter" type="Node3D" parent="." unique_id=82182478]
+script = ExtResource("1_31pii")
+random_color = false
+samples = 12
+seed = 1736219446
+metadata/_custom_type_script = "uid://da087cg46iawj"
+
+[node name="VoroniMesh" type="MeshInstance3D" parent="VoronoiShatter" unique_id=1149452485]
+visible = false
+mesh = SubResource("BoxMesh_tu013")
+
+[node name="PhysicsBody" type="RigidBody3D" parent="VoronoiShatter" unique_id=221074197]
+
+[node name="Mesh" type="MeshInstance3D" parent="VoronoiShatter/PhysicsBody" unique_id=1459325718]
+mesh = SubResource("BoxMesh_tu013")
+
+[node name="Collider" type="CollisionShape3D" parent="VoronoiShatter/PhysicsBody" unique_id=855390201]
+shape = SubResource("BoxShape3D_o3ipc")
