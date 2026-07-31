@@ -3,13 +3,25 @@ using One.Woolly.VoronoiShatter.CSVoronoiAdapter;
 using System;
 using System.Runtime.CompilerServices;
 
-public partial class DestructibleBase : Node3D
-{
+public partial class DestructibleBase : Node3D {
 
     [Export] Node3D ShatteredMesh = null;
     [Export] RigidBody3D PhysicsBody = null;
     [Export] CollisionShape3D Collider = null;
     private bool IsShattered = false;
+    private float timer = 0.0f;
+
+    public override void _Process(double delta) {
+
+        timer += (float)delta;
+
+        if (timer > 3.0f && !IsShattered) {
+
+            Shatter();
+        
+        }
+
+    }
 
     public override void _Ready() {
 
@@ -37,6 +49,8 @@ public partial class DestructibleBase : Node3D
         if (!IsShattered) {
 
             ShatteredMesh.ProcessMode = ProcessModeEnum.Pausable;
+            ShatteredMesh.Reparent(GetTree().Root);
+            ShatteredMesh.Visible = true;
             PhysicsBody.Visible = false;
             PhysicsBody.Freeze = true;
             Collider.Disabled = true;

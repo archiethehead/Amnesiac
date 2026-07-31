@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://38q6k0ctahjn" path="res://addons/func_godot/src/map/func_godot_map_settings.gd" id="9_frkhe"]
 [ext_resource type="PackedScene" uid="uid://dj3pyf3swis54" path="res://Objects/Tools/LeadPipe.tscn" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
+[ext_resource type="PackedScene" uid="uid://8bi3vfif35hl" path="res://Objects/Destructibles/Vase.tscn" id="10_bmxlf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
 
@@ -289,3 +290,6 @@ transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.
 
 [node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.1643095, 1.9098829, -22.314102)
+
+[node name="DestructibleBase" parent="." unique_id=1817050354 instance=ExtResource("10_bmxlf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1, -20)
