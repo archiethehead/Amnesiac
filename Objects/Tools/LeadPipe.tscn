@@ -57,6 +57,7 @@ points = PackedVector3Array(0.0145886615, -0.11693792, 0.04452455, -0.014594198,
 [node name="LeadPipe" unique_id=1352199677 instance=ExtResource("1_p4djx")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
 script = ExtResource("2_butlu")
+SpeedHitThreshold = 3.0
 
 [node name="Mesh" parent="." index="0" unique_id=1003253747]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)

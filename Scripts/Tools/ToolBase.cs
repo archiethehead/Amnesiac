@@ -22,6 +22,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
     public bool IsInteractable { get; protected set; } = true;
     [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
     [Export] private CollisionShape3D Collider = null;
+    [Export] protected float SpeedHitThreshold = 0.0f;
     public RayCast3D HitCast = null;
 
     private GameManager GameManager = null;
@@ -50,6 +51,18 @@ public partial class ToolBase : RigidBody3D, Interactable {
         Collider.Disabled = false;
         this.Freeze = false;
         GD.Print("you dropped me up");
+    }
+
+    public void OnBodyEntered(Node Body) {
+
+        float Speed = LinearVelocity.Length();
+
+        if (Speed >= SpeedHitThreshold && Body is Hitable h) {
+
+            h.Hit();
+        
+        }
+    
     }
 
     public void Equip() { }

@@ -8,6 +8,8 @@
 
 [node name="ToolBase" type="RigidBody3D" unique_id=749444530 node_paths=PackedStringArray("MeshInstance", "Collider")]
 mass = 6.8
+contact_monitor = true
+max_contacts_reported = 100
 script = ExtResource("1_fw2sm")
 MeshInstance = NodePath("Mesh")
 Collider = NodePath("Collider")
@@ -17,3 +19,5 @@ mesh = SubResource("PlaceholderMesh_e5rg0")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1514681216]
 shape = SubResource("SphereShape3D_nli4w")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
