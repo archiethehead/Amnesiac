@@ -7,8 +7,9 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_tu013"]
 
-[node name="DestructibleBase" type="Node3D" unique_id=1817050354 node_paths=PackedStringArray("PhysicsBody", "Collider")]
+[node name="DestructibleBase" type="Node3D" unique_id=1817050354 node_paths=PackedStringArray("Mesh", "PhysicsBody", "Collider")]
 script = ExtResource("1_o3ipc")
+Mesh = NodePath("PhysicsBody/VoronoiShatter/VoroniMesh")
 PhysicsBody = NodePath("PhysicsBody")
 Collider = NodePath("PhysicsBody/Collider")
 

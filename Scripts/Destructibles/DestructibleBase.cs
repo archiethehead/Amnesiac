@@ -6,19 +6,44 @@ using System.Runtime.CompilerServices;
 public partial class DestructibleBase : Node3D {
 
     [Export] Node3D ShatteredMesh = null;
+    [Export] MeshInstance3D Mesh = null;
     [Export] RigidBody3D PhysicsBody = null;
     [Export] CollisionShape3D Collider = null;
+    [Export] MeshInstance3D ShatteredMeshPiece = null;
+    Material MeshMaterial = null;
     private bool IsShattered = false;
-    private float timer = 0.0f;
+    private float Timer = 0.0f;
+    private float TransparencyRate = 0.4f;
 
     public override void _Process(double delta) {
 
-        timer += (float)delta;
+        //if (IsShattered) { 
 
-        if (timer > 3.0f && !IsShattered) {
+            Timer += (float)delta;
+
+        //}
+
+        if (Timer > 1.0f && !IsShattered) {
 
             Shatter();
-        
+                
+         }
+
+        if (Timer > 3.0f && MeshMaterial is BaseMaterial3D BaseMeshMaterial3D) {
+
+            BaseMeshMaterial3D.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+            Color NewTransparency = BaseMeshMaterial3D.AlbedoColor;
+            NewTransparency.A -= TransparencyRate * (float)delta;
+            NewTransparency.A = Mathf.Clamp(NewTransparency.A, 0.0f, 1.0f);
+            BaseMeshMaterial3D.AlbedoColor = NewTransparency;
+
+            if (NewTransparency.A == 0.0f) {
+
+                ShatteredMesh.QueueFree();
+                this.QueueFree();
+            
+            }
+
         }
 
     }
@@ -40,6 +65,7 @@ public partial class DestructibleBase : Node3D {
         
         }
 
+        MeshMaterial = ShatteredMeshPiece.GetActiveMaterial(0);
         ShatteredMesh.ProcessMode = ProcessModeEnum.Disabled;
 
     }
@@ -52,7 +78,6 @@ public partial class DestructibleBase : Node3D {
             ShatteredMesh.Reparent(GetTree().Root);
             ShatteredMesh.Visible = true;
             PhysicsBody.Visible = false;
-            PhysicsBody.Freeze = true;
             Collider.Disabled = true;
             IsShattered = true;
 
