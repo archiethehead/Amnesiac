@@ -8,6 +8,8 @@
 [sub_resource type="BoxMesh" id="BoxMesh_tu013"]
 
 [node name="DestructibleBase" type="RigidBody3D" unique_id=221074197 node_paths=PackedStringArray("Mesh", "Collider")]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_o3ipc")
 Mesh = NodePath("VoronoiShatter/VoroniMesh")
 Collider = NodePath("Collider")
