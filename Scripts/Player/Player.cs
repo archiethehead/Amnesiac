@@ -223,7 +223,8 @@ public partial class Player : CharacterBody3D {
     }
 
     public void Pickup(ToolBase Tool) {
-        
+
+        Tool.HitCast = RayCast;
         Tool.Reparent(ToolPos);
         EquippedTool = Tool;
 

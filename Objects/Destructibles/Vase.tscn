@@ -440,165 +440,165 @@ _surfaces = [{
 
 [node name="DestructibleBase" unique_id=1817050354 node_paths=PackedStringArray("ShatteredMesh", "ShatteredMeshPiece") instance=ExtResource("1_mmynp")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-ShatteredMesh = NodePath("PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602")
-ShatteredMeshPiece = NodePath("PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)/FracturedPiece_RID(1116463863693455)")
+ShatteredMesh = NodePath("VoronoiShatter/Fractured_VoroniMesh_1039602")
+ShatteredMeshPiece = NodePath("VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)/FracturedPiece_RID(1116463863693455)")
 
-[node name="Collider" parent="PhysicsBody" parent_id_path=PackedInt32Array(221074197) index="0" unique_id=855390201]
+[node name="Collider" parent="." index="0" unique_id=855390201]
 shape = SubResource("ConvexPolygonShape3D_jum3h")
 
-[node name="VoronoiShatter" parent="PhysicsBody" parent_id_path=PackedInt32Array(221074197) index="1" unique_id=82182478]
+[node name="VoronoiShatter" parent="." index="1" unique_id=82182478]
 outer_material = SubResource("StandardMaterial3D_1l3ct")
 inner_material = SubResource("StandardMaterial3D_1l3ct")
 samples = 10
 
-[node name="VoroniMesh" parent="PhysicsBody/VoronoiShatter" index="0" unique_id=1149452485]
+[node name="VoroniMesh" parent="VoronoiShatter" index="0" unique_id=1149452485]
 mesh = SubResource("ArrayMesh_1jxsg")
 surface_material_override/0 = SubResource("StandardMaterial3D_1l3ct")
 
-[node name="Fractured_VoroniMesh_1039602" type="Node3D" parent="PhysicsBody/VoronoiShatter" index="1" unique_id=1794501433]
+[node name="Fractured_VoroniMesh_1039602" type="Node3D" parent="VoronoiShatter" index="1" unique_id=1794501433]
 visible = false
 script = ExtResource("2_lhbb8")
 
-[node name="Rigid_FracturedPiece_RID(1116463863693455)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="0" unique_id=5152249]
+[node name="Rigid_FracturedPiece_RID(1116463863693455)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="0" unique_id=5152249]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0045796186, 1.8783376, 0.04341297)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)" index="0" unique_id=296401959]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)" index="0" unique_id=296401959]
 shape = SubResource("ConvexPolygonShape3D_1l3ct")
 
-[node name="FracturedPiece_RID(1116463863693455)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)" index="1" unique_id=289061176]
+[node name="FracturedPiece_RID(1116463863693455)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116463863693455)" index="1" unique_id=289061176]
 mesh = SubResource("ArrayMesh_1l3ct")
 
-[node name="Rigid_FracturedPiece_RID(1116562647941262)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="1" unique_id=299516481]
+[node name="Rigid_FracturedPiece_RID(1116562647941262)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="1" unique_id=299516481]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35885233, 1.2467453, 0.2319266)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116562647941262)" index="0" unique_id=337151658]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116562647941262)" index="0" unique_id=337151658]
 shape = SubResource("ConvexPolygonShape3D_anall")
 
-[node name="FracturedPiece_RID(1116562647941262)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116562647941262)" index="1" unique_id=587674992]
+[node name="FracturedPiece_RID(1116562647941262)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116562647941262)" index="1" unique_id=587674992]
 mesh = SubResource("ArrayMesh_anall")
 
-[node name="Rigid_FracturedPiece_RID(1116661432189072)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="2" unique_id=1169708026]
+[node name="Rigid_FracturedPiece_RID(1116661432189072)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="2" unique_id=1169708026]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.017543226, 0.72803426, 0.3150681)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116661432189072)" index="0" unique_id=137907006]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116661432189072)" index="0" unique_id=137907006]
 shape = SubResource("ConvexPolygonShape3D_ba1gg")
 
-[node name="FracturedPiece_RID(1116661432189072)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116661432189072)" index="1" unique_id=813827546]
+[node name="FracturedPiece_RID(1116661432189072)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116661432189072)" index="1" unique_id=813827546]
 mesh = SubResource("ArrayMesh_ba1gg")
 
-[node name="Rigid_FracturedPiece_RID(1116760216436881)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="3" unique_id=1255033843]
+[node name="Rigid_FracturedPiece_RID(1116760216436881)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="3" unique_id=1255033843]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11082518, 1.5097582, 0.13994548)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116760216436881)" index="0" unique_id=1662131159]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116760216436881)" index="0" unique_id=1662131159]
 shape = SubResource("ConvexPolygonShape3D_siwge")
 
-[node name="FracturedPiece_RID(1116760216436881)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116760216436881)" index="1" unique_id=608268110]
+[node name="FracturedPiece_RID(1116760216436881)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116760216436881)" index="1" unique_id=608268110]
 mesh = SubResource("ArrayMesh_siwge")
 
-[node name="Rigid_FracturedPiece_RID(1116859000684690)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="4" unique_id=591569299]
+[node name="Rigid_FracturedPiece_RID(1116859000684690)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="4" unique_id=591569299]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18338591, 1.1314807, -0.14229)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116859000684690)" index="0" unique_id=1193951068]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116859000684690)" index="0" unique_id=1193951068]
 shape = SubResource("ConvexPolygonShape3D_m7l50")
 
-[node name="FracturedPiece_RID(1116859000684690)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116859000684690)" index="1" unique_id=2045766269]
+[node name="FracturedPiece_RID(1116859000684690)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116859000684690)" index="1" unique_id=2045766269]
 mesh = SubResource("ArrayMesh_m7l50")
 
-[node name="Rigid_FracturedPiece_RID(1116957784932499)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="5" unique_id=1735200380]
+[node name="Rigid_FracturedPiece_RID(1116957784932499)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="5" unique_id=1735200380]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.37829804, 1.2272806, -0.138803)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116957784932499)" index="0" unique_id=1645758676]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116957784932499)" index="0" unique_id=1645758676]
 shape = SubResource("ConvexPolygonShape3D_3sduw")
 
-[node name="FracturedPiece_RID(1116957784932499)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116957784932499)" index="1" unique_id=702359523]
+[node name="FracturedPiece_RID(1116957784932499)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1116957784932499)" index="1" unique_id=702359523]
 mesh = SubResource("ArrayMesh_3sduw")
 
-[node name="Rigid_FracturedPiece_RID(1117056569180308)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="6" unique_id=435014150]
+[node name="Rigid_FracturedPiece_RID(1117056569180308)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="6" unique_id=435014150]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23721439, 0.4945691, -0.26839975)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117056569180308)" index="0" unique_id=2089772323]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117056569180308)" index="0" unique_id=2089772323]
 shape = SubResource("ConvexPolygonShape3D_ltrg6")
 
-[node name="FracturedPiece_RID(1117056569180308)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117056569180308)" index="1" unique_id=2033156129]
+[node name="FracturedPiece_RID(1117056569180308)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117056569180308)" index="1" unique_id=2033156129]
 mesh = SubResource("ArrayMesh_ltrg6")
 
-[node name="Rigid_FracturedPiece_RID(1117155353428117)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="7" unique_id=919138649]
+[node name="Rigid_FracturedPiece_RID(1117155353428117)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="7" unique_id=919138649]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.111958414, 0.5893441, 0.18839875)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117155353428117)" index="0" unique_id=906034597]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117155353428117)" index="0" unique_id=906034597]
 shape = SubResource("ConvexPolygonShape3D_x8k1n")
 
-[node name="FracturedPiece_RID(1117155353428117)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117155353428117)" index="1" unique_id=1323791648]
+[node name="FracturedPiece_RID(1117155353428117)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117155353428117)" index="1" unique_id=1323791648]
 mesh = SubResource("ArrayMesh_x8k1n")
 
-[node name="Rigid_FracturedPiece_RID(1117254137675926)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="8" unique_id=2065740128]
+[node name="Rigid_FracturedPiece_RID(1117254137675926)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="8" unique_id=2065740128]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18141219, 0.41308665, -0.21640748)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117254137675926)" index="0" unique_id=1155789572]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117254137675926)" index="0" unique_id=1155789572]
 shape = SubResource("ConvexPolygonShape3D_sqllg")
 
-[node name="FracturedPiece_RID(1117254137675926)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117254137675926)" index="1" unique_id=756125532]
+[node name="FracturedPiece_RID(1117254137675926)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117254137675926)" index="1" unique_id=756125532]
 mesh = SubResource("ArrayMesh_sqllg")
 
-[node name="Rigid_FracturedPiece_RID(1117352921923735)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="9" unique_id=1124095753]
+[node name="Rigid_FracturedPiece_RID(1117352921923735)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="9" unique_id=1124095753]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06658244, 1.1414508, -0.38204712)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117352921923735)" index="0" unique_id=350670243]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117352921923735)" index="0" unique_id=350670243]
 shape = SubResource("ConvexPolygonShape3D_rfup6")
 
-[node name="FracturedPiece_RID(1117352921923735)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117352921923735)" index="1" unique_id=2085318571]
+[node name="FracturedPiece_RID(1117352921923735)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117352921923735)" index="1" unique_id=2085318571]
 mesh = SubResource("ArrayMesh_rfup6")
 
-[node name="Rigid_FracturedPiece_RID(1117451706171544)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="10" unique_id=1930738090]
+[node name="Rigid_FracturedPiece_RID(1117451706171544)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="10" unique_id=1930738090]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2590495, 0.12985866, -0.23326053)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117451706171544)" index="0" unique_id=91171158]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117451706171544)" index="0" unique_id=91171158]
 shape = SubResource("ConvexPolygonShape3D_v2ksm")
 
-[node name="FracturedPiece_RID(1117451706171544)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117451706171544)" index="1" unique_id=1805030941]
+[node name="FracturedPiece_RID(1117451706171544)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117451706171544)" index="1" unique_id=1805030941]
 mesh = SubResource("ArrayMesh_v2ksm")
 
-[node name="Rigid_FracturedPiece_RID(1117550490419353)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="11" unique_id=339080134]
+[node name="Rigid_FracturedPiece_RID(1117550490419353)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="11" unique_id=339080134]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23216361, 0.1590825, 0.24809021)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117550490419353)" index="0" unique_id=775222183]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117550490419353)" index="0" unique_id=775222183]
 shape = SubResource("ConvexPolygonShape3D_q6dnj")
 
-[node name="FracturedPiece_RID(1117550490419353)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117550490419353)" index="1" unique_id=1802217757]
+[node name="FracturedPiece_RID(1117550490419353)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117550490419353)" index="1" unique_id=1802217757]
 mesh = SubResource("ArrayMesh_q6dnj")
 
-[node name="Rigid_FracturedPiece_RID(1117649274667162)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="12" unique_id=20098001]
+[node name="Rigid_FracturedPiece_RID(1117649274667162)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="12" unique_id=20098001]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11829033, 1.9421153, -0.17469382)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117649274667162)" index="0" unique_id=375344491]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117649274667162)" index="0" unique_id=375344491]
 shape = SubResource("ConvexPolygonShape3D_67w35")
 
-[node name="FracturedPiece_RID(1117649274667162)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117649274667162)" index="1" unique_id=1110617947]
+[node name="FracturedPiece_RID(1117649274667162)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117649274667162)" index="1" unique_id=1110617947]
 mesh = SubResource("ArrayMesh_67w35")
 
-[node name="Rigid_FracturedPiece_RID(1117808188457116)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="13" unique_id=1851065185]
+[node name="Rigid_FracturedPiece_RID(1117808188457116)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="13" unique_id=1851065185]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3404992, 0.13699129, -0.18114594)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117808188457116)" index="0" unique_id=110594671]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117808188457116)" index="0" unique_id=110594671]
 shape = SubResource("ConvexPolygonShape3D_xrh5d")
 
-[node name="FracturedPiece_RID(1117808188457116)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117808188457116)" index="1" unique_id=1048982036]
+[node name="FracturedPiece_RID(1117808188457116)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117808188457116)" index="1" unique_id=1048982036]
 mesh = SubResource("ArrayMesh_xrh5d")
 
-[node name="Rigid_FracturedPiece_RID(1117906972704923)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="14" unique_id=1329382870]
+[node name="Rigid_FracturedPiece_RID(1117906972704923)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="14" unique_id=1329382870]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.264482, 0.32760733, 0.25111595)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117906972704923)" index="0" unique_id=1525965588]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117906972704923)" index="0" unique_id=1525965588]
 shape = SubResource("ConvexPolygonShape3D_vd2xp")
 
-[node name="FracturedPiece_RID(1117906972704923)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117906972704923)" index="1" unique_id=1999657692]
+[node name="FracturedPiece_RID(1117906972704923)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1117906972704923)" index="1" unique_id=1999657692]
 mesh = SubResource("ArrayMesh_vd2xp")
 
-[node name="Rigid_FracturedPiece_RID(1118005756952733)" type="RigidBody3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602" index="15" unique_id=1054129448]
+[node name="Rigid_FracturedPiece_RID(1118005756952733)" type="RigidBody3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602" index="15" unique_id=1054129448]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11285743, 1.935601, -0.18179104)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1118005756952733)" index="0" unique_id=1602549946]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1118005756952733)" index="0" unique_id=1602549946]
 shape = SubResource("ConvexPolygonShape3D_t0w8d")
 
-[node name="FracturedPiece_RID(1118005756952733)" type="MeshInstance3D" parent="PhysicsBody/VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1118005756952733)" index="1" unique_id=1229694081]
+[node name="FracturedPiece_RID(1118005756952733)" type="MeshInstance3D" parent="VoronoiShatter/Fractured_VoroniMesh_1039602/Rigid_FracturedPiece_RID(1118005756952733)" index="1" unique_id=1229694081]
 mesh = SubResource("ArrayMesh_t0w8d")

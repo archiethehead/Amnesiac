@@ -7,13 +7,22 @@ public enum ToolBitMask {
 
 }
 
+public interface Hitable {
+
+    public bool IsHittable { get; }
+    public void Hit();
+
+}
+
 public partial class ToolBase : RigidBody3D, Interactable {
 
     public virtual ToolBitMask ToolID { get; protected set; }
+    public virtual float Range { get; protected set; }
 
     public bool IsInteractable { get; protected set; } = true;
     [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
     [Export] private CollisionShape3D Collider = null;
+    public RayCast3D HitCast = null;
 
     private GameManager GameManager = null;
 
