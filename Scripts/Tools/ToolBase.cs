@@ -55,12 +55,22 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
     public void OnBodyEntered(Node Body) {
 
-        float Speed = LinearVelocity.Length();
+        if (Body is Player p) {
 
-        if (Speed >= SpeedHitThreshold && Body is Hitable h) {
+            GameManager.CallDeferred(GameManager.MethodName.PickUp, this);
 
-            h.Hit();
-        
+        }
+
+        else if (Body is Hitable h) {
+
+            float Speed = LinearVelocity.Length();
+
+            if (Speed >= SpeedHitThreshold) {
+
+                h.Hit();
+
+            }
+
         }
     
     }

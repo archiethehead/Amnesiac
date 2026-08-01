@@ -12,7 +12,9 @@ public partial class DestructibleBase : Node3D, Hitable {
     Material MeshMaterial = null;
     private bool IsShattered = false;
     private float Timer = 0.0f;
-    private float TransparencyRate = 0.4f;
+    private const float TransparencyRate = 1.0f / 2.5f; // <---- The divisor of this is the number of seconds
+                                                        // for the fadeout to finish (or be capped).
+
     public bool IsHittable { get; protected set; } = true;
 
     public override void _Process(double delta) {

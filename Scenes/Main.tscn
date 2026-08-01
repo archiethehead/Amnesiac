@@ -291,6 +291,10 @@ transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.
 
 [node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.1643095, 1.9098829, -22.314102)
+collision_layer = 1
+collision_mask = 1
 
-[node name="DestructibleBase" parent="." unique_id=1817050354 instance=ExtResource("10_bmxlf")]
+[node name="Vase" parent="." unique_id=1817050354 instance=ExtResource("10_bmxlf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1, -20)
+collision_layer = 1
+collision_mask = 1
