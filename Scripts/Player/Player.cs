@@ -89,7 +89,7 @@ public partial class Player : CharacterBody3D {
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
 
             velocity.Y = JumpVelocity;
-        
+
         }
 
         // Get the input direction and handle the movement/deceleration.
@@ -101,7 +101,7 @@ public partial class Player : CharacterBody3D {
                                             InputMap.Forward,
                                             InputMap.Backward
 
-                                          );
+                                            );
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
@@ -114,6 +114,7 @@ public partial class Player : CharacterBody3D {
         }
 
         Velocity = velocity;
+
         MoveAndSlide();
 
     }
@@ -131,19 +132,25 @@ public partial class Player : CharacterBody3D {
 
             Interacting = false;
 
-            if (Interactable != null) { 
-             
+            if (Interactable != null) {
+
                 Interactable.Uninteract();
 
             }
-        
-    }
+
+        }
 
         else if (@event.IsActionPressed(InputMap.Pause)) {
 
             HUD.Visible = false;
             GameManager.Pause();
 
+        }
+
+        else if (@event.IsActionPressed(InputMap.Command)) {
+
+            GameManager.OpenConsole();
+        
         }
 
         else if (EquippedTool != null) {

@@ -10,19 +10,13 @@ public partial class PauseMenu : CanvasLayer {
     public override void _Ready() {
 
         GameManager = GameManager.Instance;
+        GameManager.PauseMenu = this;
+        this.ProcessMode = ProcessModeEnum.Disabled;
 
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {
-
-        if (!IsPaused) {
-
-            Input.MouseMode = Input.MouseModeEnum.Confined;
-            Visible = true;
-            IsPaused = true;
-
-        }
 
         if (PauseCooldown > 0.0f) {
 
@@ -38,17 +32,28 @@ public partial class PauseMenu : CanvasLayer {
 
     }
 
+    public void Pause() {
+
+        GameManager.MouseMode = Input.MouseMode;
+        Input.MouseMode = Input.MouseModeEnum.Confined;
+        this.ProcessMode = ProcessModeEnum.Always;
+        this.Visible = true;
+        IsPaused = true;
+
+    }
+
     private void Unpause() {
 
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        Input.MouseMode = GameManager.MouseMode;
         PauseCooldown = 0.5f;
-        Visible = false;
+        this.Visible = false;
+        this.ProcessMode = ProcessModeEnum.Disabled;
         IsPaused = false;
         GameManager.Unpause();
 
     }
 
-    public void _on_resume_pressed() {
+    private void _on_resume_pressed() {
 
         Unpause();
 

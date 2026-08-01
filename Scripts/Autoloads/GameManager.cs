@@ -10,6 +10,9 @@ public partial class GameManager : Node3D {
     public Inventory Inventory { get; set; } = null;
     public Player Player { get; set; } = null;
     public Reactor Reactor { get; set; } = null;
+    public PauseMenu PauseMenu { get; set; } = null;
+    public Console Console { get; set; } = null;
+    public Input.MouseModeEnum MouseMode { get; set; }
 
     public override void _Ready() {
 
@@ -54,15 +57,36 @@ public partial class GameManager : Node3D {
 
     }
 
+    public void OpenConsole() {
+
+        GameSuspended(true);
+        Console.ConsoleOn();
+
+    }
+
+    public void CloseConsole() {
+
+        GameSuspended(false);
+        Console.ConsoleOff();
+
+    }
+
+    public void GameSuspended(bool state) {
+
+        GetTree().Paused = state;
+    
+    }
+
     public void Pause() {
 
-        GetTree().Paused = true;
+        GameSuspended(true);
+        PauseMenu.Pause();
 
     }
 
     public void Unpause() {
 
-        GetTree().Paused = false;
+        GameSuspended(false);
         Player.Unpause();
 
     }

@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://6bee868cnqkc" path="res://Assets/Styles/Button.tres" id="4_spy8q"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1128438915]
-process_mode = 2
+process_mode = 4
 visible = false
 script = ExtResource("2_scvw1")
 

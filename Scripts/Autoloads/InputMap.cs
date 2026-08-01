@@ -19,5 +19,7 @@ public static class InputMap {
 
     // Executive
     public static StringName Pause = new StringName("Escape");
+    public static StringName Submit = new StringName("Enter");
+    public static StringName Command = new StringName("~");
 
 }
