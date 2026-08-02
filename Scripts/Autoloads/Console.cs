@@ -3,6 +3,7 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 public partial class Console : CanvasLayer
@@ -13,6 +14,7 @@ public partial class Console : CanvasLayer
     [Export] LineEdit LineEdit = null;
     private System.Collections.Generic.Dictionary<string, Action> CommandDict = new System.Collections.Generic.Dictionary<string, Action>();
     private bool FirstFrame = true;
+    private static bool Verbose = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -49,6 +51,8 @@ public partial class Console : CanvasLayer
             if (args.Length == 0) return;
             args[0] = args[0].ToLower();
             Args = args;
+
+            GetOpt.Reset();
 
             if (!CommandDict.ContainsKey(args[0])) return;
             CommandDict[args[0]]();
@@ -88,23 +92,63 @@ public partial class Console : CanvasLayer
 
     public void Inst() {
 
-        string FilePath = "res://Objects/Tools/" + Args[1] + ".tscn";
-        int loop = 1;
+        int opt;
+        string Type = null;
+        string Name = null;
+        int Quantity = 1;
 
-        if (Args.Length > 2) {
+        while ((opt = GetOpt.Parse(Args, "c:n:q::v")) != -1) {
 
-            loop = Args[2].ToInt();
+            switch ((char)opt) {
 
+                case 'c':
+                    Type = GetOpt.OptArg;
+                    goto done;
+
+                case 'n':
+                    Name = GetOpt.OptArg;
+                    goto done;
+
+                case 'q':
+                    if (GetOpt.OptArg.IsValidInt()) {
+
+                        Quantity = GetOpt.OptArg.ToInt();
+
+                    }
+
+                    else {
+
+                        throw new NotImplementedException();
+                    
+                    }
+
+                    goto done;
+
+                case 'v':
+                    Verbose = true;
+                    goto done;
+
+                case '?':
+
+                    throw new NotImplementedException();
+            
+            }
+
+        done:;
+        
         }
 
-        PackedScene Tool = GD.Load<PackedScene>(FilePath);
+        string FilePath = ("res://Objects/" + Type + "s/" + Name + ".tscn");
 
-        if (Tool is null) return;
+        PackedScene Object = GD.Load<PackedScene>(FilePath);
 
+        if (Object is null) throw new NotImplementedException();
 
-        for (int i = 0; i < loop; i++) {
+        if (Verbose) GD.Print("yay");
 
-            Node Instance = Tool.Instantiate();
+        for (int i = 0; i < Quantity; i++) {
+
+            Node Instance = Object.Instantiate();
             GetTree().Root.AddChild(Instance);
 
             if (Instance is Node3D n) {
@@ -124,7 +168,6 @@ public partial class Console : CanvasLayer
         private static bool OptReset = true;
         private static string Arg = null;
         private const char BadChar = '?';
-        private const char BadArg = ':';
         public static string OptArg { get; private set; }
 
 
@@ -132,7 +175,7 @@ public partial class Console : CanvasLayer
 
             if (Args is  null || OptionString is null) return -1;
 
-            if (OptReset || Arg is null) {
+            if (OptReset || string.IsNullOrEmpty(Arg)) {
 
                 OptReset = false;
 
@@ -145,7 +188,7 @@ public partial class Console : CanvasLayer
 
                 Arg = Args[OptIndex];
 
-                if (Arg is null || Arg[0] != '-') { 
+                if (string.IsNullOrEmpty(Arg) || Arg[0] != '-') { 
                 
                     Arg = null;
                     return -1;
@@ -164,20 +207,21 @@ public partial class Console : CanvasLayer
 
             }
 
-            OptOpt = Arg[1];
+            OptOpt = Arg[0];
             Arg = Arg.Substring(1);
 
-            int OptionIndex = OptionString.IndexOf(OptOpt);
+            int ArgPos = OptionString.IndexOf(OptOpt);
 
-            if (OptOpt == ':' || OptionIndex == -1) {
+            if (ArgPos == -1) {
 
-                if (Arg is null) OptIndex++;
+                OptIndex++;
 
                 return BadChar;
             
             }
 
-            if (OptionIndex++ >= OptionString.Length || OptionString[OptionIndex + 1] != ':') {
+            ArgPos++;
+            if (ArgPos >= OptionString.Length || OptionString[ArgPos] != ':') {
 
                 OptArg = null;
                 OptIndex++;
@@ -186,13 +230,13 @@ public partial class Console : CanvasLayer
 
             else {
 
-                if (Arg is not null) {
+                if (!string.IsNullOrEmpty(Arg)) {
 
                     OptArg = Arg;
 
                 }
 
-                else if (Args.Length <= OptIndex++) {
+                else if (OptIndex + 1 >= Args.Length) {
 
                     Args = null;
                     return BadChar;
@@ -201,6 +245,7 @@ public partial class Console : CanvasLayer
 
                 else {
 
+                    OptIndex++;
                     OptArg = Args[OptIndex];
                 
                 }
@@ -214,9 +259,11 @@ public partial class Console : CanvasLayer
         
         }
 
-        public static void Reset() { 
-        
+        public static void Reset() {
+
+            Console.Verbose = false;
             OptReset = true;
+            OptIndex = 1;
         
         }
     
