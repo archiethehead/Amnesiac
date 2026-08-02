@@ -2,6 +2,8 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 public partial class Console : CanvasLayer
 {
@@ -41,6 +43,7 @@ public partial class Console : CanvasLayer
         else if (Input.IsActionPressed(InputMap.Submit)) {
 
             string RawCommand = LineEdit.Text;
+            RawCommand = RawCommand.StripEdges();
             string[] args = RawCommand.Split(' ');
 
             if (args.Length == 0) return;
@@ -91,12 +94,12 @@ public partial class Console : CanvasLayer
         if (Args.Length > 2) {
 
             loop = Args[2].ToInt();
-        
+
         }
 
         PackedScene Tool = GD.Load<PackedScene>(FilePath);
 
-        if (Tool == null) return;
+        if (Tool is null) return;
 
 
         for (int i = 0; i < loop; i++) {
@@ -113,5 +116,110 @@ public partial class Console : CanvasLayer
         }
 
     }
-	
+
+    private static class GetOpt {
+
+        private static int OptIndex = 1;
+        private static char OptOpt;
+        private static bool OptReset = true;
+        private static string Arg = null;
+        private const char BadChar = '?';
+        private const char BadArg = ':';
+        public static string OptArg { get; private set; }
+
+
+        public static int Parse(string[] Args, string OptionString) {
+
+            if (Args is  null || OptionString is null) return -1;
+
+            if (OptReset || Arg is null) {
+
+                OptReset = false;
+
+                if (OptIndex >= Args.Length) {
+
+                    Arg = null;
+                    return -1;
+                
+                }
+
+                Arg = Args[OptIndex];
+
+                if (Arg is null || Arg[0] != '-') { 
+                
+                    Arg = null;
+                    return -1;
+                
+                }
+
+                if (Arg.Length > 1 && Arg[1] == '-') {
+
+                    OptIndex++;
+                    Arg = null;
+                    return -1;
+                
+                }
+
+                Arg = Arg.Substring(1);
+
+            }
+
+            OptOpt = Arg[1];
+            Arg = Arg.Substring(1);
+
+            int OptionIndex = OptionString.IndexOf(OptOpt);
+
+            if (OptOpt == ':' || OptionIndex == -1) {
+
+                if (Arg is null) OptIndex++;
+
+                return BadChar;
+            
+            }
+
+            if (OptionIndex++ >= OptionString.Length || OptionString[OptionIndex + 1] != ':') {
+
+                OptArg = null;
+                OptIndex++;
+
+            }
+
+            else {
+
+                if (Arg is not null) {
+
+                    OptArg = Arg;
+
+                }
+
+                else if (Args.Length <= OptIndex++) {
+
+                    Args = null;
+                    return BadChar;
+
+                }
+
+                else {
+
+                    OptArg = Args[OptIndex];
+                
+                }
+
+                Arg = null;
+                OptIndex++;
+            
+            }
+
+            return OptOpt;
+        
+        }
+
+        public static void Reset() { 
+        
+            OptReset = true;
+        
+        }
+    
+    }
+
 }

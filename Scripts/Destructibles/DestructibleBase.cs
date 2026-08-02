@@ -54,7 +54,7 @@ public partial class DestructibleBase : Node3D, Hitable {
         // |
         // V
         
-        if (ShatteredMesh == null || ShatteredMeshPiece == null) {
+        if (ShatteredMesh is null || ShatteredMeshPiece is null) {
 
             this.QueueFree();
             GD.PrintErr("Destructible ShatteredMesh or ShatteredMeshPiece not set :(");
