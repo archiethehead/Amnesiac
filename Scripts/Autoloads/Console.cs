@@ -1,23 +1,19 @@
 using Godot;
-using Godot.Collections;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 public partial class Console : CanvasLayer
 {
 
     [Export] LineEdit LineEdit = null;
-    [Export] TextEdit TextEdit = null;
+    [Export] RichTextLabel OutputWindow = null;
     private GameManager GameManager = null;
     private string[] Args = null;
     private System.Collections.Generic.Dictionary<string, Action> CommandDict = new System.Collections.Generic.Dictionary<string, Action>();
     private bool FirstFrame = true;
     private static bool Verbose = false;
-    private StringWriter ConOut = new StringWriter();
+    private static bool Error = false;
+    private System.IO.StringWriter ConOut = new System.IO.StringWriter();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -31,8 +27,8 @@ public partial class Console : CanvasLayer
         this.ProcessMode = ProcessModeEnum.Disabled;
 
         CommandDict.Add("help", Help);
-        CommandDict.Add("inst", Inst);
         CommandDict.Add("clear", Clear);
+        CommandDict.Add("inst", Inst);
 
     }
 
@@ -59,9 +55,16 @@ public partial class Console : CanvasLayer
 
             GetOpt.Reset();
 
-            if (!CommandDict.ContainsKey(args[0])) return;
-            CommandDict[args[0]]();
+            if (!CommandDict.ContainsKey(args[0])) {
 
+                Error = true;
+                ConsoleOut("{0} is not a recognised command", args[0]);
+                return;
+            
+            }
+
+            ConsoleOut(" > {0}", RawCommand);
+            CommandDict[args[0]]();
             LineEdit.Clear();
 
         }
@@ -75,6 +78,8 @@ public partial class Console : CanvasLayer
         Show();
         this.ProcessMode = ProcessModeEnum.Always;
         LineEdit.GrabFocus();
+        LineEdit.Flat = true;
+        LineEdit.Clear();
 
     }
 
@@ -82,31 +87,39 @@ public partial class Console : CanvasLayer
 
         Input.MouseMode = GameManager.MouseMode;
         Hide();
+        LineEdit.Clear();
         this.ProcessMode = ProcessModeEnum.Disabled;
         FirstFrame = true;
 
     }
 
-    public void TextEditOut() {
+    public void OutputWindowOut() {
 
-        TextEdit.Editable = true;
-        TextEdit.InsertTextAtCaret(ConOut.ToString());
+        Color BaseColour = OutputWindow.GetThemeColor("font_color");
+
+        if (Error) {
+
+            OutputWindow.AppendText("[color=red]Error:   [/color]");
+            Error = false;
+
+        }
+
+        OutputWindow.AppendText(ConOut.ToString());
         ConOut.GetStringBuilder().Clear();
-        TextEdit.Editable = false;
-    
+
     }
 
     public void ConsoleOut(string Text) {
 
         System.Console.WriteLine(Text);
-        TextEditOut();
+        OutputWindowOut();
 
     }
 
     public void ConsoleOut(string Text, params object[] Objects) {
 
         System.Console.WriteLine(string.Format(Text, Objects));
-        TextEditOut();
+        OutputWindowOut();
 
     }
 
@@ -120,22 +133,20 @@ public partial class Console : CanvasLayer
 
     public void Clear() {
 
-        TextEdit.Editable = true;
-        TextEdit.Clear();
-        TextEdit.Editable = false;
+        OutputWindow.Text = "";
     
     }
 
     public void Inst() {
 
-        int opt;
+        int Opt;
         string Type = null;
         string Name = null;
         int Quantity = 1;
 
-        while ((opt = GetOpt.Parse(Args, "c:n:q::v")) != -1) {
+        while ((Opt = GetOpt.Parse(Args, "c:n:q::v")) != -1) {
 
-            switch ((char)opt) {
+            switch ((char)Opt) {
 
                 case 'c':
                     Type = GetOpt.OptArg;
@@ -154,7 +165,8 @@ public partial class Console : CanvasLayer
 
                     else {
 
-                        throw new NotImplementedException();
+                        Error = true;
+                        ConsoleOut("Quantity must be a valid positive integer, defaulting to 1");
                     
                     }
 
@@ -166,7 +178,9 @@ public partial class Console : CanvasLayer
 
                 case '?':
 
-                    throw new NotImplementedException();
+                    Error = true;
+                    ConsoleOut("{0} is an unrecognised argument", (char)Opt);
+                    goto done;
             
             }
 
@@ -178,7 +192,13 @@ public partial class Console : CanvasLayer
 
         PackedScene Object = GD.Load<PackedScene>(FilePath);
 
-        if (Object is null) throw new NotImplementedException();
+        if (Object is null) {
+
+            Error = true;
+            ConsoleOut("{0} is not a valid filepath",FilePath);
+            return;
+        
+        }
 
         if (Verbose) ConsoleOut("Object at {0} loaded", FilePath);
 

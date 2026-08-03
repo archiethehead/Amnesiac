@@ -9,6 +9,14 @@ process_mode = 4
 visible = false
 script = ExtResource("2_scvw1")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1762065759]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25565878, 0.25565878, 0.25565878, 0.25882354)
+
 [node name="Paused" type="Label" parent="." unique_id=1407695698]
 process_mode = 2
 offset_right = 1151.0

@@ -2,21 +2,30 @@
 
 [ext_resource type="Script" uid="uid://bm33yfbd486it" path="res://Scripts/Autoloads/Console.cs" id="1_7brus"]
 
-[node name="ConsoleInput" type="CanvasLayer" unique_id=530047758 node_paths=PackedStringArray("LineEdit", "TextEdit")]
+[node name="ConsoleInput" type="CanvasLayer" unique_id=530047758 node_paths=PackedStringArray("LineEdit", "OutputWindow")]
 process_mode = 4
 visible = false
 script = ExtResource("1_7brus")
 LineEdit = NodePath("LineEdit")
-TextEdit = NodePath("TextEdit")
+OutputWindow = NodePath("OutputWindow")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=839577218]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25565878, 0.25565878, 0.25565878, 0.25882354)
 
 [node name="LineEdit" type="LineEdit" parent="." unique_id=1067016247]
 offset_left = 1.0
 offset_top = 615.0
 offset_right = 1144.0
 offset_bottom = 646.0
+backspace_deletes_composite_character_enabled = true
+clear_button_enabled = true
+caret_blink = true
 
-[node name="TextEdit" type="TextEdit" parent="." unique_id=1521622232]
+[node name="OutputWindow" type="RichTextLabel" parent="." unique_id=751779105]
 offset_right = 1148.0
 offset_bottom = 588.0
-editable = false
-wrap_mode = 1
