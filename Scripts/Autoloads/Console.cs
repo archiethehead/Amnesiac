@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Text;
 
 public partial class Console : CanvasLayer
 {
@@ -43,7 +42,7 @@ public partial class Console : CanvasLayer
 
         }
 
-        else if (Input.IsActionPressed(InputMap.Submit)) {
+        else if (Input.IsActionJustPressed(InputMap.Submit)) {
 
             string RawCommand = LineEdit.Text;
             RawCommand = RawCommand.StripEdges();
@@ -54,6 +53,7 @@ public partial class Console : CanvasLayer
             Args = args;
 
             GetOpt.Reset();
+            LineEdit.Clear();
 
             if (!CommandDict.ContainsKey(args[0])) {
 
@@ -65,7 +65,6 @@ public partial class Console : CanvasLayer
 
             ConsoleOut(" > {0}", RawCommand);
             CommandDict[args[0]]();
-            LineEdit.Clear();
 
         }
 
