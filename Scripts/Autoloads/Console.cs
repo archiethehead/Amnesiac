@@ -1,14 +1,29 @@
 using Godot;
 using System;
+using System.Globalization;
+using System.Linq;
 
 public partial class Console : CanvasLayer
 {
+
+    public struct Command {
+
+        public string Description;
+        public Action Function;
+
+        public Command(string D, Action F) : this() {
+
+            this.Description = D;
+            this.Function = F;
+
+        }
+    }
 
     [Export] LineEdit LineEdit = null;
     [Export] RichTextLabel OutputWindow = null;
     private GameManager GameManager = null;
     private string[] Args = null;
-    private System.Collections.Generic.Dictionary<string, Action> CommandDict = new System.Collections.Generic.Dictionary<string, Action>();
+    private System.Collections.Generic.Dictionary<string, Command> CommandDict = new System.Collections.Generic.Dictionary<string, Command>();
     private bool FirstFrame = true;
     private static bool Verbose = false;
     private static bool Error = false;
@@ -25,9 +40,9 @@ public partial class Console : CanvasLayer
         LineEdit.KeepEditingOnTextSubmit = true;
         this.ProcessMode = ProcessModeEnum.Disabled;
 
-        CommandDict.Add("help", Help);
-        CommandDict.Add("clear", Clear);
-        CommandDict.Add("inst", Inst);
+        CommandDict.Add("help", new Command("Outputs each command and it's respective arguments.", Help));
+        CommandDict.Add("clear", new Command("Clears the output window.", Clear));
+        CommandDict.Add("inst", new Command("<-c Category, -n Name> [-q Quantity] Instansiates an object into the scene.", Inst));
 
     }
 
@@ -64,7 +79,7 @@ public partial class Console : CanvasLayer
             }
 
             ConsoleOut(" > {0}", RawCommand);
-            CommandDict[args[0]]();
+            CommandDict[args[0]].Function();
 
         }
 
@@ -126,8 +141,18 @@ public partial class Console : CanvasLayer
 
     public void Help() {
 
-        GD.Print("test");
-    
+        ConsoleOut( "COMMANDS\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nFilepath arguments are case-sentivie on *nix systems\n" +
+                    "Arguments are not order-sensitive\nView verbose output with the '-v' flag on any command (if applicable).\n");
+
+        string[] KeyList = CommandDict.Keys.ToList().ToArray();
+        Command[] CommandList = CommandDict.Values.ToList().ToArray();
+
+        for (int i = 0; i < KeyList.Length; i++) {
+
+            ConsoleOut("{0,-10} {1}", (KeyList[i] + ": "), CommandList[i].Description);
+        
+        }
+
     }
 
     public void Clear() {
