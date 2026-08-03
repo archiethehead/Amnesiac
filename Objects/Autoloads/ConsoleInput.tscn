@@ -2,14 +2,21 @@
 
 [ext_resource type="Script" uid="uid://bm33yfbd486it" path="res://Scripts/Autoloads/Console.cs" id="1_7brus"]
 
-[node name="ConsoleInput" type="CanvasLayer" unique_id=530047758 node_paths=PackedStringArray("LineEdit")]
+[node name="ConsoleInput" type="CanvasLayer" unique_id=530047758 node_paths=PackedStringArray("LineEdit", "TextEdit")]
 process_mode = 4
 visible = false
 script = ExtResource("1_7brus")
 LineEdit = NodePath("LineEdit")
+TextEdit = NodePath("TextEdit")
 
 [node name="LineEdit" type="LineEdit" parent="." unique_id=1067016247]
 offset_left = 1.0
 offset_top = 615.0
 offset_right = 1144.0
 offset_bottom = 646.0
+
+[node name="TextEdit" type="TextEdit" parent="." unique_id=1521622232]
+offset_right = 1148.0
+offset_bottom = 588.0
+editable = false
+wrap_mode = 1

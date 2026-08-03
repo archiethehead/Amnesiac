@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,17 +10,20 @@ using System.Text;
 public partial class Console : CanvasLayer
 {
 
+    [Export] LineEdit LineEdit = null;
+    [Export] TextEdit TextEdit = null;
     private GameManager GameManager = null;
     private string[] Args = null;
-    [Export] LineEdit LineEdit = null;
     private System.Collections.Generic.Dictionary<string, Action> CommandDict = new System.Collections.Generic.Dictionary<string, Action>();
     private bool FirstFrame = true;
     private static bool Verbose = false;
+    private StringWriter ConOut = new StringWriter();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 
+        System.Console.SetOut(ConOut);
         GameManager = GameManager.Instance;
         GameManager.Console = this;
         LineEdit.ClearButtonEnabled = true;
@@ -28,6 +32,7 @@ public partial class Console : CanvasLayer
 
         CommandDict.Add("help", Help);
         CommandDict.Add("inst", Inst);
+        CommandDict.Add("clear", Clear);
 
     }
 
@@ -82,11 +87,42 @@ public partial class Console : CanvasLayer
 
     }
 
+    public void TextEditOut() {
+
+        TextEdit.Editable = true;
+        TextEdit.InsertTextAtCaret(ConOut.ToString());
+        ConOut.GetStringBuilder().Clear();
+        TextEdit.Editable = false;
+    
+    }
+
+    public void ConsoleOut(string Text) {
+
+        System.Console.WriteLine(Text);
+        TextEditOut();
+
+    }
+
+    public void ConsoleOut(string Text, params object[] Objects) {
+
+        System.Console.WriteLine(string.Format(Text, Objects));
+        TextEditOut();
+
+    }
+
     // Commands
 
     public void Help() {
 
         GD.Print("test");
+    
+    }
+
+    public void Clear() {
+
+        TextEdit.Editable = true;
+        TextEdit.Clear();
+        TextEdit.Editable = false;
     
     }
 
@@ -144,12 +180,14 @@ public partial class Console : CanvasLayer
 
         if (Object is null) throw new NotImplementedException();
 
-        if (Verbose) GD.Print("yay");
+        if (Verbose) ConsoleOut("Object at {0} loaded", FilePath);
 
         for (int i = 0; i < Quantity; i++) {
 
             Node Instance = Object.Instantiate();
             GetTree().Root.AddChild(Instance);
+
+            if (Verbose) ConsoleOut("{0} instantiated into scene", Instance.ToString());
 
             if (Instance is Node3D n) {
 
