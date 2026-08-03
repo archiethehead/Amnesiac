@@ -13,6 +13,7 @@ public partial class DestructibleBase : Node3D, Hitable {
                                                         // for the fadeout to finish (or be capped).
 
     public bool IsHittable { get; protected set; } = true;
+    [Export] public float BreakSpeed { get; protected set; } = 0.0f;
 
     public override void _Process(double delta) {
 

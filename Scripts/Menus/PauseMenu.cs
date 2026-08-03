@@ -35,7 +35,7 @@ public partial class PauseMenu : CanvasLayer {
     public void Pause() {
 
         GameManager.MouseMode = Input.MouseMode;
-        Input.MouseMode = Input.MouseModeEnum.Confined;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
         this.ProcessMode = ProcessModeEnum.Always;
         this.Visible = true;
         IsPaused = true;

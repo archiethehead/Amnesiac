@@ -19,8 +19,13 @@ color = Color(0.25565878, 0.25565878, 0.25565878, 0.25882354)
 
 [node name="Paused" type="Label" parent="." unique_id=1407695698]
 process_mode = 2
-offset_right = 1151.0
-offset_bottom = 23.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -575.5
+offset_right = 575.5
+offset_bottom = 115.0
+grow_horizontal = 2
 theme = ExtResource("3_fyku0")
 text = "PAUSED"
 horizontal_alignment = 1
@@ -45,14 +50,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Exit" type="Button" parent="." unique_id=597089427]
 process_mode = 2
 anchors_preset = -1
-anchor_left = 0.46310765
-anchor_top = 0.47608024
-anchor_right = 0.53255206
-anchor_bottom = 0.52391976
-offset_left = 2.5
-offset_top = 155.5
-offset_right = 2.5
-offset_bottom = 155.5
+anchor_left = 0.4652778
+anchor_top = 0.7160494
+anchor_right = 0.5347222
+anchor_bottom = 0.7638889
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
