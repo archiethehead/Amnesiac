@@ -301,12 +301,16 @@ public partial class Console : CanvasLayer {
         // |
         // V
 
-        public static bool FirstInput = true;
+        private static bool FirstInput = true;
+        private static bool VeryFirstInput = true;
 
         public static void Record(string RecordCommand) {
 
-            CommandList[CommandList.Count - 1] = RecordCommand;
-            CommandList.Add("");
+            CommandList[0] = RecordCommand;
+            CommandList.Insert(0, "");
+
+            if (!VeryFirstInput) Index++;
+
             FirstInput = true;
 
         }
@@ -315,8 +319,9 @@ public partial class Console : CanvasLayer {
 
             if (FirstInput) {
 
+                VeryFirstInput = false;
                 FirstInput = false;
-                return CommandList[(CommandList.Count - 1) - Index];
+                return CommandList[Index];
 
             }
 
@@ -332,14 +337,12 @@ public partial class Console : CanvasLayer {
 
             if (NewIndex >= CommandList.Count || NewIndex < 0) {
 
-                GD.Print(Index);
-                return CommandList[(CommandList.Count - 1) - Index];
+                return CommandList[Index];
 
             }
 
             Index = NewIndex;
-            GD.Print(Index);
-            return CommandList[(CommandList.Count - 1) - Index];
+            return CommandList[Index];
 
 
         }

@@ -445,7 +445,7 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 1, 0)
 ShatteredMesh = NodePath("VoronoiShatter/Fractured_VoroniMesh_235527")
 ShatteredMeshPiece = NodePath("VoronoiShatter/Fractured_VoroniMesh_235527/Rigid_FracturedPiece_RID(954208589185168)/FracturedPiece_RID(954208589185168)")
-BreakSpeed = 5.0
+BreakSpeed = 3.0
 
 [node name="Collider" parent="." index="0" unique_id=855390201]
 shape = SubResource("ConvexPolygonShape3D_jum3h")
