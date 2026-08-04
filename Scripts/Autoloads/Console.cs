@@ -6,7 +6,7 @@ using System.Linq;
 public partial class Console : CanvasLayer
 {
 
-    public struct Command {
+    private struct Command {
 
         public string Description;
         public Action Function;
@@ -42,7 +42,9 @@ public partial class Console : CanvasLayer
 
         CommandDict.Add("help", new Command("Outputs each command and it's respective arguments.", Help));
         CommandDict.Add("clear", new Command("Clears the output window.", Clear));
+        CommandDict.Add("exit", new Command("Kills the master process, exiting the game", GameManager.Exit));
         CommandDict.Add("inst", new Command("<-c Category, -n Name> [-q Quantity] Instansiates an object into the scene.", Inst));
+        CommandDict.Add("noclip", new Command("Toggles no-clip.", NoClip));
 
     }
 
@@ -73,7 +75,7 @@ public partial class Console : CanvasLayer
             if (!CommandDict.ContainsKey(args[0])) {
 
                 Error = true;
-                ConsoleOut("{0} is not a recognised command", args[0]);
+                ConsoleOut("{0} is not a recognised command, try 'help'", args[0]);
                 return;
             
             }
@@ -107,7 +109,7 @@ public partial class Console : CanvasLayer
 
     }
 
-    public void OutputWindowOut() {
+    private void OutputWindowOut() {
 
         Color BaseColour = OutputWindow.GetThemeColor("font_color");
 
@@ -123,14 +125,14 @@ public partial class Console : CanvasLayer
 
     }
 
-    public void ConsoleOut(string Text) {
+    private void ConsoleOut(string Text) {
 
         System.Console.WriteLine(Text);
         OutputWindowOut();
 
     }
 
-    public void ConsoleOut(string Text, params object[] Objects) {
+    private void ConsoleOut(string Text, params object[] Objects) {
 
         System.Console.WriteLine(string.Format(Text, Objects));
         OutputWindowOut();
@@ -139,7 +141,7 @@ public partial class Console : CanvasLayer
 
     // Commands
 
-    public void Help() {
+    private void Help() {
 
         ConsoleOut( "COMMANDS\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nFilepath arguments are case-sentivie on *nix systems\n" +
                     "Arguments are not order-sensitive\nView verbose output with the '-v' flag on any command (if applicable).\n");
@@ -155,13 +157,19 @@ public partial class Console : CanvasLayer
 
     }
 
-    public void Clear() {
+    private void Clear() {
 
         OutputWindow.Text = "";
     
     }
 
-    public void Inst() {
+    private void NoClip() {
+
+        GameManager.Player.ToggleNoClip();
+    
+    }
+
+    private void Inst() {
 
         int Opt;
         string Type = null;
@@ -242,6 +250,8 @@ public partial class Console : CanvasLayer
         }
 
     }
+
+    
 
     private static class GetOpt {
 

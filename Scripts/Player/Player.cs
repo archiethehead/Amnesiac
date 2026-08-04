@@ -7,6 +7,7 @@ public partial class Player : CharacterBody3D {
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private bool Interacting = false;
+    private bool NoClip = false;
     private ToolBase EquippedTool = null;
     private Interactable Interactable;
 
@@ -25,6 +26,7 @@ public partial class Player : CharacterBody3D {
     [Export] private RayCast3D RayCast = null;
     [Export] private Marker3D ToolPos = null;
     [Export] private CanvasLayer HUD = null;
+    [Export] private CollisionShape3D Collider = null;
 
 
     public override void _Ready() {
@@ -78,6 +80,28 @@ public partial class Player : CharacterBody3D {
     }
 
     public override void _PhysicsProcess(double delta) {
+
+        Vector2 inputDir = Input.GetVector(
+
+                                    InputMap.Left,
+                                    InputMap.Right,
+                                    InputMap.Forward,
+                                    InputMap.Backward
+
+                                    );
+
+        if (NoClip) {
+
+
+            Vector3 Forward = Camera.GlobalTransform.Basis.Z;
+            Vector3 Right = Camera.GlobalTransform.Basis.X;
+            Vector3 Direction = (Right * inputDir.X + Forward * inputDir.Y).Normalized();
+
+            this.GlobalPosition += (Direction * 10.0f) * (float)delta;
+            return;
+
+        }
+
         Vector3 velocity = Velocity;
 
         // Add the gravity.
@@ -91,17 +115,6 @@ public partial class Player : CharacterBody3D {
             velocity.Y = JumpVelocity;
 
         }
-
-        // Get the input direction and handle the movement/deceleration.
-        // As good practice, you should replace UI actions with custom gameplay actions.
-        Vector2 inputDir = Input.GetVector(
-
-                                            InputMap.Left,
-                                            InputMap.Right,
-                                            InputMap.Forward,
-                                            InputMap.Backward
-
-                                            );
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
@@ -216,7 +229,7 @@ public partial class Player : CharacterBody3D {
             Camera.RotateX(RelativeY * Sensitivity);
 
             Vector3 newRotation = Camera.GetRotation();
-            newRotation.X = Math.Clamp(Camera.Rotation.X, Mathf.DegToRad(-60), Mathf.DegToRad(70));
+            newRotation.X = Math.Clamp(Camera.Rotation.X, Mathf.DegToRad(-90), Mathf.DegToRad(90));
             Camera.SetRotation(newRotation);
 
         }
@@ -227,6 +240,14 @@ public partial class Player : CharacterBody3D {
 
         HUD.Visible = true;
 
+    }
+
+    public void ToggleNoClip() {
+
+        this.Velocity = Vector3.Zero;
+        NoClip = !NoClip;
+        Collider.Disabled = NoClip;
+    
     }
 
     public void Pickup(ToolBase Tool) {
