@@ -1,7 +1,9 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 
 public partial class Console : CanvasLayer
 {
@@ -17,6 +19,7 @@ public partial class Console : CanvasLayer
             this.Function = F;
 
         }
+
     }
 
     [Export] LineEdit LineEdit = null;
@@ -63,9 +66,13 @@ public partial class Console : CanvasLayer
 
             string RawCommand = LineEdit.Text;
             RawCommand = RawCommand.StripEdges();
+
+            if (RawCommand == "") return;
+
             string[] args = RawCommand.Split(' ');
 
-            if (args.Length == 0) return;
+            CommandHistory.Record(RawCommand);
+
             args[0] = args[0].ToLower();
             Args = args;
 
@@ -77,11 +84,25 @@ public partial class Console : CanvasLayer
                 Error = true;
                 ConsoleOut("{0} is not a recognised command, try 'help'", args[0]);
                 return;
-            
+
             }
 
-            ConsoleOut(" > {0}", RawCommand);
+            ConsoleOut("[i] > {0}[/i]", RawCommand);
             CommandDict[args[0]].Function();
+
+        }
+
+        else if (Input.IsActionJustPressed(InputMap.Up)) {
+
+            LineEdit.Clear();
+            LineEdit.InsertTextAtCaret(CommandHistory.Get(true));
+        
+        }
+
+        else if (Input.IsActionJustPressed(InputMap.Down)) {
+
+            LineEdit.Clear();
+            LineEdit.InsertTextAtCaret(CommandHistory.Get(false));
 
         }
 
@@ -115,7 +136,7 @@ public partial class Console : CanvasLayer
 
         if (Error) {
 
-            OutputWindow.AppendText("[color=red]Error:   [/color]");
+            OutputWindow.AppendText("[color=red]Error: [/color]");
             Error = false;
 
         }
@@ -211,7 +232,7 @@ public partial class Console : CanvasLayer
                 case '?':
 
                     Error = true;
-                    ConsoleOut("{0} is an unrecognised argument", (char)Opt);
+                    ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
                     goto done;
             
             }
@@ -220,7 +241,23 @@ public partial class Console : CanvasLayer
         
         }
 
-        string FilePath = ("res://Objects/" + Type + "s/" + Name + ".tscn");
+        if (Type is null) {
+
+            Error = true;
+            ConsoleOut("Object type unspecified");
+            return;
+
+        }
+
+        else if (Name is null) {
+
+            Error = true;
+            ConsoleOut("Object name unspecified");
+            return;
+
+        }
+
+            string FilePath = ("res://Objects/" + Type + "s/" + Name + ".tscn");
 
         PackedScene Object = GD.Load<PackedScene>(FilePath);
 
@@ -251,12 +288,67 @@ public partial class Console : CanvasLayer
 
     }
 
-    
+    private static class CommandHistory {
+
+        private static List<string> CommandList = new List<string>();
+        private static int Index = 0;
+
+        // Get the current index instead of shifting the index after
+        // the console adds to the history.
+        //
+        // |
+        // |
+        // |
+        // V
+
+        public static bool FirstInput = true;
+
+        public static void Record(string RecordCommand) {
+
+            CommandList.Add(RecordCommand);
+            FirstInput = true;
+
+        }
+
+        public static string Get(bool IsUp) {
+
+            if (CommandList.Count == 0) return "";
+
+            if (FirstInput) {
+
+                FirstInput = false;
+                return CommandList[Index];
+            
+            }
+
+            int Direction = 1;
+
+            if (IsUp) {
+
+                Direction = -1;
+
+            }
+
+            int NewIndex = Index + Direction;
+
+            if (NewIndex > CommandList.Count || NewIndex < 0) {
+
+                return CommandList[Index];
+            
+            }
+
+            Index = NewIndex;
+            return CommandList[Index];
+
+        
+        }
+
+    }
 
     private static class GetOpt {
 
         private static int OptIndex = 1;
-        private static char OptOpt;
+        public static char OptOpt;
         private static bool OptReset = true;
         private static string Arg = null;
         private const char BadChar = '?';
@@ -328,17 +420,16 @@ public partial class Console : CanvasLayer
 
                 }
 
-                else if (OptIndex + 1 >= Args.Length) {
+                else if (OptIndex + 1 < Args.Length) {
 
-                    Args = null;
-                    return BadChar;
+                    OptIndex++;
+                    OptArg = Args[OptIndex];
 
                 }
 
                 else {
 
-                    OptIndex++;
-                    OptArg = Args[OptIndex];
+                    OptArg = null;
                 
                 }
 
@@ -354,6 +445,8 @@ public partial class Console : CanvasLayer
         public static void Reset() {
 
             Console.Verbose = false;
+            Arg = null;
+            OptArg = null;
             OptReset = true;
             OptIndex = 1;
         

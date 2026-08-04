@@ -17,6 +17,10 @@ public static class InputMap {
     public static StringName Tertiary = new StringName("R");
     public static StringName Drop = new StringName("Q");
 
+    // Menu Form
+    public static StringName Up = new StringName("Up");
+    public static StringName Down = new StringName("Down");
+
     // Executive
     public static StringName Pause = new StringName("Escape");
     public static StringName Submit = new StringName("Enter");

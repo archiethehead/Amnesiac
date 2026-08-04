@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" uid="uid://bm33yfbd486it" path="res://Scripts/Autoloads/Console.cs" id="1_7brus"]
 
+[sub_resource type="SystemFont" id="SystemFont_7brus"]
+font_names = PackedStringArray("Consolas")
+font_italic = true
+hinting = 0
+
+[sub_resource type="SystemFont" id="SystemFont_0342s"]
+font_names = PackedStringArray("Consolas")
+hinting = 0
+
 [node name="ConsoleInput" type="CanvasLayer" unique_id=530047758 node_paths=PackedStringArray("LineEdit", "OutputWindow")]
 process_mode = 4
 visible = false
@@ -23,6 +32,9 @@ anchor_left = 0.013888889
 anchor_top = 0.9506173
 anchor_right = 0.9861111
 anchor_bottom = 0.9984568
+theme_override_fonts/font = SubResource("SystemFont_7brus")
+theme_override_font_sizes/font_size = 18
+text = "inst -c Tool -n LeadPipe"
 backspace_deletes_composite_character_enabled = true
 clear_button_enabled = true
 caret_blink = true
@@ -34,4 +46,6 @@ anchor_right = 1.0
 anchor_bottom = 0.9382716
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("SystemFont_0342s")
+theme_override_font_sizes/normal_font_size = 18
 metadata/_edit_use_anchors_ = true
