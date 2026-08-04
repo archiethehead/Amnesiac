@@ -5,8 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 
-public partial class Console : CanvasLayer
-{
+public partial class Console : CanvasLayer {
 
     private struct Command {
 
@@ -32,9 +31,8 @@ public partial class Console : CanvasLayer
     private static bool Error = false;
     private System.IO.StringWriter ConOut = new System.IO.StringWriter();
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() {
 
         System.Console.SetOut(ConOut);
         GameManager = GameManager.Instance;
@@ -96,7 +94,7 @@ public partial class Console : CanvasLayer
 
             LineEdit.Clear();
             LineEdit.InsertTextAtCaret(CommandHistory.Get(true));
-        
+
         }
 
         else if (Input.IsActionJustPressed(InputMap.Down)) {
@@ -164,8 +162,9 @@ public partial class Console : CanvasLayer
 
     private void Help() {
 
-        ConsoleOut( "COMMANDS\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nFilepath arguments are case-sentivie on *nix systems\n" +
-                    "Arguments are not order-sensitive\nView verbose output with the '-v' flag on any command (if applicable).\n");
+        ConsoleOut("COMMANDS\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nFilepath arguments are case-sentivie on *nix systems\n" +
+                    "Arguments are not order-sensitive\nView verbose output with the '-v' flag on any command (if applicable).\n" +
+                    "The Up and Down arrow can be used to navigate the command history.\n");
 
         string[] KeyList = CommandDict.Keys.ToList().ToArray();
         Command[] CommandList = CommandDict.Values.ToList().ToArray();
@@ -173,21 +172,23 @@ public partial class Console : CanvasLayer
         for (int i = 0; i < KeyList.Length; i++) {
 
             ConsoleOut("{0,-10} {1}", (KeyList[i] + ": "), CommandList[i].Description);
-        
+
         }
+
+        ConsoleOut("\nExample Command: inst -c Tools -n LeadPipe -q 100 -v");
 
     }
 
     private void Clear() {
 
         OutputWindow.Text = "";
-    
+
     }
 
     private void NoClip() {
 
         GameManager.Player.ToggleNoClip();
-    
+
     }
 
     private void Inst() {
@@ -197,7 +198,7 @@ public partial class Console : CanvasLayer
         string Name = null;
         int Quantity = 1;
 
-        while ((Opt = GetOpt.Parse(Args, "c:n:q::v")) != -1) {
+        while ((Opt = GetOpt.Parse(Args, "c:n:q:v")) != -1) {
 
             switch ((char)Opt) {
 
@@ -220,7 +221,7 @@ public partial class Console : CanvasLayer
 
                         Error = true;
                         ConsoleOut("Quantity must be a valid positive integer, defaulting to 1");
-                    
+
                     }
 
                     goto done;
@@ -234,11 +235,11 @@ public partial class Console : CanvasLayer
                     Error = true;
                     ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
                     goto done;
-            
+
             }
 
         done:;
-        
+
         }
 
         if (Type is null) {
@@ -257,16 +258,16 @@ public partial class Console : CanvasLayer
 
         }
 
-            string FilePath = ("res://Objects/" + Type + "s/" + Name + ".tscn");
+        string FilePath = ("res://Objects/" + Type + "/" + Name + ".tscn");
 
         PackedScene Object = GD.Load<PackedScene>(FilePath);
 
         if (Object is null) {
 
             Error = true;
-            ConsoleOut("{0} is not a valid filepath",FilePath);
+            ConsoleOut("{0} is not a valid filepath", FilePath);
             return;
-        
+
         }
 
         if (Verbose) ConsoleOut("Object at {0} loaded", FilePath);
@@ -290,13 +291,12 @@ public partial class Console : CanvasLayer
 
     private static class CommandHistory {
 
-        private static List<string> CommandList = new List<string>();
+        private static List<string> CommandList = [""];
         private static int Index = 0;
 
         // Get the current index instead of shifting the index after
         // the console adds to the history.
         //
-        // |
         // |
         // |
         // V
@@ -305,42 +305,43 @@ public partial class Console : CanvasLayer
 
         public static void Record(string RecordCommand) {
 
-            CommandList.Add(RecordCommand);
+            CommandList[CommandList.Count - 1] = RecordCommand;
+            CommandList.Add("");
             FirstInput = true;
 
         }
 
         public static string Get(bool IsUp) {
 
-            if (CommandList.Count == 0) return "";
-
             if (FirstInput) {
 
                 FirstInput = false;
-                return CommandList[Index];
-            
+                return CommandList[(CommandList.Count - 1) - Index];
+
             }
 
-            int Direction = 1;
+            int Direction = -1;
 
             if (IsUp) {
 
-                Direction = -1;
+                Direction = 1;
 
             }
 
             int NewIndex = Index + Direction;
 
-            if (NewIndex > CommandList.Count || NewIndex < 0) {
+            if (NewIndex >= CommandList.Count || NewIndex < 0) {
 
-                return CommandList[Index];
-            
+                GD.Print(Index);
+                return CommandList[(CommandList.Count - 1) - Index];
+
             }
 
             Index = NewIndex;
-            return CommandList[Index];
+            GD.Print(Index);
+            return CommandList[(CommandList.Count - 1) - Index];
 
-        
+
         }
 
     }
@@ -354,10 +355,18 @@ public partial class Console : CanvasLayer
         private const char BadChar = '?';
         public static string OptArg { get; private set; }
 
+        // This implementation differs slightly from the classic GNU/Linux
+        // version of GetOpt. Optional arugments must be handled by the caller,
+        // and you there's error logging and, therefore, no handling of error
+        // logging args in ostring (OptionString).
+        //
+        // |
+        // |
+        // V
 
         public static int Parse(string[] Args, string OptionString) {
 
-            if (Args is  null || OptionString is null) return -1;
+            if (Args is null || OptionString is null) return -1;
 
             if (OptReset || string.IsNullOrEmpty(Arg)) {
 
@@ -367,16 +376,16 @@ public partial class Console : CanvasLayer
 
                     Arg = null;
                     return -1;
-                
+
                 }
 
                 Arg = Args[OptIndex];
 
-                if (string.IsNullOrEmpty(Arg) || Arg[0] != '-') { 
-                
+                if (string.IsNullOrEmpty(Arg) || Arg[0] != '-') {
+
                     Arg = null;
                     return -1;
-                
+
                 }
 
                 if (Arg.Length > 1 && Arg[1] == '-') {
@@ -384,7 +393,7 @@ public partial class Console : CanvasLayer
                     OptIndex++;
                     Arg = null;
                     return -1;
-                
+
                 }
 
                 Arg = Arg.Substring(1);
@@ -401,7 +410,7 @@ public partial class Console : CanvasLayer
                 OptIndex++;
 
                 return BadChar;
-            
+
             }
 
             ArgPos++;
@@ -430,16 +439,16 @@ public partial class Console : CanvasLayer
                 else {
 
                     OptArg = null;
-                
+
                 }
 
                 Arg = null;
                 OptIndex++;
-            
+
             }
 
             return OptOpt;
-        
+
         }
 
         public static void Reset() {
@@ -449,9 +458,9 @@ public partial class Console : CanvasLayer
             OptArg = null;
             OptReset = true;
             OptIndex = 1;
-        
+
         }
-    
+
     }
 
 }

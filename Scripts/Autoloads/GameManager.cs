@@ -33,7 +33,7 @@ public partial class GameManager : Node3D {
         Tool.Reparent(GetTree().Root);
         Tool.Drop();
         Inventory.RemoveItemFromInventory();
-    
+
     }
 
     public void ReactorExplode() {
@@ -70,7 +70,7 @@ public partial class GameManager : Node3D {
     public void GameSuspended(bool state) {
 
         GetTree().Paused = state;
-    
+
     }
 
     public void Pause() {

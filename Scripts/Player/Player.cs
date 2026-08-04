@@ -163,7 +163,7 @@ public partial class Player : CharacterBody3D {
         else if (@event.IsActionPressed(InputMap.Command)) {
 
             GameManager.OpenConsole();
-        
+
         }
 
         else if (EquippedTool != null) {
@@ -247,7 +247,7 @@ public partial class Player : CharacterBody3D {
         this.Velocity = Vector3.Zero;
         NoClip = !NoClip;
         Collider.Disabled = NoClip;
-    
+
     }
 
     public void Pickup(ToolBase Tool) {

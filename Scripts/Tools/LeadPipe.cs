@@ -19,7 +19,7 @@ public partial class LeadPipe : ToolBase {
         if (HitCast.IsColliding() && HitCast.GetCollider() is Hitable h && h.IsHittable) {
 
             h.Hit();
-        
+
         }
 
         HitCast.Scale = ScaleBuffer;

@@ -17,7 +17,7 @@ public partial class DestructibleBase : Node3D, Hitable {
 
     public override void _Process(double delta) {
 
-        if (IsShattered) { 
+        if (IsShattered) {
 
             Timer += (float)delta;
 
@@ -35,7 +35,7 @@ public partial class DestructibleBase : Node3D, Hitable {
 
                 ShatteredMesh.QueueFree();
                 this.QueueFree();
-            
+
             }
 
         }
@@ -51,13 +51,13 @@ public partial class DestructibleBase : Node3D, Hitable {
         // |
         // |
         // V
-        
+
         if (ShatteredMesh is null || ShatteredMeshPiece is null) {
 
             this.QueueFree();
             GD.PrintErr("Destructible ShatteredMesh or ShatteredMeshPiece not set :(");
             return;
-        
+
         }
 
         MeshMaterial = ShatteredMeshPiece.GetActiveMaterial(0);

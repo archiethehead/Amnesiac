@@ -71,7 +71,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
             }
 
         }
-    
+
     }
 
     public void Equip() { }
