@@ -4,7 +4,7 @@ using System;
 public partial class LeadPipe : ToolBase {
 
     public override ToolBitMask ToolID { get; protected set; } = ToolBitMask.LeadPipe;
-    public override float Range { get; protected set; } = 2.0f;
+    protected override float Range { get; set; } = 2.0f;
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {

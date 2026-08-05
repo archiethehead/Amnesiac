@@ -27,6 +27,7 @@ current = true
 
 [node name="RayCast" type="RayCast3D" parent="Camera" unique_id=1997520734]
 transform = Transform3D(0.1, 0, 0, 0, -1.3113416e-07, -0.1, 0, 3, -4.371139e-09, 0, 0, 0)
+collision_mask = 3
 
 [node name="ToolPos" type="Marker3D" parent="Camera" unique_id=2001356195]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5618903, -0.41984767, -0.7671528)

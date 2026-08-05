@@ -17,9 +17,13 @@ public interface Hitable {
 public partial class ToolBase : RigidBody3D, Interactable {
 
     public virtual ToolBitMask ToolID { get; protected set; }
-    public virtual float Range { get; protected set; }
+    protected virtual float Range { get; set; }
 
+    private bool IsDropped = false;
+    private const float DropCooldownRate = 1.0f;
+    private float DropCooldown = 2.0f;
     public bool IsInteractable { get; protected set; } = true;
+    
     [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
     [Export] private CollisionShape3D Collider = null;
     public RayCast3D HitCast = null;
@@ -29,6 +33,23 @@ public partial class ToolBase : RigidBody3D, Interactable {
     public sealed override void _Ready() {
 
         GameManager = GameManager.Instance;
+
+    }
+
+    public override void _PhysicsProcess(double delta) {
+
+        if (IsDropped) {
+
+            DropCooldown -= DropCooldownRate * (float)delta;
+
+            if (DropCooldown <= 0.0f) {
+
+                IsDropped = false;
+                DropCooldown = DropCooldownRate;
+            
+            }
+        
+        }
 
     }
 
@@ -46,6 +67,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
     public void Drop() {
 
+        IsDropped = true;
         IsInteractable = true;
         Collider.Disabled = false;
         this.Freeze = false;
@@ -54,7 +76,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
     public void OnBodyEntered(Node Body) {
 
-        if (Body is Player p) {
+        if (Body is Player p && !IsDropped) {
 
             GameManager.CallDeferred(GameManager.MethodName.PickUp, this);
 

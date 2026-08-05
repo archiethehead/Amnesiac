@@ -289,12 +289,10 @@ shape = SubResource("ConvexPolygonShape3D_m4llh")
 [node name="Valve" parent="." unique_id=542406856 instance=ExtResource("8_50glp")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.185823)
 
-[node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.1643095, 1.9098829, -22.314102)
-collision_layer = 1
-collision_mask = 1
-
 [node name="Vase" parent="." unique_id=1817050354 instance=ExtResource("10_bmxlf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1, -20)
 collision_layer = 1
 collision_mask = 1
+
+[node name="LeadPipe" parent="." unique_id=1352199677 instance=ExtResource("9_vy5pj")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 8.324345, 1.0683343, -21.010677)

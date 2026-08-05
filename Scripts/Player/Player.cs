@@ -31,6 +31,7 @@ public partial class Player : CharacterBody3D {
 
     public override void _Ready() {
 
+        RayCast.AddException(this);
         GameManager = GameManager.Instance;
         GameManager.Player = this;
         Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -42,7 +43,14 @@ public partial class Player : CharacterBody3D {
         RayCast.ForceRaycastUpdate();
         if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i && i.IsInteractable) {
 
-            if (RayCast.GetCollider() != Interactable) {
+            if (i != Interactable) {
+
+                if (Interactable is not null) {
+
+                    Interactable.HideInteract();
+                    Interactable.Uninteract();
+                
+                }
 
                 Interactable = i;
                 Interactable.ShowInteract();
@@ -141,7 +149,7 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        else if (Interacting && (@event.IsActionReleased(InputMap.Interact))) {
+        else if (@event.IsActionReleased(InputMap.Interact) && Interacting) {
 
             Interacting = false;
 
