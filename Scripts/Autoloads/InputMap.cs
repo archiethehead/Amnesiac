@@ -9,6 +9,7 @@ public static class InputMap {
     public static StringName Backward = new StringName("S");
     public static StringName Right = new StringName("D");
     public static StringName Jump = new StringName("Spacebar");
+    public static StringName SpeedUp = new StringName("Left Shift");
 
     // Action
     public static StringName Interact = new StringName("E");

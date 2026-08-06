@@ -3,9 +3,9 @@ using System;
 
 public partial class Player : CharacterBody3D {
 
-    private const float Speed = 5.0f;
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
+    private float Speed = 5.0f;
     private bool Interacting = false;
     private bool NoClip = false;
     private ToolBase EquippedTool = null;
@@ -85,6 +85,18 @@ public partial class Player : CharacterBody3D {
 
         }
 
+        if (Input.IsActionJustPressed(InputMap.SpeedUp)) {
+
+            Speed *= 2.0f;
+
+        }
+
+        else if (Input.IsActionJustReleased(InputMap.SpeedUp)) {
+
+            Speed /= 2.0f;
+        
+        }
+
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -105,7 +117,7 @@ public partial class Player : CharacterBody3D {
             Vector3 Right = Camera.GlobalTransform.Basis.X;
             Vector3 Direction = (Right * inputDir.X + Forward * inputDir.Y).Normalized();
 
-            this.GlobalPosition += (Direction * 10.0f) * (float)delta;
+            this.GlobalPosition += (Direction * (Speed * 2.0f)) * (float)delta;
             return;
 
         }
