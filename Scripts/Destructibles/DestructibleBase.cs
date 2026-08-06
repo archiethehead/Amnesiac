@@ -1,11 +1,13 @@
 using Godot;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 public partial class DestructibleBase : Node3D, Hitable {
 
     [Export] Node3D ShatteredMesh = null;
-    [Export] MeshInstance3D Mesh = null;
     [Export] CollisionShape3D Collider = null;
-    [Export] MeshInstance3D ShatteredMeshPiece = null;
+    List<MeshInstance3D> ShatteredMeshArray = [];
     Material MeshMaterial = null;
     private bool IsShattered = false;
     private float Timer = 0.0f;
@@ -23,19 +25,20 @@ public partial class DestructibleBase : Node3D, Hitable {
 
         }
 
-        if (Timer > 3.0f && MeshMaterial is BaseMaterial3D BaseMeshMaterial3D) {
+        if (Timer > 3.0f) {
 
-            BaseMeshMaterial3D.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
-            Color NewTransparency = BaseMeshMaterial3D.AlbedoColor;
-            NewTransparency.A -= TransparencyRate * (float)delta;
-            NewTransparency.A = Mathf.Clamp(NewTransparency.A, 0.0f, 1.0f);
-            BaseMeshMaterial3D.AlbedoColor = NewTransparency;
+            foreach (GeometryInstance3D Node in ShatteredMeshArray) {
 
-            if (NewTransparency.A == 0.0f || Timer == 10.0f) {
+                Node.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
+                Node.Transparency += TransparencyRate * (float)delta;
+            
+            }
 
-                ShatteredMesh.QueueFree();
+            if (ShatteredMeshArray[0].Transparency >= 1.0f) {
+
                 this.QueueFree();
-
+                ShatteredMesh.QueueFree();
+            
             }
 
         }
@@ -52,15 +55,22 @@ public partial class DestructibleBase : Node3D, Hitable {
         // |
         // V
 
-        if (ShatteredMesh is null || ShatteredMeshPiece is null) {
+        if (ShatteredMesh is null) {
 
             this.QueueFree();
-            GD.PrintErr("Destructible ShatteredMesh or ShatteredMeshPiece not set :(");
+            GD.PrintErr("Destructible ShatteredMesh not set :(");
             return;
 
         }
 
-        MeshMaterial = ShatteredMeshPiece.GetActiveMaterial(0);
+        Godot.Collections.Array<Node> NodeArray = ShatteredMesh.GetChildren();
+
+        foreach (Node node in NodeArray) {
+            
+            ShatteredMeshArray.Add((MeshInstance3D)node.GetChild(1));
+        
+        }
+
         ShatteredMesh.ProcessMode = ProcessModeEnum.Disabled;
 
     }
