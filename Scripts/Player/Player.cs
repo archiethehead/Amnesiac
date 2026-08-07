@@ -6,9 +6,15 @@ public partial class Player : CharacterBody3D {
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
+    private const float StaminaLossRate = 0.2f;
+    private const float StaminaGainRate = StaminaLossRate / 2.0f;
+    private float Stamina = 1.0f;
+    private float StaminaCooldown = 1.0f;
     private float Speed = ConstSpeed;
     private bool Interacting = false;
     private bool NoClip = false;
+    private bool IsRunning = false;
+    private bool IsExhausted = false;
     private ToolBase EquippedTool = null;
     private Interactable Interactable;
 
@@ -40,6 +46,37 @@ public partial class Player : CharacterBody3D {
     }
 
     public override void _Process(double delta) {
+
+        if (!IsExhausted) {
+
+            switch (IsRunning) {
+
+                case true:
+                    Stamina -= StaminaLossRate * (float)delta;
+                    break;
+
+                case false:
+                    Stamina += StaminaGainRate * (float)delta;
+                    break;
+
+            }
+
+            Stamina = Mathf.Clamp(Stamina, 0.0f, 1.0f);
+
+        }
+
+        else {
+
+            StaminaCooldown -= 1.0f * (float)delta;
+
+            if (StaminaCooldown <= 0.0f) {
+
+                StaminaCooldown = 1.0f;
+                IsExhausted = false;
+            
+            }
+
+        }
 
         RayCast.ForceRaycastUpdate();
         if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i && i.IsInteractable) {
@@ -89,16 +126,24 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        if (Input.IsActionPressed(InputMap.SpeedUp)) {
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
 
             Speed = ConstSpeed * 2;
+            IsRunning = true;
+
+            if (Stamina <= 0.0f) { 
+            
+                IsExhausted = true;
+            
+            }
 
         }
 
         else {
 
             Speed = ConstSpeed;
-        
+            IsRunning = false;
+
         }
 
     }
