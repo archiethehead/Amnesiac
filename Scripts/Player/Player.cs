@@ -5,7 +5,8 @@ public partial class Player : CharacterBody3D {
 
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
-    private float Speed = 5.0f;
+    private const float ConstSpeed = 5.0f;
+    private float Speed = ConstSpeed;
     private bool Interacting = false;
     private bool NoClip = false;
     private ToolBase EquippedTool = null;
@@ -68,32 +69,35 @@ public partial class Player : CharacterBody3D {
 
         }
 
+        if (Throwing) {
 
-        if (Throwing && ThrowForce < 60.0f) {
+            if (ThrowForce < 60.0f) {
 
-            ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
-            Arc += (float)((MaxArc / TimeToMax) * delta);
-            Torque += (float)((MaxTorque / TimeToMax) * delta);
+                ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
+                Arc += (float)((MaxArc / TimeToMax) * delta);
+                Torque += (float)((MaxTorque / TimeToMax) * delta);
 
-        }
+            }
 
-        else if (Throwing && ThrowForce > 60.0f) {
+            else if (ThrowForce > 60.0f) {
 
-            Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
-            Mathf.Clamp(Arc, 0.0f, MaxArc);
-            Mathf.Clamp(Torque, 0.0f, MaxTorque);
+                Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
+                Mathf.Clamp(Arc, 0.0f, MaxArc);
+                Mathf.Clamp(Torque, 0.0f, MaxTorque);
 
-        }
-
-        if (Input.IsActionJustPressed(InputMap.SpeedUp)) {
-
-            Speed *= 2.0f;
+            }
 
         }
 
-        else if (Input.IsActionJustReleased(InputMap.SpeedUp)) {
+        if (Input.IsActionPressed(InputMap.SpeedUp)) {
 
-            Speed /= 2.0f;
+            Speed = ConstSpeed * 2;
+
+        }
+
+        else {
+
+            Speed = ConstSpeed;
         
         }
 
