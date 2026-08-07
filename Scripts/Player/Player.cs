@@ -11,7 +11,7 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float StaminaLossRate = 0.2f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
     private const float FallDamageMultiplier = 20.0f;
-    private const float FallDamageThreshold = FallDamageMultiplier * 1.0f; // <--- The number of seconds
+    private const float FallDamageThreshold = FallDamageMultiplier * 1.5f; // <--- The number of seconds
                                                                            // until fall damage applies.
 
     // Gameplay Stats
@@ -201,6 +201,11 @@ public partial class Player : CharacterBody3D, Hitable {
         if (!IsOnFloor()) {
 
             velocity += GetGravity() * (float)delta;
+
+        }
+
+        if (velocity.Y < 0.0f) {
+
             Falling = true;
             FallDamage += FallDamageMultiplier * (float)delta;
 
