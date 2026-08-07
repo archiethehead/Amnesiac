@@ -1,38 +1,38 @@
 using Godot;
 using System;
 
-public partial class EnemyAI : CharacterBody3D
-{
-	private const float Speed = 3.0f;
-    private const float Damage = 30.0f;
-    private const float JumpVelocity = 6.0f;
-    private const float IdleMaxTime = 1.5f;
-    private float IdleTimer = 0.0f;
+public partial class PathfindingAI : CharacterBody3D {
 
-    private enum EnemyState {
+    protected virtual float Speed { get; set; } = 3.0f;
+    protected virtual float JumpVelocity { get; set; } = 6.0f;
+    protected virtual float ActionCooldownTimer { get; set; } = 1.5f;
+    private float ActionTimer = 0.0f;
+
+    protected enum EnemyState {
     
         Idle,
+        Cooldown,
         WaitingToMove,
         Moving
     
     }
-    private EnemyState State = EnemyState.Idle;
-    [Export] public Node3D Target;
-    [Export] private NavigationAgent3D Navigator = null;
+
+    protected EnemyState State = EnemyState.Idle;
+    [Export] protected Node3D Target;
+    [Export] protected NavigationAgent3D Navigator = null;
 
 
 	public override void _PhysicsProcess(double delta)
 	{
 
-		if (!IsOnFloor())
-		{
-			Velocity += GetGravity() * (float)delta;
-		}
-
         switch (State) { 
         
             case EnemyState.Idle:
                 Idle();
+                break;
+
+            case EnemyState.Cooldown:
+                ActionCooldown();
                 break;
 
             case EnemyState.WaitingToMove:
@@ -46,32 +46,45 @@ public partial class EnemyAI : CharacterBody3D
 
         }
 
-		MoveAndSlide();
+
+        if (!IsOnFloor()) {
+            Velocity += GetGravity() * (float)delta;
+        }
+
+
+        MoveAndSlide();
 	}
 
     private void Idle() {
 
-        Velocity = Vector3.Zero;
-        
-        if (Target is not null) {
-        
-            IdleTimer = IdleMaxTime;
-            State = EnemyState.WaitingToMove;
-        
-        }
+        ActionCooldown();
+
 
     }
 
     private void WaitingToMove(float delta) {
 
-        IdleTimer -= 1.0f * delta;
+        ActionTimer -= 1.0f * delta;
 
-        if (IdleTimer <= 0.0f) {
+        if (ActionTimer <= 0.0f) {
 
             State = EnemyState.Moving;
         
         }
     
+    }
+
+    private void ActionCooldown() {
+
+        Velocity = Vector3.Zero;
+
+        if (Target is not null) {
+
+            ActionTimer = ActionCooldownTimer;
+            State = EnemyState.WaitingToMove;
+
+        }
+
     }
 
     private void Moving() {
@@ -93,22 +106,13 @@ public partial class EnemyAI : CharacterBody3D
 
     }
 
+    protected virtual void TakeAction() { }
+
     public void TargetReached() {
 
-        if (Target is Hitable h) {
+        TakeAction();
+        State = EnemyState.Cooldown;
 
-            h.Hit(Damage);
-
-            if (h.IsDestroyed) {
-
-                Target = null;
-            
-            }
-
-        }
-
-        State = EnemyState.Idle;
-    
     }
 
 }

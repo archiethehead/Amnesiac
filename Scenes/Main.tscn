@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dj3pyf3swis54" path="res://Objects/Tools/LeadPipe.tscn" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://8bi3vfif35hl" path="res://Objects/Destructibles/Vase.tscn" id="10_bmxlf"]
-[ext_resource type="PackedScene" uid="uid://bswu3c3rq50fu" path="res://Objects/AI/EnemyAI.tscn" id="11_4kpch"]
+[ext_resource type="PackedScene" uid="uid://bswu3c3rq50fu" path="res://Objects/AI/PathfindingAI.tscn" id="11_4kpch"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fum83"]
 

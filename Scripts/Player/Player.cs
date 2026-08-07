@@ -218,11 +218,11 @@ public partial class Player : CharacterBody3D, Hitable {
             if (FallDamage >= FallDamageThreshold) {
 
                 Hit(FallDamage);
-            
+
             }
 
             FallDamage = 0.0f;
-        
+
         }
 
         // Handle Jump.
