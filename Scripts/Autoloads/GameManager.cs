@@ -10,6 +10,7 @@ public partial class GameManager : Node3D {
     public Reactor Reactor { get; set; } = null;
     public PauseMenu PauseMenu { get; set; } = null;
     public Console Console { get; set; } = null;
+    public Weather Weather { get; set; } = null;
     public Input.MouseModeEnum MouseMode { get; set; }
 
     public override void _Ready() {
@@ -73,6 +74,12 @@ public partial class GameManager : Node3D {
         Object.LookAt(Player.GlobalTransform.Origin, Vector3.Up, true);
         Object.GlobalRotation = new Vector3(0.0f, Object.GlobalRotation.Y, Object.GlobalRotation.Z);
 
+    }
+
+    public void ChangeWeather(Weather.WeatherTypeEnum NewWeatherType) {
+
+        Weather.UpdateWeather(NewWeatherType);
+    
     }
 
     public void OpenConsole() {

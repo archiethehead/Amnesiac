@@ -1,0 +1,50 @@
+using Godot;
+using System;
+
+public partial class Weather : WorldEnvironment
+{
+
+    [Export] GpuParticles3D Rain = null;
+    private GameManager GameManager = null;
+
+    public enum WeatherTypeEnum { 
+        
+        Raining = 1,
+        Sunny = 2
+
+    }
+
+    private WeatherTypeEnum WeatherType = WeatherTypeEnum.Raining;
+
+	public override void _Ready()
+	{
+
+        GameManager = GameManager.Instance;
+        GameManager.Weather = this;
+
+	}
+
+    public void UpdateWeather(WeatherTypeEnum Type) {
+
+        WeatherType = Type;
+
+        switch (WeatherType) { 
+        
+            case WeatherTypeEnum.Raining:
+                Rain.Visible = true;
+                this.Environment.VolumetricFogEnabled = true;
+                break;
+
+            case WeatherTypeEnum.Sunny:
+                Rain.Visible = false;
+                this.Environment.VolumetricFogEnabled = false;
+                break;
+        
+        }
+
+    
+    }
+
+
+
+}

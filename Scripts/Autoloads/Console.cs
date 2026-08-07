@@ -46,6 +46,7 @@ public partial class Console : CanvasLayer {
         CommandDict.Add("exit", new Command("Kills the master process, exiting the game", GameManager.Exit));
         CommandDict.Add("inst", new Command("<-c Category, -n Name> [-q Quantity] Instansiates an object into the scene.", Inst));
         CommandDict.Add("noclip", new Command("Toggles no-clip.", NoClip));
+        CommandDict.Add("setweather", new Command("<-t Type> Changes the weather to the specified type", ChangeWeather));
 
     }
 
@@ -238,7 +239,7 @@ public partial class Console : CanvasLayer {
 
             }
 
-        done:;
+            done:;
 
         }
 
@@ -286,6 +287,71 @@ public partial class Console : CanvasLayer {
             }
 
         }
+
+    }
+
+    private void ChangeWeather() {
+
+        int Opt;
+        Weather.WeatherTypeEnum Type = 0;
+        string StringType = null;
+
+        while ((Opt = GetOpt.Parse(Args, "t:v")) != -1) {
+
+            switch ((char)Opt) {
+
+                case 't':
+                    StringType = GetOpt.OptArg;
+
+                    switch (StringType.ToLower()) {
+
+                        case "rain":
+                            Type = Weather.WeatherTypeEnum.Raining;
+                            goto weather_selected;
+
+                        case "sunny":
+                            Type = Weather.WeatherTypeEnum.Sunny;
+                            goto weather_selected;
+
+                        default:
+                            Error = true;
+                            ConsoleOut("{0} is not a valid weather argument", StringType);
+                            return;
+
+                    }
+
+                weather_selected:;
+
+                    goto done;
+
+                case 'v':
+                    Verbose = true;
+                    goto done;
+
+                case '?':
+
+                    Error = true;
+                    ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
+                    goto done;
+
+            }
+
+        done:;
+
+        }
+
+
+        if (Type == 0) {
+
+            Error = true;
+            ConsoleOut("Weather type not specified");
+            return;
+        
+        }
+
+        GameManager.ChangeWeather(Type);
+
+        if (Verbose) ConsoleOut("Weather set to {0}", StringType);
 
     }
 

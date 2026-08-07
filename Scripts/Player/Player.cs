@@ -70,8 +70,6 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Process(double delta) {
 
-        GD.Print("Health: ", Health);
-
         if (!IsExhausted && !NoClip) {
 
             switch (IsRunning) {
