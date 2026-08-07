@@ -24,7 +24,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
     private const float DropCooldownRate = 1.0f;
     private float DropCooldown = 2.0f;
     public bool IsInteractable { get; protected set; } = true;
-    
+
     [Export] public MeshInstance3D MeshInstance { get; protected set; } = null;
     [Export] private CollisionShape3D Collider = null;
     public RayCast3D HitCast = null;
@@ -47,9 +47,9 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
                 IsDropped = false;
                 DropCooldown = DropCooldownRate;
-            
+
             }
-        
+
         }
 
     }

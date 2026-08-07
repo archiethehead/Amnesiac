@@ -9,12 +9,12 @@ public partial class PathfindingAI : CharacterBody3D {
     private float ActionTimer = 0.0f;
 
     protected enum EnemyState {
-    
+
         Idle,
         Cooldown,
         WaitingToMove,
         Moving
-    
+
     }
 
     protected EnemyState State = EnemyState.Idle;
@@ -22,11 +22,10 @@ public partial class PathfindingAI : CharacterBody3D {
     [Export] protected NavigationAgent3D Navigator = null;
 
 
-	public override void _PhysicsProcess(double delta)
-	{
+    public override void _PhysicsProcess(double delta) {
 
-        switch (State) { 
-        
+        switch (State) {
+
             case EnemyState.Idle:
                 Idle();
                 break;
@@ -53,7 +52,7 @@ public partial class PathfindingAI : CharacterBody3D {
 
 
         MoveAndSlide();
-	}
+    }
 
     private void Idle() {
 
@@ -69,9 +68,9 @@ public partial class PathfindingAI : CharacterBody3D {
         if (ActionTimer <= 0.0f) {
 
             State = EnemyState.Moving;
-        
+
         }
-    
+
     }
 
     private void ActionCooldown() {
@@ -94,7 +93,7 @@ public partial class PathfindingAI : CharacterBody3D {
             Vector3 velocity = Velocity;
             velocity.Y = JumpVelocity;
             Velocity = velocity;
-        
+
         }
 
         Navigator.TargetPosition = Target.GlobalTransform.Origin;

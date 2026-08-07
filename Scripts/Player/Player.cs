@@ -46,7 +46,7 @@ public partial class Player : CharacterBody3D, Hitable {
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
-    [Export] private Marker3D ToolPos = null;   
+    [Export] private Marker3D ToolPos = null;
     [Export] private CanvasLayer HUD = null;
     [Export] private CollisionShape3D Collider = null;
 
@@ -98,7 +98,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
                 StaminaCooldown = 1.0f;
                 IsExhausted = false;
-            
+
             }
 
         }
@@ -132,7 +132,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
                     Interactable.HideInteract();
                     Interactable.Uninteract();
-                
+
                 }
 
                 Interactable = i;
@@ -229,7 +229,7 @@ public partial class Player : CharacterBody3D, Hitable {
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
             velocity.Y = JumpVelocity;
         }
-                
+
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
             velocity.X = direction.X * Speed;
@@ -239,7 +239,7 @@ public partial class Player : CharacterBody3D, Hitable {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
-        
+
 
         Velocity = velocity;
 
@@ -342,7 +342,7 @@ public partial class Player : CharacterBody3D, Hitable {
     public void Pause() {
 
         HUD.Visible = false;
-    
+
     }
 
     public void Unpause() {
@@ -373,7 +373,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             GameManager.Drop(EquippedTool);
             EquippedTool = null;
-        
+
         }
 
         CameraPhysics.Freeze = false;
@@ -387,7 +387,7 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public void Hit(float damage) {
-        
+
         Health -= damage;
         Health = Mathf.Clamp(Health, 0.0f, 100.0f);
 
@@ -395,7 +395,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             IsDestroyed = true;
             Die();
-        
+
         }
 
     }

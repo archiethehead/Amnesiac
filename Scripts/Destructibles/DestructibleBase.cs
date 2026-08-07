@@ -32,14 +32,14 @@ public partial class DestructibleBase : Node3D, Hitable {
 
                 Node.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
                 Node.Transparency += TransparencyRate * (float)delta;
-            
+
             }
 
             if (ShatteredMeshArray[0].Transparency >= 1.0f) {
 
                 this.QueueFree();
                 ShatteredMesh.QueueFree();
-            
+
             }
 
         }
@@ -67,9 +67,9 @@ public partial class DestructibleBase : Node3D, Hitable {
         Godot.Collections.Array<Node> NodeArray = ShatteredMesh.GetChildren();
 
         foreach (Node node in NodeArray) {
-            
+
             ShatteredMeshArray.Add((MeshInstance3D)node.GetChild(1));
-        
+
         }
 
         ShatteredMesh.ProcessMode = ProcessModeEnum.Disabled;
