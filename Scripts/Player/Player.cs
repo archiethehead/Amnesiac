@@ -31,23 +31,23 @@ public partial class Player : CharacterBody3D {
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
-    [Export] private Marker3D ToolPos = null;
+    [Export] private Marker3D ToolPos = null;   
     [Export] private CanvasLayer HUD = null;
     [Export] private CollisionShape3D Collider = null;
 
 
     public override void _Ready() {
 
-        RayCast.AddException(this);
         GameManager = GameManager.Instance;
         GameManager.Player = this;
+        RayCast.AddException(this);
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
     }
 
     public override void _Process(double delta) {
 
-        if (!IsExhausted) {
+        if (!IsExhausted && !NoClip) {
 
             switch (IsRunning) {
 
@@ -75,6 +75,26 @@ public partial class Player : CharacterBody3D {
                 IsExhausted = false;
             
             }
+
+        }
+
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
+
+            Speed = ConstSpeed * 2;
+            IsRunning = true;
+
+            if (Stamina <= 0.0f) {
+
+                IsExhausted = true;
+
+            }
+
+        }
+
+        else {
+
+            Speed = ConstSpeed;
+            IsRunning = false;
 
         }
 
@@ -126,26 +146,6 @@ public partial class Player : CharacterBody3D {
 
         }
 
-        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
-
-            Speed = ConstSpeed * 2;
-            IsRunning = true;
-
-            if (Stamina <= 0.0f) { 
-            
-                IsExhausted = true;
-            
-            }
-
-        }
-
-        else {
-
-            Speed = ConstSpeed;
-            IsRunning = false;
-
-        }
-
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -180,11 +180,9 @@ public partial class Player : CharacterBody3D {
 
         // Handle Jump.
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
-
             velocity.Y = JumpVelocity;
-
         }
-
+                
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
             velocity.X = direction.X * Speed;
@@ -194,6 +192,7 @@ public partial class Player : CharacterBody3D {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
+        
 
         Velocity = velocity;
 

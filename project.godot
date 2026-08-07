@@ -35,6 +35,10 @@ project/assembly_name="Amnesiac"
 
 enabled=PackedStringArray("res://addons/func_godot/plugin.cfg", "res://addons/voronoishatter/plugin.cfg")
 
+[global_group]
+
+PathNodes=""
+
 [input]
 
 W={
