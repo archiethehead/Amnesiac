@@ -4,6 +4,7 @@ using System;
 public partial class EnemyAI : CharacterBody3D
 {
 	private const float Speed = 3.0f;
+    private const float Damage = 30.0f;
     private const float JumpVelocity = 6.0f;
     private const float IdleMaxTime = 1.5f;
     private float IdleTimer = 0.0f;
@@ -51,9 +52,14 @@ public partial class EnemyAI : CharacterBody3D
     private void Idle() {
 
         Velocity = Vector3.Zero;
-        IdleTimer = IdleMaxTime;
-        State = EnemyState.WaitingToMove;
-    
+        
+        if (Target is not null) {
+        
+            IdleTimer = IdleMaxTime;
+            State = EnemyState.WaitingToMove;
+        
+        }
+
     }
 
     private void WaitingToMove(float delta) {
@@ -88,6 +94,18 @@ public partial class EnemyAI : CharacterBody3D
     }
 
     public void TargetReached() {
+
+        if (Target is Hitable h) {
+
+            h.Hit(Damage);
+
+            if (h.IsDestroyed) {
+
+                Target = null;
+            
+            }
+
+        }
 
         GD.Print("Target reached");
         State = EnemyState.Idle;

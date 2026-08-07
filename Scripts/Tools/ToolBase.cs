@@ -9,8 +9,9 @@ public enum ToolBitMask {
 public interface Hitable {
 
     public bool IsHittable { get; }
+    public bool IsDestroyed { get; }
     public float BreakSpeed { get; }
-    public void Hit();
+    public void Hit(float damage);
 
 }
 
@@ -88,7 +89,7 @@ public partial class ToolBase : RigidBody3D, Interactable {
 
             if (Speed >= h.BreakSpeed) {
 
-                h.Hit();
+                h.Hit(0.0f);
 
             }
 

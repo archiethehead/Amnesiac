@@ -174,7 +174,7 @@ shadow_enabled = true
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 12.634312, 1.9788463, -16.185823)
 
 [node name="Vase" parent="." unique_id=1817050354 instance=ExtResource("10_bmxlf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.829535, 1, -20.676474)
 collision_layer = 1
 collision_mask = 1
 

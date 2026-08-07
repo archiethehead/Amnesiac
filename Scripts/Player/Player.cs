@@ -1,13 +1,14 @@
 using Godot;
 using System;
 
-public partial class Player : CharacterBody3D {
+public partial class Player : CharacterBody3D, Hitable {
 
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 0.2f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
+    private float Health = 100.0f;
     private float Stamina = 1.0f;
     private float StaminaCooldown = 1.0f;
     private float Speed = ConstSpeed;
@@ -35,6 +36,13 @@ public partial class Player : CharacterBody3D {
     [Export] private CanvasLayer HUD = null;
     [Export] private CollisionShape3D Collider = null;
 
+    // Camera Physics
+    [Export] RigidBody3D CameraPhysics = null;
+    [Export] CollisionShape3D CameraCollider = null;
+
+    public bool IsHittable { get; protected set; } = true;
+    public bool IsDestroyed { get; protected set; } = false;
+    public float BreakSpeed { get; protected set; } = 5.0f;
 
     public override void _Ready() {
 
@@ -326,4 +334,27 @@ public partial class Player : CharacterBody3D {
 
     }
 
+    public void Die() {
+
+        CameraPhysics.Freeze = false;
+        CameraCollider.Disabled = false;
+        CameraPhysics.Reparent(GetTree().Root);
+        Collider.Disabled = true;
+        this.ProcessMode = ProcessModeEnum.Disabled;
+
+    }
+
+    void Hitable.Hit(float damage) {
+        
+        Health -= damage;
+        Health = Mathf.Clamp(Health, 0.0f, 100.0f);
+
+        if (Health == 0.0f) {
+
+            IsDestroyed = true;
+            Die();
+        
+        }
+
+    }
 }

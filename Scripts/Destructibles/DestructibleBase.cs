@@ -15,6 +15,7 @@ public partial class DestructibleBase : Node3D, Hitable {
                                                         // for the fadeout to finish (or be capped).
 
     public bool IsHittable { get; protected set; } = true;
+    public bool IsDestroyed { get; protected set; } = false;
     [Export] public float BreakSpeed { get; protected set; } = 0.0f;
 
     public override void _Process(double delta) {
@@ -90,9 +91,10 @@ public partial class DestructibleBase : Node3D, Hitable {
 
     }
 
-    void Hitable.Hit() {
+    void Hitable.Hit(float damage) {
 
         Shatter();
+        IsDestroyed = true;
         IsHittable = false;
 
     }
