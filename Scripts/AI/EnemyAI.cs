@@ -107,7 +107,6 @@ public partial class EnemyAI : CharacterBody3D
 
         }
 
-        GD.Print("Target reached");
         State = EnemyState.Idle;
     
     }

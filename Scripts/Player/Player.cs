@@ -3,19 +3,32 @@ using System;
 
 public partial class Player : CharacterBody3D, Hitable {
 
+
+    // Constants
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 0.2f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
+    private const float FallDamageMultiplier = 20.0f;
+    private const float FallDamageThreshold = FallDamageMultiplier * 1.0f; // <--- The number of seconds
+                                                                           // until fall damage applies.
+
+    // Gameplay Stats
     private float Health = 100.0f;
     private float Stamina = 1.0f;
     private float StaminaCooldown = 1.0f;
     private float Speed = ConstSpeed;
+    private float FallDamage = 0.0f;
+
+    // Bools
     private bool Interacting = false;
     private bool NoClip = false;
+    private bool Falling = false;
     private bool IsRunning = false;
     private bool IsExhausted = false;
+
+    // Tools
     private ToolBase EquippedTool = null;
     private Interactable Interactable;
 
@@ -29,6 +42,7 @@ public partial class Player : CharacterBody3D, Hitable {
     private float Torque = 0.0f;
     private bool Throwing = false;
 
+    // Exports
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
@@ -37,9 +51,10 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export] private CollisionShape3D Collider = null;
 
     // Camera Physics
-    [Export] RigidBody3D CameraPhysics = null;
-    [Export] CollisionShape3D CameraCollider = null;
+    [Export] private RigidBody3D CameraPhysics = null;
+    [Export] private CollisionShape3D CameraCollider = null;
 
+    // Interfaces
     public bool IsHittable { get; protected set; } = true;
     public bool IsDestroyed { get; protected set; } = false;
     public float BreakSpeed { get; protected set; } = 5.0f;
@@ -54,6 +69,8 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
+
+        GD.Print("Health: ", Health);
 
         if (!IsExhausted && !NoClip) {
 
@@ -181,9 +198,26 @@ public partial class Player : CharacterBody3D, Hitable {
 
         Vector3 velocity = Velocity;
 
-        // Add the gravity.
         if (!IsOnFloor()) {
+
             velocity += GetGravity() * (float)delta;
+            Falling = true;
+            FallDamage += FallDamageMultiplier * (float)delta;
+
+        }
+
+        else if (Falling) {
+
+            Falling = false;
+
+            if (FallDamage >= FallDamageThreshold) {
+
+                Hit(FallDamage);
+            
+            }
+
+            FallDamage = 0.0f;
+        
         }
 
         // Handle Jump.
@@ -226,19 +260,6 @@ public partial class Player : CharacterBody3D, Hitable {
                 Interactable.Uninteract();
 
             }
-
-        }
-
-        else if (@event.IsActionPressed(InputMap.Pause)) {
-
-            HUD.Visible = false;
-            GameManager.Pause();
-
-        }
-
-        else if (@event.IsActionPressed(InputMap.Command)) {
-
-            GameManager.OpenConsole();
 
         }
 
@@ -312,6 +333,13 @@ public partial class Player : CharacterBody3D, Hitable {
 
     }
 
+
+    public void Pause() {
+
+        HUD.Visible = false;
+    
+    }
+
     public void Unpause() {
 
         HUD.Visible = true;
@@ -336,15 +364,24 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public void Die() {
 
+        if (EquippedTool is not null) {
+
+            GameManager.Drop(EquippedTool);
+            EquippedTool = null;
+        
+        }
+
         CameraPhysics.Freeze = false;
         CameraCollider.Disabled = false;
         CameraPhysics.Reparent(GetTree().Root);
         Collider.Disabled = true;
+        this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
+        this.SetPhysicsProcess(false);
 
     }
 
-    void Hitable.Hit(float damage) {
+    public void Hit(float damage) {
         
         Health -= damage;
         Health = Mathf.Clamp(Health, 0.0f, 100.0f);

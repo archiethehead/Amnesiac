@@ -14,7 +14,27 @@ public partial class GameManager : Node3D {
 
     public override void _Ready() {
 
+        //DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
         Instance = this;
+
+    }
+
+    public override void _Input(InputEvent @event) {
+
+
+
+        if (@event.IsActionPressed(InputMap.Pause)) {
+
+            Player.Pause();
+            Pause();
+
+        }
+
+        else if (@event.IsActionPressed(InputMap.Command)) {
+
+            OpenConsole();
+
+        }
 
     }
 
