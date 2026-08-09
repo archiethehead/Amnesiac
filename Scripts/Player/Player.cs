@@ -214,7 +214,6 @@ public partial class Player : CharacterBody3D, Hitable {
         if (velocity.Y < 0.0f) {
 
             Falling = true;
-            PreviousVelocity = velocity;
             FallDamage += FallDamageMultiplier * (float)delta;
 
         }
@@ -232,6 +231,8 @@ public partial class Player : CharacterBody3D, Hitable {
             FallDamage = 0.0f;
 
         }
+
+        PreviousVelocity = velocity;
 
         // Handle Jump.
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
@@ -380,6 +381,7 @@ public partial class Player : CharacterBody3D, Hitable {
         if (EquippedTool is not null) {
 
             GameManager.Drop(EquippedTool);
+            EquippedTool.LinearVelocity = PreviousVelocity;
             EquippedTool = null;
 
         }
