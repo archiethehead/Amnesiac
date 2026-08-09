@@ -38,6 +38,7 @@ enabled=PackedStringArray("res://addons/func_godot/plugin.cfg", "res://addons/vo
 [global_group]
 
 PathNodes=""
+Player=""
 
 [input]
 
