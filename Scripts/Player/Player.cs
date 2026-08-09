@@ -10,8 +10,8 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
-    private const float FallDamageMultiplier = 20.0f;
-    private const float FallDamageThreshold = FallDamageMultiplier * 1.5f; // <--- The number of seconds
+    private const float FallDamageMultiplier = 40.0f;
+    private const float FallDamageThreshold = FallDamageMultiplier * 0.5f; // <--- The number of seconds
                                                                            // until fall damage applies.
 
     // Gameplay Stats
@@ -75,8 +75,6 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
-
-        PreviousVelocity = Velocity;
 
         if (!IsExhausted && !NoClip) {
 
@@ -216,6 +214,7 @@ public partial class Player : CharacterBody3D, Hitable {
         if (velocity.Y < 0.0f) {
 
             Falling = true;
+            PreviousVelocity = velocity;
             FallDamage += FallDamageMultiplier * (float)delta;
 
         }
@@ -388,11 +387,13 @@ public partial class Player : CharacterBody3D, Hitable {
         CameraPhysics.Freeze = false;
         CameraCollider.Disabled = false;
         CameraPhysics.Reparent(GetTree().Root);
-        CameraPhysics.ApplyCentralImpulse(PreviousVelocity);
+        CameraPhysics.LinearVelocity = PreviousVelocity;
+        GD.Print(PreviousVelocity);
         Collider.Disabled = true;
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
         this.SetPhysicsProcess(false);
+        Dead = true;
 
     }
 
