@@ -46,7 +46,7 @@ public partial class Console : CanvasLayer {
         CommandDict.Add("exit", new Command("Kills the master process, exiting the game", GameManager.Exit));
         CommandDict.Add("inst", new Command("<-c Category, -n Name> [-q Quantity] Instansiates an object into the scene.", Inst));
         CommandDict.Add("noclip", new Command("Toggles no-clip.", NoClip));
-        CommandDict.Add("setweather", new Command("<-t Type> Changes the weather to the specified type", ChangeWeather));
+        CommandDict.Add("setweather", new Command("<-r/-s> Changes the weather to the specified type", ChangeWeather));
         CommandDict.Add("setwindow", new Command("<-f/-w> Sets the window mode between fullscreen and windows", Screen));
 
     }
@@ -111,7 +111,7 @@ public partial class Console : CanvasLayer {
     public void ConsoleOn() {
 
         GameManager.MouseMode = Input.MouseMode;
-        Input.MouseMode = Input.MouseModeEnum.Confined;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
         Show();
         this.ProcessMode = ProcessModeEnum.Always;
         LineEdit.GrabFocus();
@@ -295,34 +295,24 @@ public partial class Console : CanvasLayer {
 
         int Opt;
         Weather.WeatherTypeEnum Type = 0;
+        bool Set = false;
         string StringType = null;
 
-        while ((Opt = GetOpt.Parse(Args, "t:v")) != -1) {
+        while ((Opt = GetOpt.Parse(Args, "rsv")) != -1) {
 
             switch ((char)Opt) {
 
-                case 't':
-                    StringType = GetOpt.OptArg;
 
-                    switch (StringType.ToLower()) {
+                case 'r':
+                    Type = Weather.WeatherTypeEnum.Raining;
+                    StringType = "rain";
+                    Set = true;
+                    goto done;
 
-                        case "rain":
-                            Type = Weather.WeatherTypeEnum.Raining;
-                            goto weather_selected;
-
-                        case "sunny":
-                            Type = Weather.WeatherTypeEnum.Sunny;
-                            goto weather_selected;
-
-                        default:
-                            Error = true;
-                            ConsoleOut("{0} is not a valid weather argument", StringType);
-                            return;
-
-                    }
-
-                weather_selected:;
-
+                case 's':
+                    Type = Weather.WeatherTypeEnum.Sunny;
+                    StringType = "sunny";
+                    Set = true;
                     goto done;
 
                 case 'v':
@@ -342,7 +332,7 @@ public partial class Console : CanvasLayer {
         }
 
 
-        if (Type == 0) {
+        if (!Set) {
 
             Error = true;
             ConsoleOut("Weather type not specified");

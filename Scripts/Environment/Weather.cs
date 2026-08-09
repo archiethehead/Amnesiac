@@ -9,8 +9,8 @@ public partial class Weather : WorldEnvironment
 
     public enum WeatherTypeEnum { 
         
-        Raining = 1,
-        Sunny = 2
+        Raining,
+        Sunny
 
     }
 
