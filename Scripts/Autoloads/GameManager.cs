@@ -100,6 +100,15 @@ public partial class GameManager : Node3D {
 
         GetTree().Paused = state;
 
+        if (state) {
+
+            Player.Pause();
+            return;
+        
+        }
+
+        Player.Unpause();
+
     }
 
     public void Pause() {

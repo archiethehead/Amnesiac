@@ -8,7 +8,7 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
-    private const float StaminaLossRate = 0.2f;
+    private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
     private const float FallDamageMultiplier = 20.0f;
     private const float FallDamageThreshold = FallDamageMultiplier * 1.5f; // <--- The number of seconds
@@ -16,10 +16,12 @@ public partial class Player : CharacterBody3D, Hitable {
 
     // Gameplay Stats
     private float Health = 100.0f;
-    private float Stamina = 1.0f;
+    private float Stamina = 100.0f;
     private float StaminaCooldown = 1.0f;
     private float Speed = ConstSpeed;
     private float FallDamage = 0.0f;
+    private bool Dead = false;
+    private Vector3 PreviousVelocity;
 
     // Bools
     private bool Interacting = false;
@@ -49,6 +51,8 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export] private Marker3D ToolPos = null;
     [Export] private CanvasLayer HUD = null;
     [Export] private CollisionShape3D Collider = null;
+    [Export] private Label HealthLabel = null;
+    [Export] private Label StaminaLabel = null;
 
     // Camera Physics
     [Export] private RigidBody3D CameraPhysics = null;
@@ -61,6 +65,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Ready() {
 
+        HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
+        StaminaLabel.Text = string.Format("Stamina: {0}", (Mathf.Floor(Stamina)).ToString());
         GameManager = GameManager.Instance;
         GameManager.Player = this;
         RayCast.AddException(this);
@@ -69,6 +75,8 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
+
+        PreviousVelocity = Velocity;
 
         if (!IsExhausted && !NoClip) {
 
@@ -84,7 +92,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
             }
 
-            Stamina = Mathf.Clamp(Stamina, 0.0f, 1.0f);
+            Stamina = Mathf.Clamp(Stamina, 0.0f, 100.0f);
+            StaminaLabel.Text = string.Format("Stamina: {0}", Mathf.Floor(Stamina).ToString());
 
         }
 
@@ -172,6 +181,8 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _PhysicsProcess(double delta) {
+
+        if (Dead) return;
 
         Vector2 inputDir = Input.GetVector(
 
@@ -377,6 +388,7 @@ public partial class Player : CharacterBody3D, Hitable {
         CameraPhysics.Freeze = false;
         CameraCollider.Disabled = false;
         CameraPhysics.Reparent(GetTree().Root);
+        CameraPhysics.ApplyCentralImpulse(PreviousVelocity);
         Collider.Disabled = true;
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
@@ -386,8 +398,12 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public void Hit(float damage) {
 
+
         Health -= damage;
         Health = Mathf.Clamp(Health, 0.0f, 100.0f);
+        Health = Mathf.Floor(Health);
+
+        HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
 
         if (Health == 0.0f) {
 

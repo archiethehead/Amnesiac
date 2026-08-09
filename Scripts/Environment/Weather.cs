@@ -14,7 +14,7 @@ public partial class Weather : WorldEnvironment
 
     }
 
-    private WeatherTypeEnum WeatherType = WeatherTypeEnum.Raining;
+    private WeatherTypeEnum WeatherType = WeatherTypeEnum.Sunny;
 
 	public override void _Ready()
 	{
