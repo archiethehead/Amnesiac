@@ -47,6 +47,7 @@ public partial class Console : CanvasLayer {
         CommandDict.Add("inst", new Command("<-c Category, -n Name> [-q Quantity] Instansiates an object into the scene.", Inst));
         CommandDict.Add("noclip", new Command("Toggles no-clip.", NoClip));
         CommandDict.Add("setweather", new Command("<-t Type> Changes the weather to the specified type", ChangeWeather));
+        CommandDict.Add("setwindow", new Command("<-f/-w> Sets the window mode between fullscreen and windows", Screen));
 
     }
 
@@ -172,7 +173,7 @@ public partial class Console : CanvasLayer {
 
         for (int i = 0; i < KeyList.Length; i++) {
 
-            ConsoleOut("{0,-10} {1}", (KeyList[i] + ": "), CommandList[i].Description);
+            ConsoleOut("{0,-15} {1}", (KeyList[i] + ": "), CommandList[i].Description);
 
         }
 
@@ -239,7 +240,7 @@ public partial class Console : CanvasLayer {
 
             }
 
-            done:;
+        done:;
 
         }
 
@@ -346,12 +347,71 @@ public partial class Console : CanvasLayer {
             Error = true;
             ConsoleOut("Weather type not specified");
             return;
-        
+
         }
 
         GameManager.ChangeWeather(Type);
 
         if (Verbose) ConsoleOut("Weather set to {0}", StringType);
+
+    }
+
+    public void Screen() {
+
+        int Opt;
+        bool Fullscreen = false;
+        bool Set = false;
+
+        while ((Opt = GetOpt.Parse(Args, "fwv")) != -1) {
+
+            switch ((char)Opt) {
+
+                case 'f':
+                    Fullscreen = true;
+                    Set = true;
+                    goto done;
+
+                case 'w':
+                    Fullscreen = false;
+                    Set = true;
+                    goto done;
+
+                case 'v':
+                    Verbose = true;
+                    goto done;
+
+                case '?':
+                    Error = true;
+                    ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
+                    goto done;
+
+            }
+
+        done:;
+
+        }
+
+        if (!Set) {
+
+            Error = true;
+            ConsoleOut("Argument must be specified (-f/-w)");
+            return;
+        
+        }
+
+        switch (Fullscreen) {
+
+            case true:
+                if (Verbose) ConsoleOut("Window mode set to fullscreen");
+                GameManager.SetFullscreen(true);
+                break;
+
+            case false:
+                if (Verbose) ConsoleOut("Window mode set to windowed");
+                GameManager.SetFullscreen(false);
+                break;
+        
+        }
 
     }
 

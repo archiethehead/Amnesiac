@@ -15,7 +15,7 @@ public partial class GameManager : Node3D {
 
     public override void _Ready() {
 
-        //DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+        DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
         Instance = this;
 
     }
@@ -37,6 +37,23 @@ public partial class GameManager : Node3D {
 
         }
 
+    }
+
+    public void SetFullscreen(bool IsFullscreen) { 
+
+        switch (IsFullscreen) { 
+        
+            case true:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+                break;
+
+            case false:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+                break;
+
+
+        }
+    
     }
 
     public void PickUp(ToolBase Tool) {
