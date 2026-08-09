@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://dj3pyf3swis54" path="res://Objects/Tools/LeadPipe.tscn" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://8bi3vfif35hl" path="res://Objects/Destructibles/Vase.tscn" id="10_bmxlf"]
-[ext_resource type="PackedScene" uid="uid://bswu3c3rq50fu" path="res://Objects/AI/PathfindingAI.tscn" id="11_4kpch"]
 [ext_resource type="PackedScene" uid="uid://cti6k1rfa87bt" path="res://Objects/Level/EventTrigger.tscn" id="13_frkhe"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_tu013"]
@@ -151,10 +150,30 @@ points = PackedVector3Array(17, 7.5, -1.8846154, 17, 5.5, -1.8846154, 9.5, 7.5, 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_m4llh"]
 points = PackedVector3Array(17, 5, -1.8846154, 17, 3, -1.8846154, 9.5, 5, -1.8846154, 9.5, 3, -1.8846154, 17, 5, -3.6923077, 17, 3, -3.6923077, 9.5, 5, -3.6923077, 9.5, 3, -3.6923077)
 
-[node name="Root" type="Node3D" unique_id=2108868054]
+[sub_resource type="GDScript" id="GDScript_grg3l"]
+resource_name = "DeathTrigger"
+script/source = "extends EventTrigger
 
-[node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.095891, 13.108647, -2.743832)
+var is_dead: bool = false
+var revive_timer: float = 3.0
+
+func _process(delta: float) -> void:
+	
+	if (is_dead):
+			revive_timer -= delta
+			
+			if (revive_timer <= 0.0):
+				GameManager.RevivePlayer()	
+				is_dead = false
+				revive_timer = 3.0
+				self.free()
+
+func event() -> void:
+	GameManager.KillPlayer()
+	is_dead = true
+"
+
+[node name="Root" type="Node3D" unique_id=2108868054]
 
 [node name="Weather" parent="." unique_id=680873189 instance=ExtResource("2_4kpch")]
 
@@ -294,9 +313,9 @@ shape = SubResource("ConvexPolygonShape3D_5psol")
 [node name="entity_0_brush_35_collision_shape" type="CollisionShape3D" parent="Map Navigation/FuncGodotMap/entity_0_worldspawn" unique_id=1832305924]
 shape = SubResource("ConvexPolygonShape3D_m4llh")
 
-[node name="AI" parent="." unique_id=2071999940 node_paths=PackedStringArray("Target") instance=ExtResource("11_4kpch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.649688, 8.484484, -5.4644356)
-Target = NodePath("../Player")
-
-[node name="EventTrigger" parent="." unique_id=1921187601 instance=ExtResource("13_frkhe")]
+[node name="DeathTrigger" parent="." unique_id=1921187601 instance=ExtResource("13_frkhe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.430925, 1.9429568, -16.064915)
+script = SubResource("GDScript_grg3l")
+
+[node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.220648, 1.5, -8.932891)

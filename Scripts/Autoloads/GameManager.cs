@@ -15,7 +15,7 @@ public partial class GameManager : Node3D {
 
     public override void _Ready() {
 
-        DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+        SetFullscreen(false);
         Instance = this;
 
     }
@@ -96,6 +96,18 @@ public partial class GameManager : Node3D {
     public void ChangeWeather(Weather.WeatherTypeEnum NewWeatherType) {
 
         Weather.UpdateWeather(NewWeatherType);
+    
+    }
+
+    public void KillPlayer() {
+
+        Player.Die();
+    
+    }
+
+    public void RevivePlayer() {
+
+        Player.Undie();
     
     }
 

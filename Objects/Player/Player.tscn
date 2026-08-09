@@ -11,7 +11,7 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cac6a"]
 
-[node name="Player" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Camera", "RayCast", "ToolPos", "HUD", "Collider", "HealthLabel", "StaminaLabel", "CameraPhysics", "CameraCollider")]
+[node name="Player" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Camera", "RayCast", "ToolPos", "HUD", "Collider", "HealthLabel", "StaminaLabel", "CameraPhysics", "CameraCollider") groups=["Player"]]
 script = ExtResource("1_8r7yd")
 Camera = NodePath("CameraPhysics/Camera")
 RayCast = NodePath("CameraPhysics/Camera/RayCast")

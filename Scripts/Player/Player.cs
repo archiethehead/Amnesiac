@@ -10,8 +10,8 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
-    private const float FallDamageMultiplier = 40.0f;
-    private const float FallDamageThreshold = FallDamageMultiplier * 0.5f; // <--- The number of seconds
+    private const float FallDamageMultiplier = 50.0f;
+    private const float FallDamageThreshold = FallDamageMultiplier * 1.0f; // <--- The number of seconds
                                                                            // until fall damage applies.
 
     // Gameplay Stats
@@ -57,6 +57,7 @@ public partial class Player : CharacterBody3D, Hitable {
     // Camera Physics
     [Export] private RigidBody3D CameraPhysics = null;
     [Export] private CollisionShape3D CameraCollider = null;
+    private Vector3 CameraPos;
 
     // Interfaces
     public bool IsHittable { get; protected set; } = true;
@@ -378,6 +379,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public void Die() {
 
+        if (Dead) return;
+
         if (EquippedTool is not null) {
 
             GameManager.Drop(EquippedTool);
@@ -386,16 +389,30 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
+        CameraPos = CameraPhysics.Position;
         CameraPhysics.Freeze = false;
         CameraCollider.Disabled = false;
         CameraPhysics.Reparent(GetTree().Root);
         CameraPhysics.LinearVelocity = PreviousVelocity;
-        GD.Print(PreviousVelocity);
         Collider.Disabled = true;
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
-        this.SetPhysicsProcess(false);
         Dead = true;
+
+    }
+
+    public void Undie() {
+
+        if (!Dead) return;
+
+        CameraPhysics.Freeze = true;
+        CameraCollider.Disabled = true;
+        CameraPhysics.Reparent(this);
+        CameraPhysics.Position = CameraPos;
+        Collider.Disabled = false;
+        this.Visible = true;
+        this.ProcessMode = ProcessModeEnum.Pausable;
+        Dead = false;
 
     }
 
