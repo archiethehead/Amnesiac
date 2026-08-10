@@ -31,6 +31,7 @@ public partial class DestructibleBase : Node3D, Hitable {
             foreach (GeometryInstance3D Node in ShatteredMeshArray) {
 
                 Node.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
+                Node.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
                 Node.Transparency += TransparencyRate * (float)delta;
 
             }
