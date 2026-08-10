@@ -1,19 +1,22 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Player : CharacterBody3D, Hitable {
 
 
-    // Constants
+    // Constants & Exports
+    [ExportGroup("Player Variables")]
     private const float JumpVelocity = 6.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
-    private const float MaxSafeFallSpeed = 13.0f;
-    private const float FatalFallSpeed = 19.5f;
+    private const float MaxSafeFallSpeed = 15.0f;
+    private const float FatalFallSpeed = 25.0f;
     private const float Accelerate = 10.0f;
     private const float Friction = 4.0f;
+    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage = 35.0f;
+    private float FallSpeed => 1.0f + (FallSpeedIncreasePercentage / 100.0f);
 
     // Gameplay Stats
     private float Health = 100.0f;
@@ -45,7 +48,8 @@ public partial class Player : CharacterBody3D, Hitable {
     private float Torque = 0.0f;
     private bool Throwing = false;
 
-    // Exports
+    // Child Node Exports
+    [ExportGroup("Child Nodes")]
     private GameManager GameManager = null;
     [Export] private Camera3D Camera = null;
     [Export] private RayCast3D RayCast = null;
@@ -147,7 +151,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             }
 
-        }
+        }   
 
         else if (Interactable is not null || (Interactable is not null && !Interactable.IsInteractable)) {
 
@@ -209,17 +213,23 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (!IsOnFloor()) {
 
-            velocity += GetGravity() * (float)delta;
+            if (velocity.Y > 0.0f) {
+
+                velocity += (GetGravity() * 1.0f) * (float)delta;
+                Falling = false;
+
+            }
+
+            else {
+
+                Falling = true;
+                velocity += (GetGravity() * FallSpeed) * (float)delta;
+
+            }
 
         }
 
-        if (velocity.Y < 0.0f) {
-
-            Falling = true;
-
-        }
-
-        else if (Falling && IsOnFloor()) {
+        else if (Falling) {
 
             Falling = false;
             float AbsoluteY = PreviousVelocity.Y * -1;
