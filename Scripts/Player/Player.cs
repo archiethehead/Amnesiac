@@ -58,7 +58,7 @@ public partial class Player : CharacterBody3D, Hitable {
     // Camera Physics
     [Export] private RigidBody3D CameraPhysics = null;
     [Export] private CollisionShape3D CameraCollider = null;
-    private Vector3 CameraPos;
+    private Transform3D CameraPos;
 
     // Interfaces
     public bool IsHittable { get; protected set; } = true;
@@ -110,7 +110,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
-        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && ) {
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
 
             Speed = ConstSpeed * 1.5f;
             IsRunning = true;
@@ -396,7 +396,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
-        CameraPos = CameraPhysics.Position;
+        CameraPos = CameraPhysics.Transform;
         CameraPhysics.Freeze = false;
         CameraCollider.Disabled = false;
         CameraPhysics.Reparent(GetTree().Root);
@@ -412,10 +412,11 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (!Dead) return;
 
+        this.GlobalPosition = CameraPhysics.GlobalPosition;
         CameraPhysics.Freeze = true;
         CameraCollider.Disabled = true;
         CameraPhysics.Reparent(this);
-        CameraPhysics.Position = CameraPos;
+        CameraPhysics.Transform = CameraPos;
         Collider.Disabled = false;
         this.Visible = true;
         this.ProcessMode = ProcessModeEnum.Pausable;
