@@ -10,9 +10,10 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
-    private const float FallDamageMultiplier = 50.0f;
-    private const float FallDamageThreshold = FallDamageMultiplier * 1.0f; // <--- The number of seconds
-                                                                           // until fall damage applies.
+    private const float MaxSafeFallSpeed = 13.0f;
+    private const float FatalFallSpeed = 19.5f;
+    private const float Accelerate = 10.0f;
+    private const float Friction = 4.0f;
 
     // Gameplay Stats
     private float Health = 100.0f;
@@ -109,9 +110,9 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
-        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && ) {
 
-            Speed = ConstSpeed * 2;
+            Speed = ConstSpeed * 1.5f;
             IsRunning = true;
 
             if (Stamina <= 0.0f) {
@@ -215,17 +216,18 @@ public partial class Player : CharacterBody3D, Hitable {
         if (velocity.Y < 0.0f) {
 
             Falling = true;
-            FallDamage += FallDamageMultiplier * (float)delta;
 
         }
 
-        else if (Falling) {
+        else if (Falling && IsOnFloor()) {
 
             Falling = false;
+            float AbsoluteY = PreviousVelocity.Y * -1;
 
-            if (FallDamage >= FallDamageThreshold) {
+            if (AbsoluteY > MaxSafeFallSpeed) {
 
-                Hit(FallDamage);
+                float Damage = (AbsoluteY - MaxSafeFallSpeed) * (100 / (FatalFallSpeed - MaxSafeFallSpeed));
+                Hit(Damage);
 
             }
 
@@ -241,16 +243,21 @@ public partial class Player : CharacterBody3D, Hitable {
         }
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        Vector3 HorizontalVelocity = new Vector3(velocity.X, 0.0f, velocity.Z);
+
         if (direction != Vector3.Zero) {
-            velocity.X = direction.X * Speed;
-            velocity.Z = direction.Z * Speed;
+
+            HorizontalVelocity = HorizontalVelocity.MoveToward(direction * Speed, Accelerate * (float)delta * 10);
+
         }
         else {
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+
+            HorizontalVelocity = HorizontalVelocity.MoveToward(Vector3.Zero, Friction * (float)delta * 10);
+
         }
 
-
+        velocity.X = HorizontalVelocity.X;
+        velocity.Z = HorizontalVelocity.Z;
         Velocity = velocity;
 
         MoveAndSlide();

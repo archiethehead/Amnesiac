@@ -83,6 +83,7 @@ disabled = true
 
 [node name="Camera" type="Camera3D" parent="CameraPhysics" unique_id=1526127380]
 current = true
+fov = 90.0
 
 [node name="RayCast" type="RayCast3D" parent="CameraPhysics/Camera" unique_id=1997520734]
 transform = Transform3D(0.1, 0, 0, 0, -1.3113416e-07, -0.1, 0, 3, -4.371139e-09, 0, 0, 0)
