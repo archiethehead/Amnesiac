@@ -6,35 +6,39 @@ public partial class Player : CharacterBody3D, Hitable {
 
     // Constants & Exports
 
-    private const float JumpVelocity = 3.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
     private const float MaxSafeFallSpeed = 15.0f;
     private const float FatalFallSpeed = 25.0f;
-    private const float Accelerate = 10.0f;
-    private const float Friction = 4.0f;
+
+    private const float GroundAcceleration = 10.0f;
+    private const float GroundFriction = 4.0f;
+    private const float AirAcceleration = 2.5f;
+    private const float AirFriction = 1.0f;
+    private float Acceleration = GroundAcceleration;
+    private float Friction = GroundFriction;
     [ExportGroup("Player Variables")]
-    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage 
-        
-        {
+    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage {
 
-            get {
+        get {
 
-                return (FallSpeed - 1) * 100;
+            return (FallSpeed - 1) * 100;
 
-            }
-        
-            set {
-
-                FallSpeed = 1 + (value / 100);
-
-            }
-    
         }
+        
+        set {
 
+            FallSpeed = 1 + (value / 100);
+
+        }
+    
+    }
     private float FallSpeed = 0.0f;
+
+    [Export(PropertyHint.None, "suffix:m/s")] private float JumpVelocity = 6.0f;
+
 
     // Gameplay Stats
     private float Health = 100.0f;
@@ -99,6 +103,8 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
+
+        GD.Print("Acceleration: ", Acceleration, "Friction: ", Friction);
 
         if (!IsExhausted && !NoClip) {
 
@@ -206,14 +212,14 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (Dead) return;
 
-        Vector2 inputDir = Input.GetVector(
+            Vector2 inputDir = Input.GetVector(
 
-                                    InputMap.Left,
-                                    InputMap.Right,
-                                    InputMap.Forward,
-                                    InputMap.Backward
+                                        InputMap.Left,
+                                        InputMap.Right,
+                                        InputMap.Forward,
+                                        InputMap.Backward
 
-                                    );
+                                        );
 
         if (NoClip) {
 
@@ -263,6 +269,21 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
+
+        if (!Falling) {
+
+            Acceleration = GroundAcceleration;
+            Friction = GroundFriction;
+
+        }
+
+        else {
+
+            Acceleration = Mathf.Lerp(Acceleration, AirAcceleration, (4.0f * (float)delta));
+            Friction = Mathf.Lerp(Friction, AirFriction, (4.0f * (float)delta));
+
+        }
+
         PreviousVelocity = velocity;
 
         // Handle Jump.
@@ -275,7 +296,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (direction != Vector3.Zero) {
 
-            HorizontalVelocity = HorizontalVelocity.MoveToward(direction * Speed, Accelerate * (float)delta * 10);
+            HorizontalVelocity = HorizontalVelocity.MoveToward(direction * Speed, Acceleration * (float)delta * 10);
 
         }
         else {
