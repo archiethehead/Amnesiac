@@ -5,8 +5,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
 
     // Constants & Exports
-    [ExportGroup("Player Variables")]
-    private const float JumpVelocity = 6.0f;
+
+    private const float JumpVelocity = 3.0f;
     private const float Sensitivity = 0.003f;
     private const float ConstSpeed = 5.0f;
     private const float StaminaLossRate = 20.0f;
@@ -15,8 +15,26 @@ public partial class Player : CharacterBody3D, Hitable {
     private const float FatalFallSpeed = 25.0f;
     private const float Accelerate = 10.0f;
     private const float Friction = 4.0f;
-    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage = 35.0f;
-    private float FallSpeed => 1.0f + (FallSpeedIncreasePercentage / 100.0f);
+    [ExportGroup("Player Variables")]
+    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage 
+        
+        {
+
+            get {
+
+                return (FallSpeed - 1) * 100;
+
+            }
+        
+            set {
+
+                FallSpeed = 1 + (value / 100);
+
+            }
+    
+        }
+
+    private float FallSpeed = 0.0f;
 
     // Gameplay Stats
     private float Health = 100.0f;
@@ -414,6 +432,7 @@ public partial class Player : CharacterBody3D, Hitable {
         Collider.Disabled = true;
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
+        this.Velocity = Vector3.Zero;
         Dead = true;
 
     }

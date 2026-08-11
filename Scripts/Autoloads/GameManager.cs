@@ -99,18 +99,6 @@ public partial class GameManager : Node3D {
     
     }
 
-    public void KillPlayer() {
-
-        Player.Die();
-    
-    }
-
-    public void RevivePlayer() {
-
-        Player.Undie();
-    
-    }
-
     public void OpenConsole() {
 
         GameSuspended(true);
