@@ -13,6 +13,8 @@ public partial class GameManager : Node3D {
     public Weather Weather { get; set; } = null;
     public Input.MouseModeEnum MouseMode { get; set; }
 
+    [Export] private Label DebugLabel;
+
     public override void _Ready() {
 
         SetFullscreen(false);
@@ -146,6 +148,12 @@ public partial class GameManager : Node3D {
 
         GetTree().Quit();
 
+    }
+
+    public void DebugOut(string Text, params object[] Objects) {
+
+        DebugLabel.Text = string.Format(Text, Objects);
+    
     }
 
 }

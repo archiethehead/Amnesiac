@@ -102,6 +102,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Process(double delta) {
 
+        GameManager.DebugOut("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length());
+
         if (!IsExhausted && !NoClip) {
 
             switch (IsRunning) {
