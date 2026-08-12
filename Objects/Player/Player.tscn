@@ -13,8 +13,6 @@
 
 [node name="Player" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Camera", "RayCast", "ToolPos", "HUD", "Collider", "HealthLabel", "StaminaLabel", "CameraPhysics", "CameraCollider") groups=["Player"]]
 script = ExtResource("1_8r7yd")
-FallSpeedIncreasePercentage = 50.0
-JumpVelocity = 5.25
 Camera = NodePath("CameraPhysics/Camera")
 RayCast = NodePath("CameraPhysics/Camera/RayCast")
 ToolPos = NodePath("CameraPhysics/Camera/ToolPos")

@@ -4,48 +4,44 @@ using Godot;
 public partial class Player : CharacterBody3D, Hitable {
 
 
-    // Constants & Exports
+    // Gameplay Exports
 
     private const float Sensitivity = 0.003f;
-    private const float WalkSpeed = 5.0f;
-    private const float SprintSpeed = WalkSpeed * 1.5f;
-    private const float StaminaLossRate = 20.0f;
-    private const float StaminaGainRate = StaminaLossRate / 2.0f;
-    private const float MaxSafeFallSpeed = 15.0f;
-    private const float FatalFallSpeed = 25.0f;
 
-    private const float GroundAcceleration = 10.0f;
-    private const float GroundFriction = 4.0f;
-    private const float AirAcceleration = 2.5f;
-    private const float AirFriction = 1.0f;
-    private float Acceleration = GroundAcceleration;
-    private float Friction = GroundFriction;
-    [ExportGroup("Player Variables")]
+    [ExportGroup("Movement")]
+
+    [Export(PropertyHint.None, "suffix:m/s")] private float JumpVelocity = 5.5f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float GroundAcceleration = 10.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float GroundFriction = 4.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float WalkSpeed = 5.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float SprintSpeed = 7.5f;
+    [Export(PropertyHint.None, "suffix:%/s")] private float StaminaLossRate = 20.0f;
+    [Export(PropertyHint.None, "suffix:%/s")] private  float StaminaGainRate = 10.0f;
+    private float Acceleration;
+    private float Friction;
+
+    [ExportGroup("Falling")]
     [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage {
 
-        get {
+        get;
 
-            return (FallSpeed - 1) * 100;
+        set => FallSpeed = 1 + (value / 100);
 
-        }
-        
-        set {
+    } = 50.0f;
 
-            FallSpeed = 1 + (value / 100);
-
-        }
+    private float FallSpeed = 1.5f;
     
-    }
+    [Export(PropertyHint.None, "suffix:m/s")] private float AirAcceleration = 2.5f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float AirFriction = 1.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float MaxSafeFallSpeed = 15.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float FatalFallSpeed = 25.0f;
 
-    private float FallSpeed = 0.0f;
-    [Export(PropertyHint.None, "suffix:m/s")] private float JumpVelocity = 5.5f;
 
-
-    // Gameplay Stats
+    // Gameplay Variables
     private float Health = 100.0f;
     private float Stamina = 100.0f;
     private float StaminaCooldown = 1.0f;
-    private float Speed = WalkSpeed;
+    private float Speed;
     private float FallDamage = 0.0f;
     private bool Dead = false;
     private Vector3 PreviousVelocity;
@@ -81,8 +77,6 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export] private CollisionShape3D Collider = null;
     [Export] private Label HealthLabel = null;
     [Export] private Label StaminaLabel = null;
-
-    // Camera Physics
     [Export] private RigidBody3D CameraPhysics = null;
     [Export] private CollisionShape3D CameraCollider = null;
     private Transform3D CameraPos;
@@ -94,6 +88,9 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Ready() {
 
+        Speed = WalkSpeed;
+        Acceleration = GroundAcceleration;
+        Friction = GroundFriction;
         HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
         StaminaLabel.Text = string.Format("Stamina: {0}", (Mathf.Floor(Stamina)).ToString());
         GameManager = GameManager.Instance;
@@ -104,8 +101,6 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
-
-        GD.Print(String.Format("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length()));
 
         if (!IsExhausted && !NoClip) {
 
