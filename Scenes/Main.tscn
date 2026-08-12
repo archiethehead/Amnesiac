@@ -163,13 +163,13 @@ func _process(delta: float) -> void:
 			revive_timer -= delta
 			
 			if (revive_timer <= 0.0):
-				GameManager.Player.Unpause()
+				GameManager.Player.Undie()
 				is_dead = false
 				revive_timer = 3.0
 				self.free()
 
 func event() -> void:
-	GameManager.Player.Pause()
+	GameManager.Player.Die()
 	is_dead = true
 "
 

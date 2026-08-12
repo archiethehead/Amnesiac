@@ -7,7 +7,8 @@ public partial class Player : CharacterBody3D, Hitable {
     // Constants & Exports
 
     private const float Sensitivity = 0.003f;
-    private const float ConstSpeed = 5.0f;
+    private const float WalkSpeed = 5.0f;
+    private const float SprintSpeed = WalkSpeed * 1.5f;
     private const float StaminaLossRate = 20.0f;
     private const float StaminaGainRate = StaminaLossRate / 2.0f;
     private const float MaxSafeFallSpeed = 15.0f;
@@ -35,16 +36,16 @@ public partial class Player : CharacterBody3D, Hitable {
         }
     
     }
-    private float FallSpeed = 0.0f;
 
-    [Export(PropertyHint.None, "suffix:m/s")] private float JumpVelocity = 6.0f;
+    private float FallSpeed = 0.0f;
+    [Export(PropertyHint.None, "suffix:m/s")] private float JumpVelocity = 5.5f;
 
 
     // Gameplay Stats
     private float Health = 100.0f;
     private float Stamina = 100.0f;
     private float StaminaCooldown = 1.0f;
-    private float Speed = ConstSpeed;
+    private float Speed = WalkSpeed;
     private float FallDamage = 0.0f;
     private bool Dead = false;
     private Vector3 PreviousVelocity;
@@ -104,7 +105,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Process(double delta) {
 
-        GD.Print("Acceleration: ", Acceleration, "Friction: ", Friction);
+        GD.Print(String.Format("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length()));
 
         if (!IsExhausted && !NoClip) {
 
@@ -123,6 +124,13 @@ public partial class Player : CharacterBody3D, Hitable {
             Stamina = Mathf.Clamp(Stamina, 0.0f, 100.0f);
             StaminaLabel.Text = string.Format("Stamina: {0}", Mathf.Floor(Stamina).ToString());
 
+            if (Stamina == 0.0f) {
+
+                IsExhausted = true;
+            
+            }
+
+
         }
 
         else {
@@ -138,22 +146,16 @@ public partial class Player : CharacterBody3D, Hitable {
 
         }
 
-        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted) {
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && Speed < SprintSpeed) {
 
-            Speed = ConstSpeed * 1.5f;
+            Speed = SprintSpeed;
             IsRunning = true;
-
-            if (Stamina <= 0.0f) {
-
-                IsExhausted = true;
-
-            }
 
         }
 
-        else {
+        else if (Input.IsActionJustReleased(InputMap.SpeedUp) || (IsExhausted && IsOnFloor())){
 
-            Speed = ConstSpeed;
+            Speed = WalkSpeed;
             IsRunning = false;
 
         }
@@ -212,14 +214,14 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (Dead) return;
 
-            Vector2 inputDir = Input.GetVector(
+        Vector2 inputDir = Input.GetVector(
 
-                                        InputMap.Left,
-                                        InputMap.Right,
-                                        InputMap.Forward,
-                                        InputMap.Backward
+                                    InputMap.Left,
+                                    InputMap.Right,
+                                    InputMap.Forward,
+                                    InputMap.Backward
 
-                                        );
+                                    );
 
         if (NoClip) {
 
@@ -239,7 +241,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (velocity.Y > 0.0f) {
 
-                velocity += (GetGravity() * 1.0f) * (float)delta;
+                velocity += GetGravity() * (float)delta;
                 Falling = false;
 
             }
@@ -255,6 +257,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         else if (Falling) {
 
+            Speed = WalkSpeed;
             Falling = false;
             float AbsoluteY = PreviousVelocity.Y * -1;
 
@@ -279,17 +282,12 @@ public partial class Player : CharacterBody3D, Hitable {
 
         else {
 
-            Acceleration = Mathf.Lerp(Acceleration, AirAcceleration, (4.0f * (float)delta));
-            Friction = Mathf.Lerp(Friction, AirFriction, (4.0f * (float)delta));
+            Acceleration = Mathf.Lerp(Acceleration, AirAcceleration, (1.0f * (float)delta));
+            Friction = Mathf.Lerp(Friction, AirFriction, (1.0f * (float)delta));
 
         }
 
         PreviousVelocity = velocity;
-
-        // Handle Jump.
-        if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
-            velocity.Y = JumpVelocity;
-        }
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         Vector3 HorizontalVelocity = new Vector3(velocity.X, 0.0f, velocity.Z);
@@ -299,6 +297,7 @@ public partial class Player : CharacterBody3D, Hitable {
             HorizontalVelocity = HorizontalVelocity.MoveToward(direction * Speed, Acceleration * (float)delta * 10);
 
         }
+
         else {
 
             HorizontalVelocity = HorizontalVelocity.MoveToward(Vector3.Zero, Friction * (float)delta * 10);
@@ -307,6 +306,17 @@ public partial class Player : CharacterBody3D, Hitable {
 
         velocity.X = HorizontalVelocity.X;
         velocity.Z = HorizontalVelocity.Z;
+
+        // Handle Jump.
+        if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
+
+            velocity.Y = JumpVelocity;
+
+            if (Speed == WalkSpeed) Speed *= 1.5f;
+            else Speed *= 1.1f;
+
+        }
+
         Velocity = velocity;
 
         MoveAndSlide();
