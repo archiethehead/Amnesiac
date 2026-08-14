@@ -41,10 +41,10 @@ public partial class GameManager : Node3D {
 
     }
 
-    public void SetFullscreen(bool IsFullscreen) { 
+    public void SetFullscreen(bool IsFullscreen) {
 
-        switch (IsFullscreen) { 
-        
+        switch (IsFullscreen) {
+
             case true:
                 DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
                 break;
@@ -55,7 +55,7 @@ public partial class GameManager : Node3D {
 
 
         }
-    
+
     }
 
     public void PickUp(ToolBase Tool) {
@@ -98,7 +98,7 @@ public partial class GameManager : Node3D {
     public void ChangeWeather(Weather.WeatherTypeEnum NewWeatherType) {
 
         Weather.UpdateWeather(NewWeatherType);
-    
+
     }
 
     public void OpenConsole() {
@@ -117,13 +117,14 @@ public partial class GameManager : Node3D {
 
     public void GameSuspended(bool state) {
 
+        DebugLabel.Visible = !state;
         GetTree().Paused = state;
 
         if (state) {
 
             Player.Pause();
             return;
-        
+
         }
 
         Player.Unpause();
@@ -153,7 +154,7 @@ public partial class GameManager : Node3D {
     public void DebugOut(string Text, params object[] Objects) {
 
         DebugLabel.Text = string.Format(Text, Objects);
-    
+
     }
 
 }

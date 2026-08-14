@@ -206,11 +206,11 @@ public partial class Console : CanvasLayer {
 
                 case 'c':
                     Type = GetOpt.OptArg;
-                    goto done;
+                    continue;
 
                 case 'n':
                     Name = GetOpt.OptArg;
-                    goto done;
+                    continue;
 
                 case 'q':
                     if (GetOpt.OptArg.IsValidInt()) {
@@ -226,21 +226,19 @@ public partial class Console : CanvasLayer {
 
                     }
 
-                    goto done;
+                    continue;
 
                 case 'v':
                     Verbose = true;
-                    goto done;
+                    continue;
 
                 case '?':
 
                     Error = true;
                     ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
-                    goto done;
+                    continue;
 
             }
-
-        done:;
 
         }
 
@@ -307,27 +305,25 @@ public partial class Console : CanvasLayer {
                     Type = Weather.WeatherTypeEnum.Raining;
                     StringType = "rain";
                     Set = true;
-                    goto done;
+                    continue;
 
                 case 's':
                     Type = Weather.WeatherTypeEnum.Sunny;
                     StringType = "sunny";
                     Set = true;
-                    goto done;
+                    continue;
 
                 case 'v':
                     Verbose = true;
-                    goto done;
+                    continue;
 
                 case '?':
 
                     Error = true;
                     ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
-                    goto done;
+                    continue;
 
             }
-
-        done:;
 
         }
 
@@ -359,25 +355,23 @@ public partial class Console : CanvasLayer {
                 case 'f':
                     Fullscreen = true;
                     Set = true;
-                    goto done;
+                    continue;
 
                 case 'w':
                     Fullscreen = false;
                     Set = true;
-                    goto done;
+                    continue;
 
                 case 'v':
                     Verbose = true;
-                    goto done;
+                    continue;
 
                 case '?':
                     Error = true;
                     ConsoleOut("{0} is an unrecognised argument", (char)GetOpt.OptOpt);
-                    goto done;
+                    continue;
 
             }
-
-        done:;
 
         }
 
@@ -386,7 +380,7 @@ public partial class Console : CanvasLayer {
             Error = true;
             ConsoleOut("Argument must be specified (-f/-w)");
             return;
-        
+
         }
 
         switch (Fullscreen) {
@@ -400,14 +394,14 @@ public partial class Console : CanvasLayer {
                 if (Verbose) ConsoleOut("Window mode set to windowed");
                 GameManager.SetFullscreen(false);
                 break;
-        
+
         }
 
     }
 
     private static class CommandHistory {
 
-        private static List<string> CommandList = [""];
+        private static List<string> CommandList = [];
         private static int Index = 0;
 
         // Get the current index instead of shifting the index after
@@ -418,15 +412,11 @@ public partial class Console : CanvasLayer {
         // V
 
         private static bool FirstInput = true;
-        private static bool VeryFirstInput = true;
 
         public static void Record(string RecordCommand) {
 
-            CommandList[0] = RecordCommand;
-            CommandList.Insert(0, "");
-
-            if (!VeryFirstInput) Index++;
-
+            CommandList.Insert(0, RecordCommand);
+            if (!FirstInput) Index++;
             FirstInput = true;
 
         }
@@ -435,7 +425,6 @@ public partial class Console : CanvasLayer {
 
             if (FirstInput) {
 
-                VeryFirstInput = false;
                 FirstInput = false;
                 return CommandList[Index];
 

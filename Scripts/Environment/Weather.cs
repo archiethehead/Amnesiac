@@ -1,14 +1,13 @@
 using Godot;
 using System;
 
-public partial class Weather : WorldEnvironment
-{
+public partial class Weather : WorldEnvironment {
 
     [Export] GpuParticles3D Rain = null;
     private GameManager GameManager = null;
 
-    public enum WeatherTypeEnum { 
-        
+    public enum WeatherTypeEnum {
+
         Raining,
         Sunny
 
@@ -16,20 +15,19 @@ public partial class Weather : WorldEnvironment
 
     private WeatherTypeEnum WeatherType = WeatherTypeEnum.Sunny;
 
-	public override void _Ready()
-	{
+    public override void _Ready() {
 
         GameManager = GameManager.Instance;
         GameManager.Weather = this;
 
-	}
+    }
 
     public void UpdateWeather(WeatherTypeEnum Type) {
 
         WeatherType = Type;
 
-        switch (WeatherType) { 
-        
+        switch (WeatherType) {
+
             case WeatherTypeEnum.Raining:
                 Rain.Visible = true;
                 this.Environment.VolumetricFogEnabled = true;
@@ -39,10 +37,10 @@ public partial class Weather : WorldEnvironment
                 Rain.Visible = false;
                 this.Environment.VolumetricFogEnabled = false;
                 break;
-        
+
         }
 
-    
+
     }
 
 
