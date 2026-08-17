@@ -16,12 +16,14 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export(PropertyHint.None, "suffix:m/s")] private float WalkSpeed = 5.0f;
     [Export(PropertyHint.None, "suffix:m/s")] private float SprintSpeed = 7.5f;
     [Export(PropertyHint.None, "suffix:%/s")] private float StaminaLossRate = 20.0f;
-    [Export(PropertyHint.None, "suffix:%/s")] private  float StaminaGainRate = 10.0f;
+    [Export(PropertyHint.None, "suffix:%/s")] private float StaminaGainRate = 10.0f;
+
     private float Acceleration;
     private float Friction;
 
     [ExportGroup("Falling")]
-    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")] private float FallSpeedIncreasePercentage {
+    [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")]
+    private float FallSpeedIncreasePercentage {
 
         get;
 
@@ -30,7 +32,7 @@ public partial class Player : CharacterBody3D, Hitable {
     } = 50.0f;
 
     private float FallSpeed = 1.5f;
-    
+
     [Export(PropertyHint.None, "suffix:m/s")] private float AirAcceleration = 2.5f;
     [Export(PropertyHint.None, "suffix:m/s")] private float AirFriction = 1.0f;
     [Export(PropertyHint.None, "suffix:m/s")] private float MaxSafeFallSpeed = 15.0f;
@@ -38,10 +40,65 @@ public partial class Player : CharacterBody3D, Hitable {
 
 
     // Gameplay Variables
+
+    private enum PlayerState {
+
+        Dead,
+        Idle,
+        Walking,
+        Running,
+        Jumping,
+        Falling
+
+
+    }
+
+    private PlayerState CurrentState {
+
+        get => StateBuffer;
+
+        set {
+
+            LastState = StateBuffer;
+            StateBuffer = value;
+
+        }
+
+    }
+    private PlayerState StateBuffer = PlayerState.Idle;
+    private PlayerState LastState = PlayerState.Idle;
+
     private float Health = 100.0f;
     private float Stamina = 100.0f;
     private float StaminaCooldown = 1.0f;
-    private float Speed;
+
+    private float Speed {
+
+        get {
+
+            switch (CurrentState) {
+
+                case PlayerState.Running:
+                    return SprintSpeed;
+
+                case PlayerState.Jumping:
+                    if (LastState == PlayerState.Walking) return WalkSpeed * 1.5f;
+                    else return SprintSpeed * 1.1f;
+
+                case PlayerState.Falling:
+                    float HorizontalVelocity = new Vector2(Velocity.X, Velocity.Z).Length();
+                    if (HorizontalVelocity > WalkSpeed) return HorizontalVelocity;
+                    return WalkSpeed;
+
+                default:
+                    return WalkSpeed;
+
+            }
+
+        }
+
+    }
+
     private float FallDamage = 0.0f;
     private bool Dead = false;
     private Vector3 PreviousVelocity;
@@ -88,7 +145,6 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Ready() {
 
-        Speed = WalkSpeed;
         Acceleration = GroundAcceleration;
         Friction = GroundFriction;
         HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
@@ -106,7 +162,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (!IsExhausted && !NoClip) {
 
-            switch (IsRunning) {
+            switch (CurrentState == PlayerState.Running) {
 
                 case true:
                     Stamina -= StaminaLossRate * (float)delta;
@@ -124,7 +180,7 @@ public partial class Player : CharacterBody3D, Hitable {
             if (Stamina == 0.0f) {
 
                 IsExhausted = true;
-            
+
             }
 
 
@@ -145,15 +201,13 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && Speed < SprintSpeed) {
 
-            Speed = SprintSpeed;
-            IsRunning = true;
+            CurrentState = PlayerState.Running;
 
         }
 
-        else if (Input.IsActionJustReleased(InputMap.SpeedUp) || (IsExhausted && IsOnFloor())){
+        else if (Input.IsActionJustReleased(InputMap.SpeedUp) || (IsExhausted && IsOnFloor())) {
 
-            Speed = WalkSpeed;
-            IsRunning = false;
+            CurrentState = PlayerState.Walking;
 
         }
 
@@ -174,7 +228,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             }
 
-        }   
+        }
 
         else if (Interactable is not null || (Interactable is not null && !Interactable.IsInteractable)) {
 
@@ -238,6 +292,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (velocity.Y > 0.0f) {
 
+                if (CurrentState != PlayerState.Jumping) CurrentState = PlayerState.Falling;
+
                 velocity += GetGravity() * (float)delta;
                 Falling = false;
 
@@ -245,17 +301,16 @@ public partial class Player : CharacterBody3D, Hitable {
 
             else {
 
-                Falling = true;
+                CurrentState = PlayerState.Falling;
                 velocity += (GetGravity() * FallSpeed) * (float)delta;
 
             }
 
         }
 
-        else if (Falling) {
+        else if (CurrentState == PlayerState.Falling) {
 
-            Speed = WalkSpeed;
-            Falling = false;
+            CurrentState = PlayerState.Walking;
             float AbsoluteY = PreviousVelocity.Y * -1;
 
             if (AbsoluteY > MaxSafeFallSpeed) {
@@ -270,7 +325,7 @@ public partial class Player : CharacterBody3D, Hitable {
         }
 
 
-        if (!Falling) {
+        if (!(CurrentState == PlayerState.Falling)) {
 
             Acceleration = GroundAcceleration;
             Friction = GroundFriction;
@@ -307,10 +362,8 @@ public partial class Player : CharacterBody3D, Hitable {
         // Handle Jump.
         if (Input.IsActionJustPressed(InputMap.Jump) && IsOnFloor()) {
 
+            CurrentState = PlayerState.Jumping;
             velocity.Y = JumpVelocity;
-
-            if (Speed == WalkSpeed) Speed *= 1.5f;
-            else Speed *= 1.1f;
 
         }
 
@@ -442,7 +495,9 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public void Die() {
 
-        if (Dead) return;
+        if (CurrentState == PlayerState.Dead) return;
+
+        CurrentState = PlayerState.Dead;
 
         if (EquippedTool is not null) {
 
@@ -461,13 +516,13 @@ public partial class Player : CharacterBody3D, Hitable {
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
         this.Velocity = Vector3.Zero;
-        Dead = true;
 
     }
 
     public void Undie() {
 
-        if (!Dead) return;
+        if (!(CurrentState == PlayerState.Dead)) return;
+        CurrentState = PlayerState.Idle;
 
         this.GlobalPosition = CameraPhysics.GlobalPosition;
         CameraPhysics.Freeze = true;

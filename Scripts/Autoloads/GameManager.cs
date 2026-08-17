@@ -5,12 +5,12 @@ using System.Linq;
 public partial class GameManager : Node3D {
 
     public static GameManager Instance { get; private set; }
-    public Inventory Inventory { get; set; } = null;
-    public Player Player { get; set; } = null;
-    public Reactor Reactor { get; set; } = null;
-    public PauseMenu PauseMenu { get; set; } = null;
-    public Console Console { get; set; } = null;
-    public Weather Weather { get; set; } = null;
+    public Inventory Inventory = null;
+    public Player Player = null;
+    public Reactor Reactor = null;
+    public PauseMenu PauseMenu = null;
+    public Console Console = null;
+    public Weather Weather = null;
     public Input.MouseModeEnum MouseMode { get; set; }
 
     [Export] private Label DebugLabel;
