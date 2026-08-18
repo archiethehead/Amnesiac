@@ -18,8 +18,41 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export(PropertyHint.None, "suffix:%/s")] private float StaminaLossRate = 20.0f;
     [Export(PropertyHint.None, "suffix:%/s")] private float StaminaGainRate = 10.0f;
 
-    private float Acceleration;
-    private float Friction;
+    private float FrictionBuffer = 0.0f;
+    private float AccelerationBuffer = 0.0f;
+
+    private float Acceleration {
+
+        get {
+
+            if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
+
+                return Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * Delta);
+            
+            }
+
+            AccelerationBuffer = GroundAcceleration;
+            return GroundAcceleration;
+        
+        }
+    
+    }
+
+    private float Friction {
+
+        get {
+
+            if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
+
+                return Mathf.Lerp(FrictionBuffer, AirFriction, 0.5f * Delta);
+
+            }
+
+            FrictionBuffer = GroundFriction;
+            return GroundFriction;
+        }
+            
+    }
 
     [ExportGroup("Falling")]
     [Export(PropertyHint.Range, "0.0,100.0,or_greater,suffix:%")]
@@ -40,6 +73,15 @@ public partial class Player : CharacterBody3D, Hitable {
 
 
     // Gameplay Variables
+
+    // Should ONLY be used for member variables
+    // that are not in the scope of delta.
+    //
+    // |
+    // |
+    // V
+    
+    private float Delta = 0.0f;
 
     private enum PlayerState {
 
@@ -83,7 +125,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
                 case PlayerState.Jumping:
                     if (LastState == PlayerState.Walking) return WalkSpeed * 1.5f;
-                    else return SprintSpeed * 1.1f;
+                    return SprintSpeed * 1.1f;
 
                 case PlayerState.Falling:
                     float HorizontalVelocity = new Vector2(Velocity.X, Velocity.Z).Length();
@@ -106,9 +148,15 @@ public partial class Player : CharacterBody3D, Hitable {
     // Bools
     private bool Interacting = false;
     private bool NoClip = false;
-    private bool Falling = false;
-    private bool IsRunning = false;
-    private bool IsExhausted = false;
+    private bool IsExhausted {
+
+        get {
+
+            return (Stamina == 0.0f);
+
+        }
+    
+    }
 
     // Tools
     private ToolBase EquippedTool = null;
@@ -145,8 +193,6 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Ready() {
 
-        Acceleration = GroundAcceleration;
-        Friction = GroundFriction;
         HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
         StaminaLabel.Text = string.Format("Stamina: {0}", (Mathf.Floor(Stamina)).ToString());
         GameManager = GameManager.Instance;
@@ -157,6 +203,8 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
+
+        Delta = (float)delta;
 
         GameManager.DebugOut("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length());
 
@@ -177,12 +225,7 @@ public partial class Player : CharacterBody3D, Hitable {
             Stamina = Mathf.Clamp(Stamina, 0.0f, 100.0f);
             StaminaLabel.Text = string.Format("Stamina: {0}", Mathf.Floor(Stamina).ToString());
 
-            if (Stamina == 0.0f) {
-
-                IsExhausted = true;
-
-            }
-
+            if (IsExhausted) CurrentState = PlayerState.Walking;
 
         }
 
@@ -192,8 +235,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (StaminaCooldown <= 0.0f) {
 
+                Stamina += StaminaGainRate * (float)delta;
                 StaminaCooldown = 1.0f;
-                IsExhausted = false;
 
             }
 
@@ -293,9 +336,7 @@ public partial class Player : CharacterBody3D, Hitable {
             if (velocity.Y > 0.0f) {
 
                 if (CurrentState != PlayerState.Jumping) CurrentState = PlayerState.Falling;
-
                 velocity += GetGravity() * (float)delta;
-                Falling = false;
 
             }
 
@@ -321,21 +362,6 @@ public partial class Player : CharacterBody3D, Hitable {
             }
 
             FallDamage = 0.0f;
-
-        }
-
-
-        if (!(CurrentState == PlayerState.Falling)) {
-
-            Acceleration = GroundAcceleration;
-            Friction = GroundFriction;
-
-        }
-
-        else {
-
-            Acceleration = Mathf.Lerp(Acceleration, AirAcceleration, (1.0f * (float)delta));
-            Friction = Mathf.Lerp(Friction, AirFriction, (1.0f * (float)delta));
 
         }
 
