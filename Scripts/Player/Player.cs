@@ -27,8 +27,10 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
 
-                return Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * (float)GetProcessDeltaTime());
+                AccelerationBuffer = Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * (float)GetProcessDeltaTime());
+                return AccelerationBuffer;
             
+
             }
 
             AccelerationBuffer = GroundAcceleration;
@@ -44,7 +46,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
 
-                return Mathf.Lerp(FrictionBuffer, AirFriction, 0.5f * (float)GetProcessDeltaTime());
+                FrictionBuffer = Mathf.Lerp(FrictionBuffer, AirFriction, 0.5f * (float)GetProcessDeltaTime());
+                return FrictionBuffer;
 
             }
 
