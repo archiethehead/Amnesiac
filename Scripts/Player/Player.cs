@@ -29,7 +29,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
                 AccelerationBuffer = Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * (float)GetProcessDeltaTime());
                 return AccelerationBuffer;
-            
+
 
             }
 
@@ -122,7 +122,6 @@ public partial class Player : CharacterBody3D, Hitable {
                     return SprintSpeed * 1.1f;
 
                 case PlayerState.Falling:
-                    float HorizontalVelocity = new Vector2(Velocity.X, Velocity.Z).Length();
                     if (HorizontalVelocity > WalkSpeed) return HorizontalVelocity;
                     return WalkSpeed;
 
@@ -135,8 +134,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
     }
 
-    private float FallDamage = 0.0f;
-    private bool Dead = false;
+    private float HorizontalVelocity;
     private Vector3 PreviousVelocity;
 
     // Bools
@@ -194,107 +192,15 @@ public partial class Player : CharacterBody3D, Hitable {
 
     public override void _Process(double delta) {
 
-        GameManager.DebugOut("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length());
+        HorizontalVelocity = new Vector2(Velocity.X, Velocity.Z).Length();
 
-        if (!IsExhausted && !NoClip) {
-
-            switch (CurrentState == PlayerState.Running) {
-
-                case true:
-                    Stamina -= StaminaLossRate * (float)delta;
-                    break;
-
-                case false:
-                    Stamina += StaminaGainRate * (float)delta;
-                    break;
-
-            }
-
-            Stamina = Mathf.Clamp(Stamina, 0.0f, 100.0f);
-            StaminaLabel.Text = string.Format("Stamina: {0}", Mathf.Floor(Stamina).ToString());
-
-            if (IsExhausted) CurrentState = PlayerState.Walking;
-
-        }
-
-        else {
-
-            StaminaCooldown -= 1.0f * (float)delta;
-
-            if (StaminaCooldown <= 0.0f) {
-
-                Stamina += StaminaGainRate * (float)delta;
-                StaminaCooldown = 1.0f;
-
-            }
-
-        }
-
-        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && Speed < SprintSpeed) {
-
-            CurrentState = PlayerState.Running;
-
-        }
-
-        else if (Input.IsActionJustReleased(InputMap.SpeedUp) || (IsExhausted && IsOnFloor())) {
-
-            CurrentState = PlayerState.Walking;
-
-        }
-
-        RayCast.ForceRaycastUpdate();
-        if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i && i.IsInteractable) {
-
-            if (i != Interactable) {
-
-                if (Interactable is not null) {
-
-                    Interactable.HideInteract();
-                    Interactable.Uninteract();
-
-                }
-
-                Interactable = i;
-                Interactable.ShowInteract();
-
-            }
-
-        }
-
-        else if (Interactable is not null || (Interactable is not null && !Interactable.IsInteractable)) {
-
-            Interactable.HideInteract();
-            Interactable.Uninteract();
-            Interactable = null;
-
-
-        }
-
-        if (Throwing) {
-
-            if (ThrowForce < 60.0f) {
-
-                ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
-                Arc += (float)((MaxArc / TimeToMax) * delta);
-                Torque += (float)((MaxTorque / TimeToMax) * delta);
-
-            }
-
-            else if (ThrowForce > 60.0f) {
-
-                Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
-                Mathf.Clamp(Arc, 0.0f, MaxArc);
-                Mathf.Clamp(Torque, 0.0f, MaxTorque);
-
-            }
-
-        }
+        GameManager.DebugOut("Acceleration: {0} \nFriction: {1}", Acceleration, Friction);
+        PlayerStatsProcess(delta);
+        InteractProcess(delta);
 
     }
 
     public override void _PhysicsProcess(double delta) {
-
-        if (Dead) return;
 
         Vector2 inputDir = Input.GetVector(
 
@@ -352,10 +258,8 @@ public partial class Player : CharacterBody3D, Hitable {
 
             }
 
-            FallDamage = 0.0f;
-
         }
-
+        
         PreviousVelocity = velocity;
 
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
@@ -481,6 +385,107 @@ public partial class Player : CharacterBody3D, Hitable {
 
     }
 
+    public void PlayerStatsProcess(double delta) {
+
+        if (!IsExhausted) {
+
+            switch (CurrentState == PlayerState.Running) {
+
+                case true:
+                    Stamina -= StaminaLossRate * (float)delta;
+                    break;
+
+                case false:
+                    Stamina += StaminaGainRate * (float)delta;
+                    break;
+
+            }
+
+            Stamina = Mathf.Clamp(Stamina, 0.0f, 100.0f);
+            StaminaLabel.Text = string.Format("Stamina: {0}", Mathf.Floor(Stamina).ToString());
+
+            if (IsExhausted) CurrentState = PlayerState.Walking;
+
+        }
+
+        else {
+
+            StaminaCooldown -= 1.0f * (float)delta;
+
+            if (StaminaCooldown <= 0.0f) {
+
+                Stamina += StaminaGainRate * (float)delta;
+                StaminaCooldown = 1.0f;
+
+            }
+
+        }
+
+        if (Input.IsActionPressed(InputMap.SpeedUp) && !IsExhausted && Speed < SprintSpeed) {
+
+            CurrentState = PlayerState.Running;
+
+        }
+
+        else if (Input.IsActionJustReleased(InputMap.SpeedUp) || (IsExhausted && IsOnFloor())) {
+
+            CurrentState = PlayerState.Walking;
+
+        }
+
+    }
+
+    public void InteractProcess(double delta) {
+
+        RayCast.ForceRaycastUpdate();
+        if (RayCast.IsColliding() && RayCast.GetCollider() is Interactable i && i.IsInteractable) {
+
+            if (i != Interactable) {
+
+                if (Interactable is not null) {
+
+                    Interactable.HideInteract();
+                    Interactable.Uninteract();
+
+                }
+
+                Interactable = i;
+                Interactable.ShowInteract();
+
+            }
+
+        }
+
+        else if (Interactable is not null || (Interactable is not null && !Interactable.IsInteractable)) {
+
+            Interactable.HideInteract();
+            Interactable.Uninteract();
+            Interactable = null;
+
+
+        }
+
+        if (Throwing) {
+
+            if (ThrowForce < 60.0f) {
+
+                ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
+                Arc += (float)((MaxArc / TimeToMax) * delta);
+                Torque += (float)((MaxTorque / TimeToMax) * delta);
+
+            }
+
+            else if (ThrowForce > 60.0f) {
+
+                Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
+                Mathf.Clamp(Arc, 0.0f, MaxArc);
+                Mathf.Clamp(Torque, 0.0f, MaxTorque);
+
+            }
+
+        }
+
+    }
 
     public void Pause() {
 
@@ -549,7 +554,6 @@ public partial class Player : CharacterBody3D, Hitable {
         Collider.Disabled = false;
         this.Visible = true;
         this.ProcessMode = ProcessModeEnum.Pausable;
-        Dead = false;
 
     }
 
