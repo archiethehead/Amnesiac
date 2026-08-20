@@ -27,7 +27,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
 
-                return Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * Delta);
+                return Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * (float)GetProcessDeltaTime());
             
             }
 
@@ -44,7 +44,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             if (CurrentState == PlayerState.Falling || CurrentState == PlayerState.Jumping) {
 
-                return Mathf.Lerp(FrictionBuffer, AirFriction, 0.5f * Delta);
+                return Mathf.Lerp(FrictionBuffer, AirFriction, 0.5f * (float)GetProcessDeltaTime());
 
             }
 
@@ -73,15 +73,6 @@ public partial class Player : CharacterBody3D, Hitable {
 
 
     // Gameplay Variables
-
-    // Should ONLY be used for member variables
-    // that are not in the scope of delta.
-    //
-    // |
-    // |
-    // V
-    
-    private float Delta = 0.0f;
 
     private enum PlayerState {
 
@@ -150,11 +141,7 @@ public partial class Player : CharacterBody3D, Hitable {
     private bool NoClip = false;
     private bool IsExhausted {
 
-        get {
-
-            return (Stamina == 0.0f);
-
-        }
+        get => Stamina == 0.0f;
     
     }
 
@@ -203,8 +190,6 @@ public partial class Player : CharacterBody3D, Hitable {
     }
 
     public override void _Process(double delta) {
-
-        Delta = (float)delta;
 
         GameManager.DebugOut("Horizontal Velocity: {0}", new Vector2(Velocity.X, Velocity.Z).Length());
 
@@ -319,12 +304,15 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (NoClip) {
 
+            float NoClipSpeed = WalkSpeed;
+
+            if (Input.IsActionPressed(InputMap.SpeedUp)) NoClipSpeed = WalkSpeed * 1.5f;
 
             Vector3 Forward = Camera.GlobalTransform.Basis.Z;
             Vector3 Right = Camera.GlobalTransform.Basis.X;
             Vector3 Direction = (Right * inputDir.X + Forward * inputDir.Y).Normalized();
 
-            this.GlobalPosition += (Direction * (Speed * 2.0f)) * (float)delta;
+            this.GlobalPosition += (Direction * (NoClipSpeed * 2.0f)) * (float)delta;
             return;
 
         }
