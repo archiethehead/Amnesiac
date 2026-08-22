@@ -35,6 +35,12 @@ public partial class EnemyAI : PathfindingAI {
     }
     private EnemyState CurrentState = EnemyState.Seeking;
 
+    public override void _Process(double delta) {
+
+        PathfinderProcess(delta);
+
+    }
+
     protected override void Idle() { }
 
     private void OnBodyEntered(Node Body) {

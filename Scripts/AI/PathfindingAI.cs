@@ -24,6 +24,15 @@ public partial class PathfindingAI : CharacterBody3D {
 
     public override void _PhysicsProcess(double delta) {
 
+        if (!IsOnFloor()) {
+            Velocity += GetGravity() * (float)delta;
+        }
+
+        MoveAndSlide();
+    }
+
+    protected void PathfinderProcess(double delta) {
+
         switch (_PathfinderState) {
 
             case PathfinderState.Idle:
@@ -45,13 +54,6 @@ public partial class PathfindingAI : CharacterBody3D {
 
         }
 
-
-        if (!IsOnFloor()) {
-            Velocity += GetGravity() * (float)delta;
-        }
-
-
-        MoveAndSlide();
     }
 
     protected virtual void Idle() {
