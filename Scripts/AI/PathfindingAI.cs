@@ -3,12 +3,12 @@ using System;
 
 public partial class PathfindingAI : CharacterBody3D {
 
-    protected virtual float Speed { get; set; } = 3.0f;
+    protected virtual float Speed { get; } = 3.0f;
     protected virtual float JumpVelocity { get; set; } = 6.0f;
     protected virtual float ActionCooldownTimer { get; set; } = 1.5f;
     private float ActionTimer = 0.0f;
 
-    protected enum EnemyState {
+    protected enum PathfinderState {
 
         Idle,
         Cooldown,
@@ -17,28 +17,28 @@ public partial class PathfindingAI : CharacterBody3D {
 
     }
 
-    protected EnemyState State = EnemyState.Idle;
+    protected PathfinderState _PathfinderState = PathfinderState.Idle;
     [Export] protected Node3D Target;
     [Export] protected NavigationAgent3D Navigator = null;
 
 
     public override void _PhysicsProcess(double delta) {
 
-        switch (State) {
+        switch (_PathfinderState) {
 
-            case EnemyState.Idle:
+            case PathfinderState.Idle:
                 Idle();
                 break;
 
-            case EnemyState.Cooldown:
+            case PathfinderState.Cooldown:
                 ActionCooldown();
                 break;
 
-            case EnemyState.WaitingToMove:
+            case PathfinderState.WaitingToMove:
                 WaitingToMove((float)delta);
                 break;
 
-            case EnemyState.Moving:
+            case PathfinderState.Moving:
                 Moving();
                 break;
 
@@ -54,7 +54,7 @@ public partial class PathfindingAI : CharacterBody3D {
         MoveAndSlide();
     }
 
-    private void Idle() {
+    protected virtual void Idle() {
 
         ActionCooldown();
 
@@ -67,7 +67,7 @@ public partial class PathfindingAI : CharacterBody3D {
 
         if (ActionTimer <= 0.0f) {
 
-            State = EnemyState.Moving;
+            _PathfinderState = PathfinderState.Moving;
 
         }
 
@@ -80,7 +80,7 @@ public partial class PathfindingAI : CharacterBody3D {
         if (Target is not null) {
 
             ActionTimer = ActionCooldownTimer;
-            State = EnemyState.WaitingToMove;
+            _PathfinderState = PathfinderState.WaitingToMove;
 
         }
 
@@ -110,7 +110,7 @@ public partial class PathfindingAI : CharacterBody3D {
     public void TargetReached() {
 
         TakeAction();
-        State = EnemyState.Cooldown;
+        _PathfinderState = PathfinderState.Cooldown;
 
     }
 

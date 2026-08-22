@@ -30,7 +30,6 @@ public partial class Player : CharacterBody3D, Hitable {
                 AccelerationBuffer = Mathf.Lerp(AccelerationBuffer, AirAcceleration, 0.5f * (float)GetProcessDeltaTime());
                 return AccelerationBuffer;
 
-
             }
 
             AccelerationBuffer = GroundAcceleration;
