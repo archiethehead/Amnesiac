@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Godot;
 
 public partial class Player : CharacterBody3D, Hitable {
@@ -103,7 +104,25 @@ public partial class Player : CharacterBody3D, Hitable {
     private PlayerState StateBuffer = PlayerState.Idle;
     private PlayerState LastState = PlayerState.Idle;
 
-    private float Health = 100.0f;
+    private float Health {
+
+        get => HealthBuffer;
+
+        set {
+
+            HealthBuffer = Mathf.Clamp(value, 0.0f, 100.0f);
+            HealthLabel.Text = string.Format("Health: {0}", Mathf.Floor(Health).ToString());
+
+            if (HealthBuffer == 0.0f) {
+
+                Die();
+            
+            }
+
+        }
+    
+    }
+    private float HealthBuffer = 100.0f;
     private float Stamina = 100.0f;
     private float StaminaCooldown = 1.0f;
 
@@ -253,7 +272,7 @@ public partial class Player : CharacterBody3D, Hitable {
             if (AbsoluteY > MaxSafeFallSpeed) {
 
                 float Damage = (AbsoluteY - MaxSafeFallSpeed) * (100 / (FatalFallSpeed - MaxSafeFallSpeed));
-                Hit(Damage);
+                Health -= Damage;
 
             }
 
@@ -537,6 +556,7 @@ public partial class Player : CharacterBody3D, Hitable {
         this.Visible = false;
         this.ProcessMode = ProcessModeEnum.Disabled;
         this.Velocity = Vector3.Zero;
+        IsDestroyed = true;
 
     }
 
@@ -551,26 +571,17 @@ public partial class Player : CharacterBody3D, Hitable {
         CameraPhysics.Reparent(this);
         CameraPhysics.Transform = CameraPos;
         Collider.Disabled = false;
+        Health = 100.0f;
         this.Visible = true;
         this.ProcessMode = ProcessModeEnum.Pausable;
+        IsDestroyed = false;
 
     }
 
     public void Hit(float damage) {
 
-
         Health -= damage;
-        Health = Mathf.Clamp(Health, 0.0f, 100.0f);
-        Health = Mathf.Floor(Health);
-
-        HealthLabel.Text = string.Format("Health: {0}", Health.ToString());
-
-        if (Health == 0.0f) {
-
-            IsDestroyed = true;
-            Die();
-
-        }
 
     }
+
 }
