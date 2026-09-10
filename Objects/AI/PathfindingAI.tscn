@@ -6,8 +6,9 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ljk2t"]
 
-[node name="AI" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("Navigator")]
+[node name="PathfindingAI" type="CharacterBody3D" unique_id=1929853051 node_paths=PackedStringArray("TempTarget", "Navigator")]
 script = ExtResource("1_b6l0p")
+TempTarget = NodePath("TempTarget")
 Navigator = NodePath("Navigator")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=847383310]
@@ -22,6 +23,10 @@ collision_mask = 3
 
 [node name="Navigator" type="NavigationAgent3D" parent="." unique_id=1284022680]
 target_desired_distance = 2.0
+avoidance_enabled = true
 debug_enabled = true
 
+[node name="TempTarget" type="Node3D" parent="." unique_id=557445106]
+
 [connection signal="target_reached" from="Navigator" to="." method="TargetReached"]
+[connection signal="velocity_computed" from="Navigator" to="." method="NavigatorVelocitySet"]

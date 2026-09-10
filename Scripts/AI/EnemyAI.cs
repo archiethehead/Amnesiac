@@ -3,37 +3,37 @@ using System;
 
 public partial class EnemyAI : PathfindingAI {
 
-    [Export] protected Area3D DetectionCollider = null;
+    protected GameManager GameManager = null;
+    [Export] private Area3D DetectionCollider = null;
 
     protected override float Speed {
 
         get {
 
-            switch (CurrentState) {
-
-                case EnemyState.Seeking:
-                    return SeekSpeed;
-
-                default:
-                    return ChaseSpeed;
-
-            }
+            if (CurrentState == EnemyState.Seeking) return SeekSpeed;
+            return ChaseSpeed;
         
         }
     
     }
 
-    protected virtual float SeekSpeed { get; } = 3.0f;
-    protected virtual float ChaseSpeed { get; } = 5.25f;
+    [Export] protected virtual float SeekSpeed { get; set; } = 3.0f;
+    [Export] protected virtual float ChaseSpeed { get; set; } = 5.25f;
 
-    private enum EnemyState { 
+    protected enum EnemyState { 
     
         Seeking,
         Chasing,
         Attacking
     
     }
-    private EnemyState CurrentState = EnemyState.Seeking;
+    protected EnemyState CurrentState = EnemyState.Seeking;
+
+    public override void _Ready() {
+
+        GameManager = GameManager.Instance;
+
+    }
 
     public override void _Process(double delta) {
 
@@ -41,12 +41,11 @@ public partial class EnemyAI : PathfindingAI {
 
     }
 
-    protected override void Idle() { }
-
     private void OnBodyEntered(Node Body) {
 
         if (Body is Player) {
 
+            Navigator.PathDesiredDistance = 1.0f;
             Target = (Node3D)Body;
             CurrentState = EnemyState.Chasing;
             _PathfinderState = PathfinderState.Moving;
@@ -55,10 +54,23 @@ public partial class EnemyAI : PathfindingAI {
     
     }
 
+    public override void TargetReached() {
+
+        if (CurrentState == EnemyState.Seeking) {
+
+            SetRandomTargetLocation();
+            return;
+        
+        }
+
+        base.TargetReached();
+
+    }
+
     protected override void TakeAction() {
 
-        Attack();
-    
+        if (CurrentState == EnemyState.Attacking) Attack();
+
     }
 
     protected virtual void Attack() { }

@@ -12,6 +12,7 @@ public partial class GameManager : Node3D {
     public Console Console = null;
     public Weather Weather = null;
     public Input.MouseModeEnum MouseMode { get; set; }
+    public readonly RandomNumberGenerator RNG = new RandomNumberGenerator();
 
     [Export] private Label DebugLabel;
 

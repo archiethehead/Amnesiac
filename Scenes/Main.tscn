@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dj3pyf3swis54" path="res://Objects/Tools/LeadPipe.tscn" id="9_vy5pj"]
 [ext_resource type="Script" uid="uid://cij36hpqc46c" path="res://addons/func_godot/src/import/quake_wad_file.gd" id="10_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://8bi3vfif35hl" path="res://Objects/Destructibles/Vase.tscn" id="10_bmxlf"]
+[ext_resource type="PackedScene" uid="uid://bruixmf2mvr4y" path="res://Objects/AI/Empty.tscn" id="13_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://cti6k1rfa87bt" path="res://Objects/Level/EventTrigger.tscn" id="13_frkhe"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_tu013"]
@@ -319,3 +320,6 @@ script = SubResource("GDScript_grg3l")
 
 [node name="Player" parent="." unique_id=1929853051 instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.220648, 1.5, -8.932891)
+
+[node name="Empty" parent="." unique_id=731038802 instance=ExtResource("13_1p5hy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7855177, 1.5000005, -7.4311237)

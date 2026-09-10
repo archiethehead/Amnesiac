@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bruixmf2mvr4y"]
+
+[ext_resource type="PackedScene" uid="uid://cdyeeewhddopx" path="res://Objects/AI/EnemyAI.tscn" id="1_xkeor"]
+[ext_resource type="Script" uid="uid://dipel0bjk6dy2" path="res://Scripts/AI/Empty.cs" id="2_pgoaj"]
+
+[node name="Empty" unique_id=1929853051 instance=ExtResource("1_xkeor")]
+script = ExtResource("2_pgoaj")
+
+[node name="Navigator" parent="." index="3" unique_id=1284022680]
+avoidance_enabled = false
