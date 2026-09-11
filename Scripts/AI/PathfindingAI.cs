@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class PathfindingAI : CharacterBody3D {
 
@@ -23,7 +24,6 @@ public partial class PathfindingAI : CharacterBody3D {
     [Export] protected Node3D TempTarget = null;
     [Export] protected Node3D Target = null;
     [Export] protected NavigationAgent3D Navigator = null;
-
 
     public override void _PhysicsProcess(double delta) {
 
@@ -88,20 +88,12 @@ public partial class PathfindingAI : CharacterBody3D {
 
     protected void Moving() {
 
-        if (IsOnWall() && IsOnFloor()) {
-
-            Vector3 velocity = Velocity;
-            velocity.Y = JumpVelocity;
-            Velocity = velocity;
-
-        }
-
         Navigator.TargetPosition = Target.GlobalTransform.Origin;
         Vector3 CurrentPosition = this.GlobalTransform.Origin;
         Vector3 NextPosition = Navigator.GetNextPathPosition();
         Vector3 Direction = (NextPosition - CurrentPosition).Normalized();
         Vector3 NewVelocity = Direction * Speed;
-        Velocity = NewVelocity;
+        Navigator.Velocity = NewVelocity;
 
     }
 
@@ -110,16 +102,15 @@ public partial class PathfindingAI : CharacterBody3D {
     protected virtual void SetRandomTargetLocation() {
 
         TempTarget.Reparent(this);
-        float OffsetX = GameManager.Instance.RNG.RandfRange(0.5f, 1.5f) * GameManager.Instance.RNG.Randf() < 0.5f ? -RandomPathDistance : RandomPathDistance;
-        float OffsetZ = GameManager.Instance.RNG.RandfRange(0.5f, 1.5f) * GameManager.Instance.RNG.Randf() < 0.5f ? -RandomPathDistance : RandomPathDistance;
-        Vector3 RandomTargetPosition = GlobalTransform.Origin + new Vector3(OffsetX, 0.0f, OffsetZ);
-        TempTarget.GlobalPosition = RandomTargetPosition;
+        Vector3 RandomPoint = NavigationServer3D.MapGetRandomPoint(GetWorld3D().NavigationMap, 1, true);
+        TempTarget.GlobalPosition = RandomPoint; 
         Target = TempTarget;
         TempTarget.Reparent(GameManager.Instance);
+        GameManager.Instance.DebugOut("Random Point: {0}", RandomPoint);
 
     }
 
-    public virtual void TargetReached() {
+    public virtual void NavigationFinished() {
 
         TakeAction();
         _PathfinderState = PathfinderState.Cooldown;
@@ -131,7 +122,7 @@ public partial class PathfindingAI : CharacterBody3D {
         if (IsOnFloor()) {
 
             Velocity = Navigator.Velocity.MoveToward(SafeVelocity, 0.25f);
-        
+
         }
     
     }

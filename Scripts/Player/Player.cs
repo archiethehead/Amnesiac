@@ -212,7 +212,6 @@ public partial class Player : CharacterBody3D, Hitable {
 
         HorizontalVelocity = new Vector2(Velocity.X, Velocity.Z).Length();
 
-        GameManager.DebugOut("Acceleration: {0} \nFriction: {1}", Acceleration, Friction);
         PlayerStatsProcess(delta);
         InteractProcess(delta);
 

@@ -6,5 +6,10 @@
 [node name="Empty" unique_id=1929853051 instance=ExtResource("1_xkeor")]
 script = ExtResource("2_pgoaj")
 
+[node name="RayCast" type="RayCast3D" parent="." index="2" unique_id=1997520734]
+transform = Transform3D(0.1, 0, 0, 0, -1.3113416e-07, -0.1, 0, 3, -4.371139e-09, 0, 1, 0)
+collision_mask = 3
+
 [node name="Navigator" parent="." index="3" unique_id=1284022680]
-avoidance_enabled = false
+path_desired_distance = 1.0
+target_desired_distance = 1.0

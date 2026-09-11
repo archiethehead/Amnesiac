@@ -35,17 +35,22 @@ public partial class EnemyAI : PathfindingAI {
 
     }
 
-    public override void _Process(double delta) {
+    public override void _PhysicsProcess(double delta) {
+
+        // Pathfinder process does all of the Velocity calculations
+        // and MUST be called before the MoveAndSlide/Gravity handling
+        // in the inherited physics process, in order for our Velocity
+        // calculations to actually be applied.
 
         PathfinderProcess(delta);
-
+        base._PhysicsProcess(delta);
+    
     }
 
     private void OnBodyEntered(Node Body) {
 
         if (Body is Player) {
 
-            Navigator.PathDesiredDistance = 1.0f;
             Target = (Node3D)Body;
             CurrentState = EnemyState.Chasing;
             _PathfinderState = PathfinderState.Moving;
@@ -54,16 +59,16 @@ public partial class EnemyAI : PathfindingAI {
     
     }
 
-    public override void TargetReached() {
+    public override void NavigationFinished() {
 
-        if (CurrentState == EnemyState.Seeking) {
+         if (CurrentState == EnemyState.Seeking) {
 
             SetRandomTargetLocation();
             return;
         
         }
 
-        base.TargetReached();
+        base.NavigationFinished();
 
     }
 
