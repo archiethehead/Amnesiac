@@ -18,16 +18,37 @@ public partial class EnemyAI : PathfindingAI {
     }
 
     [Export] protected virtual float SeekSpeed { get; set; } = 3.0f;
-    [Export] protected virtual float ChaseSpeed { get; set; } = 5.25f;
+    [Export] protected virtual float ChaseSpeed { get; set; } = 2.25f;
+
+    protected virtual float AttackCooldown { get; } = 1.0f;
+    private float AttackCooldownTimer = 0.0f;
+
+    protected virtual float PlayerLostThreshold { get; } = 1.0f;
+    private float PlayerLostTimer = 0.0f;
 
     protected enum EnemyState { 
     
         Seeking,
         Chasing,
-        Attacking
+        Attacking,
+        Cooldown
     
     }
-    protected EnemyState CurrentState = EnemyState.Seeking;
+    protected EnemyState CurrentState {
+
+        get => StateBuffer;
+        
+        set {
+
+            PreviousState = StateBuffer;
+            StateBuffer = value;
+        
+        }
+
+    }
+    protected EnemyState StateBuffer = EnemyState.Seeking;
+    protected EnemyState PreviousState = EnemyState.Seeking;
+    protected bool PlayerLost = false;
 
     protected bool IsStuck {
 
@@ -38,7 +59,25 @@ public partial class EnemyAI : PathfindingAI {
         }
 
     }
-    private float StuckTimerThreshold = 1.0f;
+    private float StuckTimerThreshold {
+
+        get {
+
+            switch (CurrentState) {
+
+                case EnemyState.Seeking:
+                    return 1.0f;
+
+                default:
+                    return 5.0f;
+
+            
+            }
+        
+        }
+    
+    }
+    
     private float StuckTimer = 0.0f;
 
 
@@ -50,8 +89,7 @@ public partial class EnemyAI : PathfindingAI {
 
     public override void _PhysicsProcess(double delta) {
 
-
-        if (IsStuck) {
+        if (IsStuck && CurrentState != EnemyState.Attacking) {
 
             StuckTimer += (float)delta;
 
@@ -71,7 +109,31 @@ public partial class EnemyAI : PathfindingAI {
 
         }
 
-        GameManager.Instance.DebugOut("StuckTimer {0}", StuckTimer);
+        if (CurrentState == EnemyState.Cooldown) {
+
+            AttackCooldownTimer += 1.0f * (float)delta;
+
+            if (AttackCooldownTimer >= AttackCooldown) {
+
+                AttackCooldownTimer = 0.0f;
+                CurrentState = EnemyState.Chasing;
+
+            }
+
+        }
+
+        if (PlayerLost && CurrentState == EnemyState.Chasing) {
+
+            PlayerLostTimer += 1.0f * (float)delta;
+
+            if (PlayerLostTimer >= PlayerLostThreshold) {
+
+                PlayerLostTimer = 0.0f;
+                CurrentState = EnemyState.Seeking;
+
+            }
+
+        }
 
         // Pathfinder process does all of the Velocity calculations
         // and MUST be called before the MoveAndSlide/Gravity handling
@@ -87,6 +149,7 @@ public partial class EnemyAI : PathfindingAI {
 
         if (Body is Player) {
 
+            PlayerLost = false;
             Target = (Node3D)Body;
             CurrentState = EnemyState.Chasing;
             _PathfinderState = PathfinderState.Moving;
@@ -95,12 +158,28 @@ public partial class EnemyAI : PathfindingAI {
     
     }
 
+    private void OnBodyExited(Node Body) {
+
+        if (Body is Player) {
+
+            PlayerLost = true;
+
+        }
+    
+    }
+
     public override void NavigationFinished() {
 
-         if (CurrentState == EnemyState.Seeking) {
+        if (CurrentState == EnemyState.Seeking) {
 
             SetRandomTargetLocation();
             return;
+
+        }
+
+        else if (CurrentState == EnemyState.Chasing) {
+
+            CurrentState = EnemyState.Attacking;
         
         }
 
@@ -111,6 +190,7 @@ public partial class EnemyAI : PathfindingAI {
     protected override void TakeAction() {
 
         if (CurrentState == EnemyState.Attacking) Attack();
+        CurrentState = EnemyState.Cooldown;
 
     }
 

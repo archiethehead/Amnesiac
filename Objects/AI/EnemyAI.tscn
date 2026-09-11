@@ -19,3 +19,4 @@ transform = Transform3D(-4.371139e-08, -3, 0, 1, -1.3113416e-07, 0, 0, 0, 5, 3.0
 shape = SubResource("ConcavePolygonShape3D_ivl12")
 
 [connection signal="body_entered" from="DetectionCone" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="DetectionCone" to="." method="OnBodyExited"]

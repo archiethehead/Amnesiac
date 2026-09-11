@@ -9,7 +9,8 @@ public partial class PathfindingAI : CharacterBody3D {
 
     protected virtual float Speed { get; } = 3.0f;
     protected virtual float ActionCooldownTimer { get; set; } = 1.5f;
-    private float ActionTimer = 0.0f;
+    protected virtual float NavigatorCooldown { get; } = 1.0f;
+    private float NavigatorCooldownTimer = 0.0f;
 
     protected enum PathfinderState {
 
@@ -44,7 +45,7 @@ public partial class PathfindingAI : CharacterBody3D {
                 break;
 
             case PathfinderState.Cooldown:
-                ActionCooldown();
+                Cooldown();
                 break;
 
             case PathfinderState.WaitingToMove:
@@ -64,23 +65,24 @@ public partial class PathfindingAI : CharacterBody3D {
 
     private void WaitingToMove(float delta) {
 
-        ActionTimer -= 1.0f * delta;
+        NavigatorCooldownTimer += 1.0f * delta;
 
-        if (ActionTimer <= 0.0f) {
+        if (NavigatorCooldownTimer >= NavigatorCooldown) {
 
+            NavigatorCooldownTimer = 0.0f;
             _PathfinderState = PathfinderState.Moving;
 
         }
 
     }
 
-    private void ActionCooldown() {
+    private void Cooldown() {
 
         Velocity = Vector3.Zero;
 
         if (Target is not null) {
 
-            ActionTimer = ActionCooldownTimer;
+            NavigatorCooldownTimer = ActionCooldownTimer;
             _PathfinderState = PathfinderState.WaitingToMove;
 
         }
@@ -133,7 +135,6 @@ public partial class PathfindingAI : CharacterBody3D {
     public virtual void NavigationFinished() {
 
         TakeAction();
-        _PathfinderState = PathfinderState.Cooldown;
 
     }
 
