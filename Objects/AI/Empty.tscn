@@ -11,5 +11,7 @@ transform = Transform3D(0.1, 0, 0, 0, -1.3113416e-07, -0.1, 0, 3, -4.371139e-09,
 collision_mask = 3
 
 [node name="Navigator" parent="." index="3" unique_id=1284022680]
-path_desired_distance = 1.0
-target_desired_distance = 1.0
+height = 1.0
+
+[node name="DetectionCone" parent="." index="5" unique_id=108904667]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)

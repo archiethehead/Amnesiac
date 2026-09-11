@@ -29,6 +29,19 @@ public partial class EnemyAI : PathfindingAI {
     }
     protected EnemyState CurrentState = EnemyState.Seeking;
 
+    protected bool IsStuck {
+
+        get {
+
+            return IsOnWall() && IsOnFloor();
+
+        }
+
+    }
+    private float StuckTimerThreshold = 1.0f;
+    private float StuckTimer = 0.0f;
+
+
     public override void _Ready() {
 
         GameManager = GameManager.Instance;
@@ -36,6 +49,29 @@ public partial class EnemyAI : PathfindingAI {
     }
 
     public override void _PhysicsProcess(double delta) {
+
+
+        if (IsStuck) {
+
+            StuckTimer += (float)delta;
+
+        }
+
+        else {
+
+            StuckTimer = 0.0f;
+
+        }
+
+        if (StuckTimer >= StuckTimerThreshold) {
+
+            StuckTimer = 0.0f;
+            CurrentState = EnemyState.Seeking;
+            SetRandomTargetLocation();
+
+        }
+
+        GameManager.Instance.DebugOut("StuckTimer {0}", StuckTimer);
 
         // Pathfinder process does all of the Velocity calculations
         // and MUST be called before the MoveAndSlide/Gravity handling

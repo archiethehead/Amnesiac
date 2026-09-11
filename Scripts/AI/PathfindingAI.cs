@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 public partial class PathfindingAI : CharacterBody3D {
@@ -7,7 +8,6 @@ public partial class PathfindingAI : CharacterBody3D {
     [Export(PropertyHint.None, "suffix:m")] private float RandomPathDistance = 5.0f;
 
     protected virtual float Speed { get; } = 3.0f;
-    protected virtual float JumpVelocity { get; set; } = 6.0f;
     protected virtual float ActionCooldownTimer { get; set; } = 1.5f;
     private float ActionTimer = 0.0f;
 
@@ -24,6 +24,7 @@ public partial class PathfindingAI : CharacterBody3D {
     [Export] protected Node3D TempTarget = null;
     [Export] protected Node3D Target = null;
     [Export] protected NavigationAgent3D Navigator = null;
+
 
     public override void _PhysicsProcess(double delta) {
 
@@ -51,7 +52,7 @@ public partial class PathfindingAI : CharacterBody3D {
                 break;
 
             case PathfinderState.Moving:
-                Moving();
+                Moving(delta);
                 break;
 
 
@@ -86,7 +87,7 @@ public partial class PathfindingAI : CharacterBody3D {
 
     }
 
-    protected void Moving() {
+    protected void Moving(double delta) {
 
         Navigator.TargetPosition = Target.GlobalTransform.Origin;
         Vector3 CurrentPosition = this.GlobalTransform.Origin;
@@ -94,7 +95,27 @@ public partial class PathfindingAI : CharacterBody3D {
         Vector3 Direction = (NextPosition - CurrentPosition).Normalized();
         Vector3 NewVelocity = Direction * Speed;
         Navigator.Velocity = NewVelocity;
+        Vector3 NewRotation = Navigator.GetNextPathPosition() - GlobalPosition;
+        NewRotation.Y = 0.0f;
+        GlobalRotation = RotateTowards(GlobalRotation, NewRotation, 4.0f * (float)delta);
 
+    }
+
+
+    // u/DaWeedM (n.d.).
+    // How to make an object always “look at” the camera without using lookat().
+    // Reddit.
+    // Available at: https://www.reddit.com/r/godot/comments/1gdire7/how_to_make_an_object_always_look_at_the_camera
+    // [Accessed 11 Sept. 2026].
+    
+    public Vector3 RotateTowards(Vector3 _currentRotation, Vector3 _direction, float _lerpValue) {
+    
+        if (_direction.LengthSquared() == 0) return _currentRotation;
+
+        float yRotation = Mathf.LerpAngle(_currentRotation.Y, Mathf.Atan2(_direction.X, _direction.Z), _lerpValue);
+        Vector3 rotationSmoothed = new Vector3(_currentRotation.X, yRotation, _currentRotation.Z);
+        return rotationSmoothed;
+    
     }
 
     protected virtual void TakeAction() { }
@@ -106,7 +127,6 @@ public partial class PathfindingAI : CharacterBody3D {
         TempTarget.GlobalPosition = RandomPoint; 
         Target = TempTarget;
         TempTarget.Reparent(GameManager.Instance);
-        GameManager.Instance.DebugOut("Random Point: {0}", RandomPoint);
 
     }
 
