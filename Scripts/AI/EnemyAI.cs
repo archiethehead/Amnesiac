@@ -130,6 +130,7 @@ public partial class EnemyAI : PathfindingAI {
 
                 PlayerLostTimer = 0.0f;
                 CurrentState = EnemyState.Seeking;
+                SetRandomTargetLocation();
 
             }
 

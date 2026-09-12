@@ -23,7 +23,25 @@ public partial class PathfindingAI : CharacterBody3D {
 
     protected PathfinderState _PathfinderState = PathfinderState.Idle;
     [Export] protected Node3D TempTarget = null;
-    [Export] protected Node3D Target = null;
+    [Export] protected Node3D Target {
+
+        get => TargetBuffer;
+
+        set {
+
+            TargetBuffer = value;
+            IsMovingTarget = false;
+
+            if (value is not null)
+                Navigator.TargetPosition = value.GlobalPosition;
+
+        }
+
+    }
+
+    Node3D TargetBuffer = null;
+    bool IsMovingTarget = false;
+    
     [Export] protected NavigationAgent3D Navigator = null;
 
 
@@ -91,15 +109,16 @@ public partial class PathfindingAI : CharacterBody3D {
 
     protected void Moving(double delta) {
 
-        Navigator.TargetPosition = Target.GlobalTransform.Origin;
-        Vector3 CurrentPosition = this.GlobalTransform.Origin;
-        Vector3 NextPosition = Navigator.GetNextPathPosition();
-        Vector3 Direction = (NextPosition - CurrentPosition).Normalized();
-        Vector3 NewVelocity = Direction * Speed;
-        Navigator.Velocity = NewVelocity;
-        Vector3 NewRotation = Navigator.GetNextPathPosition() - GlobalPosition;
-        NewRotation.Y = 0.0f;
-        GlobalRotation = RotateTowards(GlobalRotation, NewRotation, 4.0f * (float)delta);
+        if (Navigator.TargetPosition != Target.GlobalPosition && !IsMovingTarget)
+            IsMovingTarget = true;
+
+        if (IsMovingTarget)
+            Navigator.TargetPosition = Target.GlobalPosition;
+            
+        Vector3 Direction = (Navigator.GetNextPathPosition() - GlobalPosition);
+        Navigator.Velocity = Direction.Normalized() * Speed;
+        Direction.Y = 0.0f;
+        GlobalRotation = RotateTowards(GlobalRotation, Direction, 4.0f * (float)delta);
 
     }
 
