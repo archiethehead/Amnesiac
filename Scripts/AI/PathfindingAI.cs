@@ -12,16 +12,6 @@ public partial class PathfindingAI : CharacterBody3D {
     protected virtual float NavigatorCooldown { get; } = 1.0f;
     private float NavigatorCooldownTimer = 0.0f;
 
-    protected enum PathfinderState {
-
-        Idle,
-        Cooldown,
-        WaitingToMove,
-        Moving
-
-    }
-
-    protected PathfinderState _PathfinderState = PathfinderState.Idle;
     [Export] protected Node3D TempTarget = null;
     [Export] protected Node3D Target {
 
@@ -38,7 +28,6 @@ public partial class PathfindingAI : CharacterBody3D {
 
     }
     private Node3D TargetBuffer = null;
-    
     [Export] protected NavigationAgent3D Navigator = null;
 
 
@@ -49,59 +38,6 @@ public partial class PathfindingAI : CharacterBody3D {
         }
 
         MoveAndSlide();
-    }
-
-    protected void PathfinderProcess(double delta) {
-
-        switch (_PathfinderState) {
-
-            case PathfinderState.Idle:
-                Idle();
-                break;
-
-            case PathfinderState.Cooldown:
-                Cooldown();
-                break;
-
-            case PathfinderState.WaitingToMove:
-                WaitingToMove((float)delta);
-                break;
-
-            case PathfinderState.Moving:
-                Moving(delta);
-                break;
-
-
-        }
-
-    }
-
-    protected virtual void Idle() { }
-
-    private void WaitingToMove(float delta) {
-
-        NavigatorCooldownTimer += 1.0f * delta;
-
-        if (NavigatorCooldownTimer >= NavigatorCooldown) {
-
-            NavigatorCooldownTimer = 0.0f;
-            _PathfinderState = PathfinderState.Moving;
-
-        }
-
-    }
-
-    private void Cooldown() {
-
-        Velocity = Vector3.Zero;
-
-        if (Target is not null) {
-
-            NavigatorCooldownTimer = ActionCooldownTimer;
-            _PathfinderState = PathfinderState.WaitingToMove;
-
-        }
-
     }
 
     protected void Moving(double delta) {
@@ -123,7 +59,7 @@ public partial class PathfindingAI : CharacterBody3D {
     // Available at: https://www.reddit.com/r/godot/comments/1gdire7/how_to_make_an_object_always_look_at_the_camera
     // [Accessed 11 Sept. 2026].
     
-    public Vector3 RotateTowards(Vector3 _currentRotation, Vector3 _direction, float _lerpValue) {
+    protected Vector3 RotateTowards(Vector3 _currentRotation, Vector3 _direction, float _lerpValue) {
     
         if (_direction.LengthSquared() == 0) 
             return _currentRotation;
@@ -134,9 +70,7 @@ public partial class PathfindingAI : CharacterBody3D {
     
     }
 
-    protected virtual void TakeAction() { }
-
-    protected virtual void SetRandomTargetLocation() {
+    protected void SetRandomTargetLocation() {
 
         TempTarget.Reparent(this);
         Vector3 RandomPoint = NavigationServer3D.MapGetRandomPoint(GetWorld3D().NavigationMap, 1, true);
@@ -146,19 +80,12 @@ public partial class PathfindingAI : CharacterBody3D {
 
     }
 
-    public virtual void NavigationFinished() {
-
-        TakeAction();
-
-    }
+    public virtual void NavigationFinished() {}
 
     public void NavigatorVelocitySet(Vector3 SafeVelocity) {
 
-        if (IsOnFloor()) {
-
+        if (IsOnFloor())
             Velocity = Navigator.Velocity.MoveToward(SafeVelocity, 0.25f);
-
-        }
     
     }
 

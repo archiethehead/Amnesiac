@@ -10,13 +10,14 @@ public partial class EnemyAI : PathfindingAI {
 
         get {
 
-            if (CurrentState == EnemyState.Seeking) return SeekSpeed;
+            if (CurrentState == EnemyState.Seeking) 
+                return SeekSpeed;
+            
             return ChaseSpeed;
         
         }
     
     }
-
     [Export] protected virtual float SeekSpeed { get; set; } = 3.0f;
     [Export] protected virtual float ChaseSpeed { get; set; } = 2.25f;
 
@@ -141,7 +142,9 @@ public partial class EnemyAI : PathfindingAI {
         // in the inherited physics process, in order for our Velocity
         // calculations to actually be applied.
 
-        PathfinderProcess(delta);
+        if (CurrentState != EnemyState.Cooldown)
+            Moving(delta);
+
         base._PhysicsProcess(delta);
     
     }
@@ -153,7 +156,6 @@ public partial class EnemyAI : PathfindingAI {
             PlayerLost = false;
             Target = (Node3D)Body;
             CurrentState = EnemyState.Chasing;
-            _PathfinderState = PathfinderState.Moving;
 
         }
     
@@ -184,14 +186,12 @@ public partial class EnemyAI : PathfindingAI {
         
         }
 
-        base.NavigationFinished();
+        if (CurrentState == EnemyState.Attacking) {
+         
+            Attack();
+            CurrentState = EnemyState.Cooldown;
 
-    }
-
-    protected override void TakeAction() {
-
-        if (CurrentState == EnemyState.Attacking) Attack();
-        CurrentState = EnemyState.Cooldown;
+        }
 
     }
 

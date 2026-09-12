@@ -9,7 +9,7 @@ public partial class Empty : EnemyAI {
 
         base._Ready();
         SetRandomTargetLocation();
-        _PathfinderState = PathfinderState.Moving;
+
 
     }
 
@@ -32,8 +32,6 @@ public partial class Empty : EnemyAI {
             } 
 
         }
-
-        _PathfinderState = PathfinderState.Cooldown;
 
     }
     
