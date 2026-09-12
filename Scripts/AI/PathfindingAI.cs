@@ -30,7 +30,6 @@ public partial class PathfindingAI : CharacterBody3D {
         set {
 
             TargetBuffer = value;
-            IsMovingTarget = false;
 
             if (value is not null)
                 Navigator.TargetPosition = value.GlobalPosition;
@@ -38,9 +37,7 @@ public partial class PathfindingAI : CharacterBody3D {
         }
 
     }
-
-    Node3D TargetBuffer = null;
-    bool IsMovingTarget = false;
+    private Node3D TargetBuffer = null;
     
     [Export] protected NavigationAgent3D Navigator = null;
 
@@ -109,10 +106,7 @@ public partial class PathfindingAI : CharacterBody3D {
 
     protected void Moving(double delta) {
 
-        if (Navigator.TargetPosition != Target.GlobalPosition && !IsMovingTarget)
-            IsMovingTarget = true;
-
-        if (IsMovingTarget)
+        if (Navigator.TargetPosition != Target.GlobalPosition)
             Navigator.TargetPosition = Target.GlobalPosition;
             
         Vector3 Direction = (Navigator.GetNextPathPosition() - GlobalPosition);
@@ -131,7 +125,8 @@ public partial class PathfindingAI : CharacterBody3D {
     
     public Vector3 RotateTowards(Vector3 _currentRotation, Vector3 _direction, float _lerpValue) {
     
-        if (_direction.LengthSquared() == 0) return _currentRotation;
+        if (_direction.LengthSquared() == 0) 
+            return _currentRotation;
 
         float yRotation = Mathf.LerpAngle(_currentRotation.Y, Mathf.Atan2(_direction.X, _direction.Z), _lerpValue);
         Vector3 rotationSmoothed = new Vector3(_currentRotation.X, yRotation, _currentRotation.Z);
