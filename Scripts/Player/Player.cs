@@ -19,6 +19,17 @@ public partial class Player : CharacterBody3D, Hitable {
     [Export(PropertyHint.None, "suffix:%/s")] private float StaminaLossRate = 20.0f;
     [Export(PropertyHint.None, "suffix:%/s")] private float StaminaGainRate = 10.0f;
 
+    [Export(PropertyHint.None, "suffix:s")]
+    private float StaminaCooldownThreshold {
+
+        get => StamindaCooldown.Threshold;
+        set => StamindaCooldown.Threshold = value;
+
+
+    }
+
+    private Countdown StamindaCooldown = new Countdown(1.5f);
+
     private float FrictionBuffer = 0.0f;
     private float AccelerationBuffer = 0.0f;
 
@@ -124,7 +135,6 @@ public partial class Player : CharacterBody3D, Hitable {
     }
     private float HealthBuffer = 100.0f;
     private float Stamina = 100.0f;
-    private float StaminaCooldown = 1.0f;
 
     private float Speed {
 
@@ -427,12 +437,9 @@ public partial class Player : CharacterBody3D, Hitable {
 
         else {
 
-            StaminaCooldown -= 1.0f * (float)delta;
-
-            if (StaminaCooldown <= 0.0f) {
+            if (StamindaCooldown.LogTime(delta)) {
 
                 Stamina += StaminaGainRate * (float)delta;
-                StaminaCooldown = 1.0f;
 
             }
 
@@ -484,7 +491,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
         if (Throwing) {
 
-            if (ThrowForce < 60.0f) {
+            if (ThrowForce < MaxThrowForce) {
 
                 ThrowForce += (float)((MaxThrowForce / TimeToMax) * delta);
                 Arc += (float)((MaxArc / TimeToMax) * delta);
@@ -492,7 +499,7 @@ public partial class Player : CharacterBody3D, Hitable {
 
             }
 
-            else if (ThrowForce > 60.0f) {
+            else if (ThrowForce > MaxThrowForce) {
 
                 Mathf.Clamp(ThrowForce, 0.0f, MaxThrowForce);
                 Mathf.Clamp(Arc, 0.0f, MaxArc);

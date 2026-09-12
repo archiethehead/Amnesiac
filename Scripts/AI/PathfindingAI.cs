@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 public partial class PathfindingAI : CharacterBody3D {
 
-    [Export(PropertyHint.None, "suffix:m")] private float RandomPathDistance = 5.0f;
-
+    [Export(PropertyHint.None, "suffix:m")] protected float RandomPathDistance = 5.0f;
     protected virtual float Speed { get; } = 3.0f;
-    protected virtual float ActionCooldownTimer { get; set; } = 1.5f;
-    protected virtual float NavigatorCooldown { get; } = 1.0f;
-    private float NavigatorCooldownTimer = 0.0f;
 
     [Export] protected Node3D TempTarget = null;
     [Export] protected Node3D Target {

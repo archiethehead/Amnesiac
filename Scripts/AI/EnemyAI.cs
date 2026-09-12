@@ -18,14 +18,23 @@ public partial class EnemyAI : PathfindingAI {
         }
     
     }
-    [Export] protected virtual float SeekSpeed { get; set; } = 3.0f;
-    [Export] protected virtual float ChaseSpeed { get; set; } = 2.25f;
+    [Export] protected float SeekSpeed = 3.0f;
+    [Export] protected float ChaseSpeed = 3.5f;
 
-    protected virtual float AttackCooldown { get; } = 1.0f;
-    private float AttackCooldownTimer = 0.0f;
 
-    protected virtual float PlayerLostThreshold { get; } = 1.0f;
-    private float PlayerLostTimer = 0.0f;
+    [Export] protected float AttackCooldownThreshold {
+
+        get => AttackCooldown.Threshold;
+        set => AttackCooldown.Threshold = value;
+    }
+    private Countdown AttackCooldown = new Countdown();
+
+    [Export] protected float PlayerLostThreshold {
+
+        get => PlayerLostCountdown.Threshold;
+        set => PlayerLostCountdown.Threshold = value;
+    }
+    private Countdown PlayerLostCountdown = new Countdown();
 
     protected enum EnemyState { 
     
@@ -112,11 +121,8 @@ public partial class EnemyAI : PathfindingAI {
 
         if (CurrentState == EnemyState.Cooldown) {
 
-            AttackCooldownTimer += 1.0f * (float)delta;
+            if (AttackCooldown.LogTime(delta)) {
 
-            if (AttackCooldownTimer >= AttackCooldown) {
-
-                AttackCooldownTimer = 0.0f;
                 CurrentState = EnemyState.Chasing;
 
             }
@@ -125,11 +131,10 @@ public partial class EnemyAI : PathfindingAI {
 
         if (PlayerLost && CurrentState == EnemyState.Chasing) {
 
-            PlayerLostTimer += 1.0f * (float)delta;
+            
 
-            if (PlayerLostTimer >= PlayerLostThreshold) {
+            if (PlayerLostCountdown.LogTime(delta)) {
 
-                PlayerLostTimer = 0.0f;
                 CurrentState = EnemyState.Seeking;
                 SetRandomTargetLocation();
 

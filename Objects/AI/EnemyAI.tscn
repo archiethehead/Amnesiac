@@ -11,6 +11,8 @@ script = ExtResource("2_lrn7b")
 DetectionCollider = NodePath("DetectionCone")
 SeekSpeed = 3.0
 ChaseSpeed = 5.25
+AttackCooldownThreshold = 1.5
+PlayerLostThreshold = 3.0
 
 [node name="DetectionCone" type="Area3D" parent="." index="4" unique_id=108904667]
 
