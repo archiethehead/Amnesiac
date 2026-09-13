@@ -90,6 +90,34 @@ public partial class EnemyAI : PathfindingAI {
 
     }
 
+    protected float VelocityMagnitude {
+
+        get {
+
+            float delta = (float)GetProcessDeltaTime();
+
+            if (delta < 0.0f) return 0.0f;
+
+            return (CurrentGlobalPositionBuffer - PreviousGlobalPosition).Length() / delta;
+        
+        }
+    
+    }
+    private Vector3 CurrentGlobalPosition {
+
+        get => CurrentGlobalPositionBuffer;
+
+        set {
+
+            PreviousGlobalPosition = CurrentGlobalPositionBuffer;
+            CurrentGlobalPositionBuffer = value;
+        
+        }
+    
+    }
+    private Vector3 CurrentGlobalPositionBuffer;
+    private Vector3 PreviousGlobalPosition;
+
     [Export] protected float ChasingStuckTimerThreshold = 5.0f;
     [Export] protected float StuckTimerThreshold = 1.0f;
     private Countdown StuckCountdown = new Countdown(1.0f);
@@ -99,15 +127,18 @@ public partial class EnemyAI : PathfindingAI {
 
     public override void _Ready() {
 
+        CurrentGlobalPositionBuffer = GlobalPosition;
         GameManager = GameManager.Instance;
 
     }
 
     public override void _PhysicsProcess(double delta) {
 
-        GameManager.DebugOut("Empty Stuck Timer: {0}", StuckCountdown.ExposedTimer);
+        CurrentGlobalPosition = GlobalPosition;
 
-        if (IsStuck) {
+        GameManager.DebugOut("Empty Stuck Timer: {0} \nVelocity Magnitude: {1}", StuckCountdown.ExposedTimer, VelocityMagnitude  );
+
+        if (IsStuck && (VelocityMagnitude < 1.0f) && CurrentState != EnemyState.Cooldown) {
 
             if (StuckCountdown.LogTime(delta)) {
 
