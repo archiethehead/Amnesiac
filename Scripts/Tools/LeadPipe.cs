@@ -18,7 +18,7 @@ public partial class LeadPipe : ToolBase {
         HitCast.ForceRaycastUpdate();
         if (HitCast.IsColliding() && HitCast.GetCollider() is Hitable h && h.IsHittable) {
 
-            h.Hit(0.0f);
+            h.Hit(20.0f);
 
         }
 

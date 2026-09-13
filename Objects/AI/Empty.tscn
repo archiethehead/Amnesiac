@@ -6,7 +6,6 @@
 [node name="Empty" unique_id=1929853051 node_paths=PackedStringArray("HitCast") instance=ExtResource("1_xkeor")]
 script = ExtResource("2_pgoaj")
 HitCast = NodePath("RayCast")
-AttackCooldownThreshold = 0.5
 ChasingStuckTimerThreshold = 5.0
 StuckTimerThreshold = 1.0
 

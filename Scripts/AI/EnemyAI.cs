@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class EnemyAI : PathfindingAI {
+public partial class EnemyAI : PathfindingAI, Hitable {
 
     protected GameManager GameManager = null;
     [Export] private Area3D DetectionCollider = null;
@@ -20,6 +20,29 @@ public partial class EnemyAI : PathfindingAI {
     }
     [Export] protected float SeekSpeed = 3.0f;
     [Export] protected float ChaseSpeed = 3.5f;
+
+    private float Health {
+
+        get => HealthBuffer;
+
+        set {
+
+            HealthBuffer = Mathf.Clamp(value, 0.0f, 100.0f);
+
+            if (CurrentState == EnemyState.Seeking) {
+             
+                Target = GameManager.Player;
+                CurrentState = EnemyState.Chasing;
+
+            }
+
+            if (HealthBuffer == 0.0f)
+                this.QueueFree();
+
+        }
+
+    }
+    private float HealthBuffer = 100.0f;
 
 
     [Export] protected float AttackCooldownThreshold {
@@ -115,6 +138,11 @@ public partial class EnemyAI : PathfindingAI {
         }
     
     }
+
+    public bool IsHittable { get; protected set; } = true;
+    public bool IsDestroyed { get; protected set; } = false;
+    public float BreakSpeed { get; protected set; } = 1.0f;
+
     private Vector3 CurrentGlobalPositionBuffer;
     private Vector3 PreviousGlobalPosition;
 
@@ -133,6 +161,8 @@ public partial class EnemyAI : PathfindingAI {
     }
 
     public override void _PhysicsProcess(double delta) {
+
+        GameManager.DebugOut("Empty Health: {0}", Health);
 
         CurrentGlobalPosition = GlobalPosition;
 
@@ -224,4 +254,9 @@ public partial class EnemyAI : PathfindingAI {
 
     protected virtual void Attack() { }
 
+    public void Hit(float damage) {
+
+        Health -= damage;
+
+    }
 }

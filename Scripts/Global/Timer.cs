@@ -2,12 +2,7 @@
 
 public struct Countdown {
 
-    public float ExposedTimer {
-
-        get => Timer;
-    
-    }
-    private float Timer = 0.0f;
+    public float Timer { get; private set; } = 0.0f;
     public float Threshold = 1.0f;
 
     public bool LogTime(double delta) {
