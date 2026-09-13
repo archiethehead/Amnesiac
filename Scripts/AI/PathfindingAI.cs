@@ -41,8 +41,8 @@ public partial class PathfindingAI : CharacterBody3D {
         if (Navigator.TargetPosition != Target.GlobalPosition)
             Navigator.TargetPosition = Target.GlobalPosition;
             
-        Vector3 Direction = (Navigator.GetNextPathPosition() - GlobalPosition);
-        Navigator.Velocity = Direction.Normalized() * Speed;
+        Vector3 Direction = (Navigator.GetNextPathPosition() - GlobalPosition).Normalized();
+        Navigator.Velocity = Direction * Speed;
         Direction.Y = 0.0f;
         GlobalRotation = RotateTowards(GlobalRotation, Direction, 4.0f * (float)delta);
 

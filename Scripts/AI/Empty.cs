@@ -16,6 +16,10 @@ public partial class Empty : EnemyAI {
 
     protected override void Attack() {
 
+        HitCast.TargetPosition = HitCast.ToLocal(Target.GlobalPosition);
+
+        GameManager.DebugOut("HitCast X value: {0}", HitCast.GlobalRotation.X);
+
         Vector3 velocity = Velocity;
         velocity.X = 0.0f;
         velocity.Z = 0.0f;

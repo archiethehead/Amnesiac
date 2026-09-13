@@ -136,8 +136,6 @@ public partial class EnemyAI : PathfindingAI {
 
         CurrentGlobalPosition = GlobalPosition;
 
-        GameManager.DebugOut("Empty Stuck Timer: {0} \nVelocity Magnitude: {1}", StuckCountdown.ExposedTimer, VelocityMagnitude  );
-
         if (IsStuck && (VelocityMagnitude < 1.0f) && CurrentState != EnemyState.Cooldown) {
 
             if (StuckCountdown.LogTime(delta)) {
