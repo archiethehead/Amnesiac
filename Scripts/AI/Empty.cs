@@ -5,11 +5,12 @@ public partial class Empty : EnemyAI {
 
     private float Damage = 25.0f;
 
+    [Export] private RayCast3D HitCast = null;
+
     public override void _Ready() {
 
         base._Ready();
         SetRandomTargetLocation();
-
 
     }
 
@@ -18,9 +19,11 @@ public partial class Empty : EnemyAI {
         Vector3 velocity = Velocity;
         velocity.X = 0.0f;
         velocity.Z = 0.0f;
-        Velocity = velocity;
+        Navigator.Velocity = velocity;
 
-        if (Target is Hitable h) {
+        HitCast.ForceRaycastUpdate();
+
+        if (Target is Hitable h && (HitCast.IsColliding() && HitCast.GetCollider() == Target)) {
 
             h.Hit(Damage);
 
@@ -32,6 +35,8 @@ public partial class Empty : EnemyAI {
             } 
 
         }
+
+        CurrentState = EnemyState.Cooldown;
 
     }
     

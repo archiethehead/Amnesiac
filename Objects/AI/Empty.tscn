@@ -3,11 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://cdyeeewhddopx" path="res://Objects/AI/EnemyAI.tscn" id="1_xkeor"]
 [ext_resource type="Script" uid="uid://dipel0bjk6dy2" path="res://Scripts/AI/Empty.cs" id="2_pgoaj"]
 
-[node name="Empty" unique_id=1929853051 instance=ExtResource("1_xkeor")]
+[node name="Empty" unique_id=1929853051 node_paths=PackedStringArray("HitCast") instance=ExtResource("1_xkeor")]
 script = ExtResource("2_pgoaj")
+HitCast = NodePath("RayCast")
+AttackCooldownThreshold = 0.5
 
 [node name="RayCast" type="RayCast3D" parent="." index="2" unique_id=1997520734]
-transform = Transform3D(0.1, 0, 0, 0, -1.3113416e-07, -0.1, 0, 3, -4.371139e-09, 0, 1, 0)
+transform = Transform3D(-0.1, -2.6226832e-07, 3.821371e-16, 0, -1.3113416e-07, -0.1, 8.742278e-09, -3, 4.371139e-09, -1.5285484e-15, 0.4, -1.7484556e-08)
 collision_mask = 3
 
 [node name="Navigator" parent="." index="3" unique_id=1284022680]
@@ -15,3 +17,6 @@ height = 1.0
 
 [node name="DetectionCone" parent="." index="5" unique_id=108904667]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="Collider" parent="DetectionCone" index="0" unique_id=978909432]
+transform = Transform3D(-4.371139e-08, -3, 0, 1, -1.3113416e-07, 0, 0, 0, 5, 3, 0.5, 0)

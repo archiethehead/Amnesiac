@@ -40,7 +40,6 @@ public partial class EnemyAI : PathfindingAI {
     
         Seeking,
         Chasing,
-        Attacking,
         Cooldown
     
     }
@@ -50,6 +49,12 @@ public partial class EnemyAI : PathfindingAI {
         
         set {
 
+            if (value == EnemyState.Chasing)
+                StuckCountdown.Threshold = ChasingStuckTimerThreshold;
+
+            else
+                StuckCountdown.Threshold = StuckTimerThreshold;
+
             PreviousState = StateBuffer;
             StateBuffer = value;
         
@@ -58,7 +63,22 @@ public partial class EnemyAI : PathfindingAI {
     }
     protected EnemyState StateBuffer = EnemyState.Seeking;
     protected EnemyState PreviousState = EnemyState.Seeking;
-    protected bool PlayerLost = false;
+    
+    protected bool PlayerLost {
+
+        get => PlayerLostBuffer;
+
+        set {
+
+            if (!value)
+                PlayerLostCountdown.Reset();
+
+            PlayerLostBuffer = value;
+        
+        }
+    
+    }
+    private bool PlayerLostBuffer = true;
 
     protected bool IsStuck {
 
@@ -69,26 +89,12 @@ public partial class EnemyAI : PathfindingAI {
         }
 
     }
-    private float StuckTimerThreshold {
 
-        get {
+    [Export] protected float ChasingStuckTimerThreshold = 5.0f;
+    [Export] protected float StuckTimerThreshold = 1.0f;
+    private Countdown StuckCountdown = new Countdown(1.0f);
 
-            switch (CurrentState) {
-
-                case EnemyState.Seeking:
-                    return 1.0f;
-
-                default:
-                    return 5.0f;
-
-            
-            }
-        
-        }
-    
-    }
-    
-    private float StuckTimer = 0.0f;
+    private float Stuck = 0.0f;
 
 
     public override void _Ready() {
@@ -99,39 +105,27 @@ public partial class EnemyAI : PathfindingAI {
 
     public override void _PhysicsProcess(double delta) {
 
-        if (IsStuck && CurrentState != EnemyState.Attacking) {
+        GameManager.DebugOut("Empty Stuck Timer: {0}", StuckCountdown.ExposedTimer);
 
-            StuckTimer += (float)delta;
+        if (IsStuck) {
 
-        }
+            if (StuckCountdown.LogTime(delta)) {
 
-        else {
-
-            StuckTimer = 0.0f;
-
-        }
-
-        if (StuckTimer >= StuckTimerThreshold) {
-
-            StuckTimer = 0.0f;
-            CurrentState = EnemyState.Seeking;
-            SetRandomTargetLocation();
-
-        }
-
-        if (CurrentState == EnemyState.Cooldown) {
-
-            if (AttackCooldown.LogTime(delta)) {
-
-                CurrentState = EnemyState.Chasing;
+                CurrentState = EnemyState.Seeking;
+                SetRandomTargetLocation();
 
             }
 
         }
 
+        else {
+
+            StuckCountdown.Reset();
+
+        }
+
         if (PlayerLost && CurrentState == EnemyState.Chasing) {
 
-            
 
             if (PlayerLostCountdown.LogTime(delta)) {
 
@@ -142,13 +136,20 @@ public partial class EnemyAI : PathfindingAI {
 
         }
 
+        if (CurrentState == EnemyState.Cooldown) {
+
+            if (AttackCooldown.LogTime(delta))
+                CurrentState = EnemyState.Chasing;
+
+        }
+
+        else
+            Moving(delta);
+
         // Pathfinder process does all of the Velocity calculations
         // and MUST be called before the MoveAndSlide/Gravity handling
         // in the inherited physics process, in order for our Velocity
         // calculations to actually be applied.
-
-        if (CurrentState != EnemyState.Cooldown)
-            Moving(delta);
 
         base._PhysicsProcess(delta);
     
@@ -178,24 +179,16 @@ public partial class EnemyAI : PathfindingAI {
 
     public override void NavigationFinished() {
 
-        if (CurrentState == EnemyState.Seeking) {
+        switch (CurrentState) {
 
-            SetRandomTargetLocation();
-            return;
+            case EnemyState.Seeking:
+                SetRandomTargetLocation();
+                break;
 
-        }
-
-        else if (CurrentState == EnemyState.Chasing) {
-
-            CurrentState = EnemyState.Attacking;
+            case EnemyState.Chasing:
+                Attack();
+                break;
         
-        }
-
-        if (CurrentState == EnemyState.Attacking) {
-         
-            Attack();
-            CurrentState = EnemyState.Cooldown;
-
         }
 
     }

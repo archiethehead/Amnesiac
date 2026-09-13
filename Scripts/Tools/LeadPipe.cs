@@ -27,10 +27,15 @@ public partial class LeadPipe : ToolBase {
     }
 
     public override void SecondaryAction() {
+
         GD.Print("BLOCK");
+
     }
 
     public override void TertiaryAction() {
+
         GD.Print("DUNNO");
+
     }
+
 }

@@ -81,7 +81,7 @@ public partial class PathfindingAI : CharacterBody3D {
     public void NavigatorVelocitySet(Vector3 SafeVelocity) {
 
         if (IsOnFloor())
-            Velocity = Navigator.Velocity.MoveToward(SafeVelocity, 0.25f);
+            Velocity = SafeVelocity;
     
     }
 
