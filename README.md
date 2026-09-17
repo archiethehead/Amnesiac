@@ -19,11 +19,17 @@ The game is in a functional alpha state, and is able to be ran through the Godot
 
 ## Contributors
 Programming:
+
 Mr Archie T. Healy - archiehealy06@gmail.com
+
 
 Level-Building:
+
 Miss Chloe B. Phillips - chloebphillips101@outlook.com
+
 Mr Archie T. Healy - archiehealy06@gmail.com
 
+
 Art & Assets:
+
 Miss Chloe B. Phillips - chloebphillips101@outlook.com
